@@ -93,8 +93,8 @@ class BIP32Tests(unittest.TestCase):
         self.assertEqual(ret, 0)
         return master
 
-    def get_test_key(self, vec, path, typ):
-        buf, buf_len = make_cbuffer(vec[path][typ])
+    def get_test_key(self, vec, path, flags):
+        buf, buf_len = make_cbuffer(vec[path][flags])
         ret, key_out = self.unserialize_key(buf, self.SERIALIZED_LEN)
         self.assertEqual(ret, 0)
         return key_out
@@ -120,9 +120,9 @@ class BIP32Tests(unittest.TestCase):
         self.assertEqual(ret, 0)
         return key_out
 
-    def compare_keys(self, key, expected, typ):
+    def compare_keys(self, key, expected, flags):
         self.assertEqual(h(key.chain_code), h(expected.chain_code))
-        key_name = 'pub_key' if (typ & FLAG_KEY_PUBLIC) else 'priv_key'
+        key_name = 'pub_key' if (flags & FLAG_KEY_PUBLIC) else 'priv_key'
         expected_cmp = getattr(expected, key_name)
         key_cmp = getattr(key, key_name)
         self.assertEqual(h(key_cmp), h(expected_cmp))
@@ -170,8 +170,8 @@ class BIP32Tests(unittest.TestCase):
                      (0x01111111,            FLAG_KEY_PUBLIC,  WALLY_EINVAL),
                      (0x01111111,            FLAG_KEY_PRIVATE, WALLY_EINVAL)]
 
-        for ver, typ, expected in ver_cases:
-            no_ver = vec_1['m'][typ][8:-8]
+        for ver, flags, expected in ver_cases:
+            no_ver = vec_1['m'][flags][8:-8]
             v_str = '0' + hex(ver)[2:]
             buf, buf_len = make_cbuffer(v_str + no_ver)
             ret, _ = self.unserialize_key(buf, buf_len)
@@ -199,9 +199,9 @@ class BIP32Tests(unittest.TestCase):
         master = self.get_test_master_key(vec_1)
 
         # Chain m:
-        for typ in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
-            expected = self.get_test_key(vec_1, 'm', typ)
-            self.compare_keys(master, expected, typ)
+        for flags in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
+            expected = self.get_test_key(vec_1, 'm', flags)
+            self.compare_keys(master, expected, flags)
 
         derived = master
         for path, i in [('m/0H', 0x80000000),
@@ -215,11 +215,11 @@ class BIP32Tests(unittest.TestCase):
             parent160 = derived.hash160
             derived_pub = self.derive_key(derived, i, FLAG_KEY_PUBLIC)
             derived = self.derive_key(derived, i, FLAG_KEY_PRIVATE)
-            for typ in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
-                expected = self.get_test_key(vec_1, path, typ)
-                self.compare_keys(derived, expected, typ)
-                if typ == FLAG_KEY_PUBLIC:
-                    self.compare_keys(derived_pub, expected, typ)
+            for flags in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
+                expected = self.get_test_key(vec_1, path, flags)
+                self.compare_keys(derived, expected, flags)
+                if flags & FLAG_KEY_PUBLIC:
+                    self.compare_keys(derived_pub, expected, flags)
                     # A neutered private key is indicated by
                     # BIP32_FLAG_KEY_PUBLIC (0x1) as its first byte.
                     self.assertEqual(h(derived_pub.priv_key), '01' + '00' * 32)
@@ -257,10 +257,10 @@ class BIP32Tests(unittest.TestCase):
         self.assertNotEqual(h(pub.pub_key), h(priv_pub.pub_key))
 
         # Test path derivation with multiple child elements
-        for kind, typ, expected in [(FLAG_KEY_PUBLIC,  FLAG_KEY_PUBLIC,  pub_pub),
-                                    (FLAG_KEY_PRIVATE, FLAG_KEY_PRIVATE, priv_priv)]:
+        for kind, flags, expected in [(FLAG_KEY_PUBLIC,  FLAG_KEY_PUBLIC,  pub_pub),
+                                      (FLAG_KEY_PRIVATE, FLAG_KEY_PRIVATE, priv_priv)]:
             path_derived = self.derive_key_by_path(master, [1, 1], kind)
-            self.compare_keys(path_derived, expected, typ)
+            self.compare_keys(path_derived, expected, flags)
 
 if __name__ == '__main__':
     unittest.main()
