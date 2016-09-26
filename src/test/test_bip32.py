@@ -14,13 +14,13 @@ vec_1 = {
     'seed':     '000102030405060708090a0b0c0d0e0f',
 
     'm': {
-        'pub':  '0488B21E000000000000000000873DFF'
+        FLAG_KEY_PUBLIC:  '0488B21E000000000000000000873DFF'
                 '81C02F525623FD1FE5167EAC3A55A049'
                 'DE3D314BB42EE227FFED37D5080339A3'
                 '6013301597DAEF41FBE593A02CC513D0'
                 'B55527EC2DF1050E2E8FF49C85C2AB473B21',
 
-        'priv': '0488ADE4000000000000000000873DFF'
+        FLAG_KEY_PRIVATE: '0488ADE4000000000000000000873DFF'
                 '81C02F525623FD1FE5167EAC3A55A049'
                 'DE3D314BB42EE227FFED37D50800E8F3'
                 '2E723DECF4051AEFAC8E2C93C9C5B214'
@@ -28,13 +28,13 @@ vec_1 = {
     },
 
     'm/0H': {
-        'pub':  '0488B21E013442193E8000000047FDAC'
+        FLAG_KEY_PUBLIC:  '0488B21E013442193E8000000047FDAC'
                 'BD0F1097043B78C63C20C34EF4ED9A11'
                 '1D980047AD16282C7AE6236141035A78'
                 '4662A4A20A65BF6AAB9AE98A6C068A81'
                 'C52E4B032C0FB5400C706CFCCC56B8B9C580',
 
-        'priv': '0488ADE4013442193E8000000047FDAC'
+        FLAG_KEY_PRIVATE: '0488ADE4013442193E8000000047FDAC'
                 'BD0F1097043B78C63C20C34EF4ED9A11'
                 '1D980047AD16282C7AE623614100EDB2'
                 'E14F9EE77D26DD93B4ECEDE8D16ED408'
@@ -42,13 +42,13 @@ vec_1 = {
     },
 
     'm/0H/1': {
-        'pub':  '0488B21E025C1BD648000000012A7857'
+        FLAG_KEY_PUBLIC:  '0488B21E025C1BD648000000012A7857'
                 '631386BA23DACAC34180DD1983734E44'
                 '4FDBF774041578E9B6ADB37C1903501E'
                 '454BF00751F24B1B489AA925215D66AF'
                 '2234E3891C3B21A52BEDB3CD711C6F6E2AF7',
 
-        'priv': '0488ADE4025C1BD648000000012A7857'
+        FLAG_KEY_PRIVATE: '0488ADE4025C1BD648000000012A7857'
                 '631386BA23DACAC34180DD1983734E44'
                 '4FDBF774041578E9B6ADB37C19003C6C'
                 'B8D0F6A264C91EA8B5030FADAA8E538B'
@@ -56,13 +56,13 @@ vec_1 = {
     },
 
     'm/0H/1/2H': {
-        'pub':  '0488B21E03BEF5A2F98000000204466B'
+        FLAG_KEY_PUBLIC:  '0488B21E03BEF5A2F98000000204466B'
                 '9CC8E161E966409CA52986C584F07E9D'
                 'C81F735DB683C3FF6EC7B1503F0357BF'
                 'E1E341D01C69FE5654309956CBEA5168'
                 '22FBA8A601743A012A7896EE8DC2A5162AFA',
 
-        'priv': '0488ADE403BEF5A2F98000000204466B'
+        FLAG_KEY_PRIVATE: '0488ADE403BEF5A2F98000000204466B'
                 '9CC8E161E966409CA52986C584F07E9D'
                 'C81F735DB683C3FF6EC7B1503F00CBCE'
                 '0D719ECF7431D88E6A89FA1483E02E35'
@@ -107,8 +107,7 @@ class BIP32Tests(unittest.TestCase):
 
         # Verify that path derivation matches also
         p_key_out = self.derive_key_by_path(parent, [child_num], kind)
-        typ = 'pub' if kind == FLAG_KEY_PUBLIC else 'priv'
-        self.compare_keys(p_key_out, key_out, typ)
+        self.compare_keys(p_key_out, key_out, kind)
         return key_out
 
     def derive_key_by_path(self, parent, path, kind):
@@ -123,8 +122,9 @@ class BIP32Tests(unittest.TestCase):
 
     def compare_keys(self, key, expected, typ):
         self.assertEqual(h(key.chain_code), h(expected.chain_code))
-        expected_cmp = getattr(expected, typ + '_key')
-        key_cmp = getattr(key, typ + '_key')
+        key_name = 'pub_key' if (typ & FLAG_KEY_PUBLIC) else 'priv_key'
+        expected_cmp = getattr(expected, key_name)
+        key_cmp = getattr(key, key_name)
         self.assertEqual(h(key_cmp), h(expected_cmp))
         self.assertEqual(key.depth, expected.depth)
         self.assertEqual(key.child_num, expected.child_num)
@@ -144,7 +144,7 @@ class BIP32Tests(unittest.TestCase):
         # Try short, correct, long lengths. Trimming 8 chars is the correct
         # length because the vector value contains 4 check bytes at the end.
         for trim, expected in [(0, WALLY_EINVAL), (8, WALLY_OK), (16, WALLY_EINVAL)]:
-            serialized_hex = vec_1['m']['priv'][0:-trim]
+            serialized_hex = vec_1['m'][FLAG_KEY_PRIVATE][0:-trim]
             buf, buf_len = make_cbuffer(serialized_hex)
             ret, key_out = self.unserialize_key(buf, buf_len)
             self.assertEqual(ret, expected)
@@ -159,16 +159,16 @@ class BIP32Tests(unittest.TestCase):
 
         # Check correct and incorrect version numbers as well
         # as mismatched key types and versions
-        ver_cases = [(self.VER_MAIN_PUBLIC,  'pub',  WALLY_OK),
-                     (self.VER_MAIN_PUBLIC,  'priv', WALLY_EINVAL),
-                     (self.VER_MAIN_PRIVATE, 'pub',  WALLY_EINVAL),
-                     (self.VER_MAIN_PRIVATE, 'priv', WALLY_OK),
-                     (self.VER_TEST_PUBLIC,  'pub',  WALLY_OK),
-                     (self.VER_TEST_PUBLIC , 'priv', WALLY_EINVAL),
-                     (self.VER_TEST_PRIVATE, 'pub',  WALLY_EINVAL),
-                     (self.VER_TEST_PRIVATE, 'priv', WALLY_OK),
-                     (0x01111111,            'pub',  WALLY_EINVAL),
-                     (0x01111111,            'priv', WALLY_EINVAL)]
+        ver_cases = [(self.VER_MAIN_PUBLIC,  FLAG_KEY_PUBLIC,  WALLY_OK),
+                     (self.VER_MAIN_PUBLIC,  FLAG_KEY_PRIVATE, WALLY_EINVAL),
+                     (self.VER_MAIN_PRIVATE, FLAG_KEY_PUBLIC,  WALLY_EINVAL),
+                     (self.VER_MAIN_PRIVATE, FLAG_KEY_PRIVATE, WALLY_OK),
+                     (self.VER_TEST_PUBLIC,  FLAG_KEY_PUBLIC,  WALLY_OK),
+                     (self.VER_TEST_PUBLIC , FLAG_KEY_PRIVATE, WALLY_EINVAL),
+                     (self.VER_TEST_PRIVATE, FLAG_KEY_PUBLIC,  WALLY_EINVAL),
+                     (self.VER_TEST_PRIVATE, FLAG_KEY_PRIVATE, WALLY_OK),
+                     (0x01111111,            FLAG_KEY_PUBLIC,  WALLY_EINVAL),
+                     (0x01111111,            FLAG_KEY_PRIVATE, WALLY_EINVAL)]
 
         for ver, typ, expected in ver_cases:
             no_ver = vec_1['m'][typ][8:-8]
@@ -199,7 +199,7 @@ class BIP32Tests(unittest.TestCase):
         master = self.get_test_master_key(vec_1)
 
         # Chain m:
-        for typ in ['pub', 'priv']:
+        for typ in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
             expected = self.get_test_key(vec_1, 'm', typ)
             self.compare_keys(master, expected, typ)
 
@@ -215,10 +215,10 @@ class BIP32Tests(unittest.TestCase):
             parent160 = derived.hash160
             derived_pub = self.derive_key(derived, i, FLAG_KEY_PUBLIC)
             derived = self.derive_key(derived, i, FLAG_KEY_PRIVATE)
-            for typ in ['pub', 'priv']:
+            for typ in [FLAG_KEY_PUBLIC, FLAG_KEY_PRIVATE]:
                 expected = self.get_test_key(vec_1, path, typ)
                 self.compare_keys(derived, expected, typ)
-                if typ == 'pub':
+                if typ == FLAG_KEY_PUBLIC:
                     self.compare_keys(derived_pub, expected, typ)
                     # A neutered private key is indicated by
                     # BIP32_FLAG_KEY_PUBLIC (0x1) as its first byte.
@@ -257,8 +257,8 @@ class BIP32Tests(unittest.TestCase):
         self.assertNotEqual(h(pub.pub_key), h(priv_pub.pub_key))
 
         # Test path derivation with multiple child elements
-        for kind, typ, expected in [(FLAG_KEY_PUBLIC,  'pub',  pub_pub),
-                                    (FLAG_KEY_PRIVATE, 'priv', priv_priv)]:
+        for kind, typ, expected in [(FLAG_KEY_PUBLIC,  FLAG_KEY_PUBLIC,  pub_pub),
+                                    (FLAG_KEY_PRIVATE, FLAG_KEY_PRIVATE, priv_priv)]:
             path_derived = self.derive_key_by_path(master, [1, 1], kind)
             self.compare_keys(path_derived, expected, typ)
 
