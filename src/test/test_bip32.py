@@ -99,24 +99,24 @@ class BIP32Tests(unittest.TestCase):
         self.assertEqual(ret, 0)
         return key_out
 
-    def derive_key(self, parent, child_num, kind):
+    def derive_key(self, parent, child_num, flags):
         key_out = ext_key()
         ret = bip32_key_from_parent(byref(parent), child_num,
-                                    kind, byref(key_out))
+                                    flags, byref(key_out))
         self.assertEqual(ret, 0)
 
         # Verify that path derivation matches also
-        p_key_out = self.derive_key_by_path(parent, [child_num], kind)
-        self.compare_keys(p_key_out, key_out, kind)
+        p_key_out = self.derive_key_by_path(parent, [child_num], flags)
+        self.compare_keys(p_key_out, key_out, flags)
         return key_out
 
-    def derive_key_by_path(self, parent, path, kind):
+    def derive_key_by_path(self, parent, path, flags):
         key_out = ext_key()
         c_path = (c_uint * len(path))()
         for i, n in enumerate(path):
             c_path[i] = n
         ret = bip32_key_from_parent_path(byref(parent), c_path, len(path),
-                                         kind, byref(key_out))
+                                         flags, byref(key_out))
         self.assertEqual(ret, 0)
         return key_out
 
@@ -257,9 +257,9 @@ class BIP32Tests(unittest.TestCase):
         self.assertNotEqual(h(pub.pub_key), h(priv_pub.pub_key))
 
         # Test path derivation with multiple child elements
-        for kind, flags, expected in [(FLAG_KEY_PUBLIC,  FLAG_KEY_PUBLIC,  pub_pub),
-                                      (FLAG_KEY_PRIVATE, FLAG_KEY_PRIVATE, priv_priv)]:
-            path_derived = self.derive_key_by_path(master, [1, 1], kind)
+        for flags, expected in [(FLAG_KEY_PUBLIC,  pub_pub),
+                                (FLAG_KEY_PRIVATE, priv_priv)]:
+            path_derived = self.derive_key_by_path(master, [1, 1], flags)
             self.compare_keys(path_derived, expected, flags)
 
 if __name__ == '__main__':
