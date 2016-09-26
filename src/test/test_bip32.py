@@ -1,6 +1,8 @@
 import unittest
 from util import *
 
+FLAG_KEY_PRIVATE, FLAG_KEY_PUBLIC = 0, 1
+
 # These vectors are expressed in binary rather than base 58. The spec base 58
 # representation just obfuscates the data we are validating. For example, the
 # chain codes in pub/priv results can be seen as equal in the hex data only.
@@ -71,7 +73,6 @@ vec_1 = {
 class BIP32Tests(unittest.TestCase):
 
     SERIALIZED_LEN = 4 + 1 + 4 + 4 + 32 + 33
-    KEY_PRIVATE, KEY_PUBLIC = 0, 1
 
     VER_MAIN_PUBLIC = 0x0488B21E
     VER_MAIN_PRIVATE = 0x0488ADE4
@@ -106,7 +107,7 @@ class BIP32Tests(unittest.TestCase):
 
         # Verify that path derivation matches also
         p_key_out = self.derive_key_by_path(parent, [child_num], kind)
-        typ = 'pub' if kind == self.KEY_PUBLIC else 'priv'
+        typ = 'pub' if kind == FLAG_KEY_PUBLIC else 'priv'
         self.compare_keys(p_key_out, key_out, typ)
         return key_out
 
@@ -151,7 +152,7 @@ class BIP32Tests(unittest.TestCase):
                 # Check this key serializes back to the same representation
                 # FIXME: Add full test cases for the serialisation code including errors
                 buf, buf_len = make_cbuffer('0' * len(serialized_hex))
-                ret = bip32_key_serialize(key_out, self.KEY_PRIVATE,
+                ret = bip32_key_serialize(key_out, FLAG_KEY_PRIVATE,
                                           buf, buf_len)
                 self.assertEqual(ret, 0)
                 self.assertEqual(h(buf).upper(), utf8(serialized_hex))
@@ -212,8 +213,8 @@ class BIP32Tests(unittest.TestCase):
             # the public child matches the public vector and has no private
             # key. Finally, check that the child holds the correct parent hash.
             parent160 = derived.hash160
-            derived_pub = self.derive_key(derived, i, self.KEY_PUBLIC)
-            derived = self.derive_key(derived, i, self.KEY_PRIVATE)
+            derived_pub = self.derive_key(derived, i, FLAG_KEY_PUBLIC)
+            derived = self.derive_key(derived, i, FLAG_KEY_PRIVATE)
             for typ in ['pub', 'priv']:
                 expected = self.get_test_key(vec_1, path, typ)
                 self.compare_keys(derived, expected, typ)
@@ -231,19 +232,19 @@ class BIP32Tests(unittest.TestCase):
         master = self.get_test_master_key(vec_1)
 
         # Derive the same child public and private keys from master
-        pub = self.derive_key(master, 1, self.KEY_PUBLIC)
-        priv = self.derive_key(master, 1, self.KEY_PRIVATE)
+        pub = self.derive_key(master, 1, FLAG_KEY_PUBLIC)
+        priv = self.derive_key(master, 1, FLAG_KEY_PRIVATE)
 
         # From the private child we can derive public and private keys
-        priv_pub = self.derive_key(priv, 1, self.KEY_PUBLIC)
-        priv_priv = self.derive_key(priv, 1, self.KEY_PRIVATE)
+        priv_pub = self.derive_key(priv, 1, FLAG_KEY_PUBLIC)
+        priv_priv = self.derive_key(priv, 1, FLAG_KEY_PRIVATE)
 
         # From the public child we can only derive a public key
-        pub_pub = self.derive_key(pub, 1, self.KEY_PUBLIC)
+        pub_pub = self.derive_key(pub, 1, FLAG_KEY_PUBLIC)
         # Verify that trying to derive a private key doesn't work
         key_out = ext_key()
         ret = bip32_key_from_parent(byref(pub), 1,
-                                    self.KEY_PRIVATE, byref(key_out))
+                                    FLAG_KEY_PRIVATE, byref(key_out))
         self.assertEqual(ret, WALLY_EINVAL)
 
         # Now our identities:
@@ -256,8 +257,8 @@ class BIP32Tests(unittest.TestCase):
         self.assertNotEqual(h(pub.pub_key), h(priv_pub.pub_key))
 
         # Test path derivation with multiple child elements
-        for kind, typ, expected in [(self.KEY_PUBLIC,  'pub',  pub_pub),
-                                    (self.KEY_PRIVATE, 'priv', priv_priv)]:
+        for kind, typ, expected in [(FLAG_KEY_PUBLIC,  'pub',  pub_pub),
+                                    (FLAG_KEY_PRIVATE, 'priv', priv_priv)]:
             path_derived = self.derive_key_by_path(master, [1, 1], kind)
             self.compare_keys(path_derived, expected, typ)
 
