@@ -57,7 +57,6 @@
 		91018E361DD275E200BB4E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 91018D841DD275E200BB4E40 /* README.md */; };
 		91018E371DD275E200BB4E40 /* field_10x26_arm.s in Sources */ = {isa = PBXBuildFile; fileRef = 91018D8B1DD275E200BB4E40 /* field_10x26_arm.s */; };
 		91018E381DD275E200BB4E40 /* bench_ecdh.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D8E1DD275E200BB4E40 /* bench_ecdh.c */; };
-		91018E391DD275E200BB4E40 /* bench_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D8F1DD275E200BB4E40 /* bench_internal.c */; };
 		91018E3A1DD275E200BB4E40 /* bench_rangeproof.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D901DD275E200BB4E40 /* bench_rangeproof.c */; };
 		91018E3B1DD275E200BB4E40 /* bench_recover.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D911DD275E200BB4E40 /* bench_recover.c */; };
 		91018E3C1DD275E200BB4E40 /* bench_schnorr_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D921DD275E200BB4E40 /* bench_schnorr_verify.c */; };
@@ -1075,7 +1074,6 @@
 			files = (
 				91018E041DD275E200BB4E40 /* bip32.c in Sources */,
 				91018E411DD275E200BB4E40 /* NativeSecp256k1Test.java in Sources */,
-				91018E391DD275E200BB4E40 /* bench_internal.c in Sources */,
 				91018E321DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c in Sources */,
 				91018E371DD275E200BB4E40 /* field_10x26_arm.s in Sources */,
 				91018E261DD275E200BB4E40 /* french.c in Sources */,
@@ -1241,6 +1239,10 @@
 				OTHER_CFLAGS = (
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/",
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/ccan/",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1254,6 +1256,10 @@
 				OTHER_CFLAGS = (
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/",
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/ccan/",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
