@@ -55,8 +55,6 @@
 		91018E341DD275E200BB4E40 /* lax_der_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D751DD275E200BB4E40 /* lax_der_parsing.c */; };
 		91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D771DD275E200BB4E40 /* lax_der_privatekey_parsing.c */; };
 		91018E361DD275E200BB4E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 91018D841DD275E200BB4E40 /* README.md */; };
-		91018E381DD275E200BB4E40 /* bench_ecdh.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D8E1DD275E200BB4E40 /* bench_ecdh.c */; };
-		91018E3A1DD275E200BB4E40 /* bench_rangeproof.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D901DD275E200BB4E40 /* bench_rangeproof.c */; };
 		91018E3B1DD275E200BB4E40 /* bench_recover.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D911DD275E200BB4E40 /* bench_recover.c */; };
 		91018E3C1DD275E200BB4E40 /* bench_schnorr_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D921DD275E200BB4E40 /* bench_schnorr_verify.c */; };
 		91018E3D1DD275E200BB4E40 /* bench_sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D931DD275E200BB4E40 /* bench_sign.c */; };
@@ -72,7 +70,6 @@
 		91018E481DD275E200BB4E40 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE01DD275E200BB4E40 /* sign.c */; };
 		91018E491DD275E200BB4E40 /* test_bip32.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE71DD275E200BB4E40 /* test_bip32.java */; };
 		91018E4A1DD275E200BB4E40 /* test_mnemonic.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE81DD275E200BB4E40 /* test_mnemonic.java */; };
-		91018E4B1DD275E200BB4E40 /* swig.i in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE91DD275E200BB4E40 /* swig.i */; };
 		91018E4D1DD275E200BB4E40 /* wordlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018E001DD275E200BB4E40 /* wordlist.c */; };
 /* End PBXBuildFile section */
 
@@ -1081,11 +1078,8 @@
 				91018E481DD275E200BB4E40 /* sign.c in Sources */,
 				91018E131DD275E200BB4E40 /* run-lotsa-data.c in Sources */,
 				91018E401DD275E200BB4E40 /* NativeSecp256k1.java in Sources */,
-				91018E4B1DD275E200BB4E40 /* swig.i in Sources */,
 				91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */,
 				91018E2C1DD275E200BB4E40 /* internal.c in Sources */,
-				91018E3A1DD275E200BB4E40 /* bench_rangeproof.c in Sources */,
-				91018E381DD275E200BB4E40 /* bench_ecdh.c in Sources */,
 				91018E241DD275E200BB4E40 /* chinese_traditional.c in Sources */,
 				91018E1A1DD275E200BB4E40 /* run.c in Sources */,
 				91018E341DD275E200BB4E40 /* lax_der_parsing.c in Sources */,
@@ -1234,7 +1228,10 @@
 		91018A191DD2701200BB4E40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/secp256k1/";
 				OTHER_CFLAGS = (
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/secp256k1/include/",
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
 					"-isystem",
@@ -1251,7 +1248,10 @@
 		91018A1A1DD2701200BB4E40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/secp256k1/";
 				OTHER_CFLAGS = (
+					"-isystem",
+					"$(PROJECT_DIR)/../../src/secp256k1/include/",
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
 					"-isystem",
