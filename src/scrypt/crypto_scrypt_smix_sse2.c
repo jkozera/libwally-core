@@ -46,6 +46,8 @@ static void blockmix_salsa8(const __m128i *, __m128i *, __m128i *, size_t);
 static uint64_t integerify(const void *, size_t);
 #endif
 
+#include <stddef.h>
+
 static void
 sse2_blkcpy(void * dest, const void * src, size_t len)
 {

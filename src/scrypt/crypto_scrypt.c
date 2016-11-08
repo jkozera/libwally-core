@@ -52,6 +52,12 @@
 static void (*smix_func)(uint8_t *, size_t, uint64_t, void *, void *) = NULL;
 #endif
 
+#include <include/wally_core.h>
+
+void PBKDF2_SHA256(const unsigned char *pass, size_t pass_len,
+						  const unsigned char *salt, size_t salt_len,
+						  uint64_t cost,
+						  unsigned char *bytes_out, size_t len);
 /**
  * _crypto_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen, smix):
  * Perform the requested scrypt computation, using ${smix} as the smix routine.
