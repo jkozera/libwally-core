@@ -30,7 +30,6 @@
 		91018E1A1DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D291DD275E200BB4E40 /* run.c */; };
 		91018E1B1DD275E200BB4E40 /* tap.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D2D1DD275E200BB4E40 /* tap.c */; };
 		91018E1C1DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D301DD275E200BB4E40 /* run.c */; };
-		91018E1D1DD275E200BB4E40 /* cpu-features.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D371DD275E200BB4E40 /* cpu-features.c */; };
 		91018E1E1DD275E200BB4E40 /* bench.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3B1DD275E200BB4E40 /* bench.c */; };
 		91018E1F1DD275E200BB4E40 /* ctaes.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3D1DD275E200BB4E40 /* ctaes.c */; };
 		91018E201DD275E200BB4E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3F1DD275E200BB4E40 /* README.md */; };
@@ -48,8 +47,6 @@
 		91018E2D1DD275E200BB4E40 /* mnemonic.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D601DD275E200BB4E40 /* mnemonic.c */; };
 		91018E2E1DD275E200BB4E40 /* pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D621DD275E200BB4E40 /* pbkdf2.c */; };
 		91018E2F1DD275E200BB4E40 /* crypto_scrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D651DD275E200BB4E40 /* crypto_scrypt.c */; };
-		91018E301DD275E200BB4E40 /* crypto_scrypt_smix.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D661DD275E200BB4E40 /* crypto_scrypt_smix.c */; };
-		91018E311DD275E200BB4E40 /* crypto_scrypt_smix_neon.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D671DD275E200BB4E40 /* crypto_scrypt_smix_neon.c */; };
 		91018E321DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D681DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c */; };
 		91018E331DD275E200BB4E40 /* scrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D691DD275E200BB4E40 /* scrypt.c */; };
 		91018E341DD275E200BB4E40 /* lax_der_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D751DD275E200BB4E40 /* lax_der_parsing.c */; };
@@ -1098,15 +1095,12 @@
 				91018E3F1DD275E200BB4E40 /* gen_context.c in Sources */,
 				91018E0A1DD275E200BB4E40 /* run-BUILD_ASSERT_OR_ZERO.c in Sources */,
 				91018E271DD275E200BB4E40 /* italian.c in Sources */,
-				91018E301DD275E200BB4E40 /* crypto_scrypt_smix.c in Sources */,
 				91018E021DD275E200BB4E40 /* aes.c in Sources */,
 				91018E111DD275E200BB4E40 /* sha256.c in Sources */,
 				91018E421DD275E200BB4E40 /* NativeSecp256k1Util.java in Sources */,
 				91018E281DD275E200BB4E40 /* japanese.c in Sources */,
-				91018E311DD275E200BB4E40 /* crypto_scrypt_smix_neon.c in Sources */,
 				91018E2D1DD275E200BB4E40 /* mnemonic.c in Sources */,
 				91018E2B1DD275E200BB4E40 /* hmac.c in Sources */,
-				91018E1D1DD275E200BB4E40 /* cpu-features.c in Sources */,
 				91018E061DD275E200BB4E40 /* bip39.c in Sources */,
 				91018E3D1DD275E200BB4E40 /* bench_sign.c in Sources */,
 				91018E201DD275E200BB4E40 /* README.md in Sources */,
