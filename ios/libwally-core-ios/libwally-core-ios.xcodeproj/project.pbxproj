@@ -16,22 +16,16 @@
 		91018E061DD275E200BB4E40 /* bip39.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CEF1DD275E200BB4E40 /* bip39.c */; };
 		91018E071DD275E200BB4E40 /* compile_fail-expr.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CF71DD275E200BB4E40 /* compile_fail-expr.c */; };
 		91018E081DD275E200BB4E40 /* compile_fail.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CF81DD275E200BB4E40 /* compile_fail.c */; };
-		91018E091DD275E200BB4E40 /* compile_ok.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CF91DD275E200BB4E40 /* compile_ok.c */; };
 		91018E0A1DD275E200BB4E40 /* run-BUILD_ASSERT_OR_ZERO.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CFA1DD275E200BB4E40 /* run-BUILD_ASSERT_OR_ZERO.c */; };
 		91018E0B1DD275E200BB4E40 /* compile_fail-printf.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D001DD275E200BB4E40 /* compile_fail-printf.c */; };
 		91018E0C1DD275E200BB4E40 /* run-is_compile_constant.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D011DD275E200BB4E40 /* run-is_compile_constant.c */; };
 		91018E0D1DD275E200BB4E40 /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D061DD275E200BB4E40 /* ripemd160.c */; };
-		91018E0E1DD275E200BB4E40 /* run-lotsa-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D091DD275E200BB4E40 /* run-lotsa-data.c */; };
 		91018E0F1DD275E200BB4E40 /* run-test-vectors.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0A1DD275E200BB4E40 /* run-test-vectors.c */; };
-		91018E101DD275E200BB4E40 /* run-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0B1DD275E200BB4E40 /* run-types.c */; };
 		91018E111DD275E200BB4E40 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0F1DD275E200BB4E40 /* sha256.c */; };
 		91018E121DD275E200BB4E40 /* run-33-bit-test.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D121DD275E200BB4E40 /* run-33-bit-test.c */; };
 		91018E131DD275E200BB4E40 /* run-lotsa-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D131DD275E200BB4E40 /* run-lotsa-data.c */; };
-		91018E141DD275E200BB4E40 /* run-test-vectors.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D141DD275E200BB4E40 /* run-test-vectors.c */; };
 		91018E151DD275E200BB4E40 /* run-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D151DD275E200BB4E40 /* run-types.c */; };
 		91018E161DD275E200BB4E40 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D191DD275E200BB4E40 /* sha512.c */; };
-		91018E171DD275E200BB4E40 /* compile_ok-constant.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D201DD275E200BB4E40 /* compile_ok-constant.c */; };
-		91018E181DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D211DD275E200BB4E40 /* run.c */; };
 		91018E191DD275E200BB4E40 /* hex.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D251DD275E200BB4E40 /* hex.c */; };
 		91018E1A1DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D291DD275E200BB4E40 /* run.c */; };
 		91018E1B1DD275E200BB4E40 /* tap.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D2D1DD275E200BB4E40 /* tap.c */; };
@@ -41,7 +35,6 @@
 		91018E1F1DD275E200BB4E40 /* ctaes.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3D1DD275E200BB4E40 /* ctaes.c */; };
 		91018E201DD275E200BB4E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3F1DD275E200BB4E40 /* README.md */; };
 		91018E211DD275E200BB4E40 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D401DD275E200BB4E40 /* test.c */; };
-		91018E221DD275E200BB4E40 /* test_clear.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D421DD275E200BB4E40 /* test_clear.c */; };
 		91018E231DD275E200BB4E40 /* chinese_simplified.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D491DD275E200BB4E40 /* chinese_simplified.c */; };
 		91018E241DD275E200BB4E40 /* chinese_traditional.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D4B1DD275E200BB4E40 /* chinese_traditional.c */; };
 		91018E251DD275E200BB4E40 /* english.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D4D1DD275E200BB4E40 /* english.c */; };
@@ -76,14 +69,12 @@
 		91018E421DD275E200BB4E40 /* NativeSecp256k1Util.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB11DD275E200BB4E40 /* NativeSecp256k1Util.java */; };
 		91018E431DD275E200BB4E40 /* Secp256k1Context.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB21DD275E200BB4E40 /* Secp256k1Context.java */; };
 		91018E441DD275E200BB4E40 /* org_bitcoin_NativeSecp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB31DD275E200BB4E40 /* org_bitcoin_NativeSecp256k1.c */; };
-		91018E451DD275E200BB4E40 /* org_bitcoin_Secp256k1Context.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB51DD275E200BB4E40 /* org_bitcoin_Secp256k1Context.c */; };
 		91018E461DD275E200BB4E40 /* secp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDA1DD275E200BB4E40 /* secp256k1.c */; };
 		91018E471DD275E200BB4E40 /* tests.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDD1DD275E200BB4E40 /* tests.c */; };
 		91018E481DD275E200BB4E40 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE01DD275E200BB4E40 /* sign.c */; };
 		91018E491DD275E200BB4E40 /* test_bip32.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE71DD275E200BB4E40 /* test_bip32.java */; };
 		91018E4A1DD275E200BB4E40 /* test_mnemonic.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE81DD275E200BB4E40 /* test_mnemonic.java */; };
 		91018E4B1DD275E200BB4E40 /* swig.i in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE91DD275E200BB4E40 /* swig.i */; };
-		91018E4C1DD275E200BB4E40 /* swig.i in Sources */ = {isa = PBXBuildFile; fileRef = 91018DEE1DD275E200BB4E40 /* swig.i */; };
 		91018E4D1DD275E200BB4E40 /* wordlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018E001DD275E200BB4E40 /* wordlist.c */; };
 /* End PBXBuildFile section */
 
@@ -1082,21 +1073,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91018E091DD275E200BB4E40 /* compile_ok.c in Sources */,
-				91018E0E1DD275E200BB4E40 /* run-lotsa-data.c in Sources */,
 				91018E041DD275E200BB4E40 /* bip32.c in Sources */,
-				91018E4C1DD275E200BB4E40 /* swig.i in Sources */,
 				91018E411DD275E200BB4E40 /* NativeSecp256k1Test.java in Sources */,
-				91018E181DD275E200BB4E40 /* run.c in Sources */,
 				91018E391DD275E200BB4E40 /* bench_internal.c in Sources */,
-				91018E101DD275E200BB4E40 /* run-types.c in Sources */,
-				91018E221DD275E200BB4E40 /* test_clear.c in Sources */,
-				91018E171DD275E200BB4E40 /* compile_ok-constant.c in Sources */,
 				91018E321DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c in Sources */,
 				91018E371DD275E200BB4E40 /* field_10x26_arm.s in Sources */,
 				91018E261DD275E200BB4E40 /* french.c in Sources */,
-				91018E141DD275E200BB4E40 /* run-test-vectors.c in Sources */,
-				91018E451DD275E200BB4E40 /* org_bitcoin_Secp256k1Context.c in Sources */,
 				91018E1F1DD275E200BB4E40 /* ctaes.c in Sources */,
 				91018A141DD2701200BB4E40 /* libwally_core_ios.m in Sources */,
 				91018E491DD275E200BB4E40 /* test_bip32.java in Sources */,
@@ -1256,6 +1238,10 @@
 		91018A191DD2701200BB4E40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_CFLAGS = (
+					"-isystem",
+					"$(PROJECT_DIR)/../../",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1265,6 +1251,10 @@
 		91018A1A1DD2701200BB4E40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_CFLAGS = (
+					"-isystem",
+					"$(PROJECT_DIR)/../../",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
