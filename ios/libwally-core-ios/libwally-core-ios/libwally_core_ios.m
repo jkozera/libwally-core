@@ -9,5 +9,13 @@
 #import "libwally_core_ios.h"
 
 @implementation libwally_core_ios
++(NSString *) staticTest{
+	NSDate * aDate = [[NSDate alloc] init];
+	return aDate.description;
+}
+
+- (NSString *) objectTest{
+	return self.description;
+}
 
 @end

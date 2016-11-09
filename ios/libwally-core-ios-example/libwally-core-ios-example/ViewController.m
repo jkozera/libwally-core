@@ -30,7 +30,12 @@
 }
 
 - (IBAction)actionTest:(id)sender {
-	self.fDebugTextView.text = @"test done";
+	self.fDebugTextView.text = @"begin test…";
+	NSMutableArray * aLogArray = [[NSMutableArray alloc] init];
+	[aLogArray addObject:[libwally_core_ios staticTest]];
+	libwally_core_ios * aObject = [[libwally_core_ios alloc] init];
+	[aLogArray addObject: [aObject objectTest]];
+	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@";\n"];
 }
 
 @end

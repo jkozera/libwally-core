@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface libwally_core_ios : NSObject
-
++ (NSString *) staticTest;
+- (NSString *) objectTest;
 @end
