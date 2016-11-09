@@ -22,7 +22,6 @@
 		91018E0D1DD275E200BB4E40 /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D061DD275E200BB4E40 /* ripemd160.c */; };
 		91018E0F1DD275E200BB4E40 /* run-test-vectors.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0A1DD275E200BB4E40 /* run-test-vectors.c */; };
 		91018E111DD275E200BB4E40 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0F1DD275E200BB4E40 /* sha256.c */; };
-		91018E121DD275E200BB4E40 /* run-33-bit-test.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D121DD275E200BB4E40 /* run-33-bit-test.c */; };
 		91018E131DD275E200BB4E40 /* run-lotsa-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D131DD275E200BB4E40 /* run-lotsa-data.c */; };
 		91018E151DD275E200BB4E40 /* run-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D151DD275E200BB4E40 /* run-types.c */; };
 		91018E161DD275E200BB4E40 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D191DD275E200BB4E40 /* sha512.c */; };
@@ -47,7 +46,6 @@
 		91018E2D1DD275E200BB4E40 /* mnemonic.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D601DD275E200BB4E40 /* mnemonic.c */; };
 		91018E2E1DD275E200BB4E40 /* pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D621DD275E200BB4E40 /* pbkdf2.c */; };
 		91018E2F1DD275E200BB4E40 /* crypto_scrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D651DD275E200BB4E40 /* crypto_scrypt.c */; };
-		91018E321DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D681DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c */; };
 		91018E331DD275E200BB4E40 /* scrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D691DD275E200BB4E40 /* scrypt.c */; };
 		91018E341DD275E200BB4E40 /* lax_der_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D751DD275E200BB4E40 /* lax_der_parsing.c */; };
 		91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D771DD275E200BB4E40 /* lax_der_privatekey_parsing.c */; };
@@ -61,7 +59,6 @@
 		91018E411DD275E200BB4E40 /* NativeSecp256k1Test.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB01DD275E200BB4E40 /* NativeSecp256k1Test.java */; };
 		91018E421DD275E200BB4E40 /* NativeSecp256k1Util.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB11DD275E200BB4E40 /* NativeSecp256k1Util.java */; };
 		91018E431DD275E200BB4E40 /* Secp256k1Context.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB21DD275E200BB4E40 /* Secp256k1Context.java */; };
-		91018E441DD275E200BB4E40 /* org_bitcoin_NativeSecp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB31DD275E200BB4E40 /* org_bitcoin_NativeSecp256k1.c */; };
 		91018E461DD275E200BB4E40 /* secp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDA1DD275E200BB4E40 /* secp256k1.c */; };
 		91018E471DD275E200BB4E40 /* tests.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDD1DD275E200BB4E40 /* tests.c */; };
 		91018E481DD275E200BB4E40 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE01DD275E200BB4E40 /* sign.c */; };
@@ -316,6 +313,11 @@
 		91018DFF1DD275E200BB4E40 /* util.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = util.py; sourceTree = "<group>"; };
 		91018E001DD275E200BB4E40 /* wordlist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wordlist.c; sourceTree = "<group>"; };
 		91018E011DD275E200BB4E40 /* wordlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wordlist.h; sourceTree = "<group>"; };
+		91FD24FF1DD34C00001F3339 /* wally_bip32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wally_bip32.h; sourceTree = "<group>"; };
+		91FD25001DD34C00001F3339 /* wally_bip38.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wally_bip38.h; sourceTree = "<group>"; };
+		91FD25011DD34C00001F3339 /* wally_bip39.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wally_bip39.h; sourceTree = "<group>"; };
+		91FD25021DD34C00001F3339 /* wally_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wally_core.h; sourceTree = "<group>"; };
+		91FD25031DD34C00001F3339 /* wally_crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wally_crypto.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 		91018A061DD2701200BB4E40 = {
 			isa = PBXGroup;
 			children = (
+				91FD24FE1DD34C00001F3339 /* libwally-core-include */,
 				91018CE81DD275E200BB4E40 /* libwally-core-src */,
 				91018A111DD2701200BB4E40 /* libwally-core-ios */,
 				91018A101DD2701200BB4E40 /* Products */,
@@ -1008,6 +1011,19 @@
 			path = test;
 			sourceTree = "<group>";
 		};
+		91FD24FE1DD34C00001F3339 /* libwally-core-include */ = {
+			isa = PBXGroup;
+			children = (
+				91FD24FF1DD34C00001F3339 /* wally_bip32.h */,
+				91FD25001DD34C00001F3339 /* wally_bip38.h */,
+				91FD25011DD34C00001F3339 /* wally_bip39.h */,
+				91FD25021DD34C00001F3339 /* wally_core.h */,
+				91FD25031DD34C00001F3339 /* wally_crypto.h */,
+			);
+			name = "libwally-core-include";
+			path = ../../include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1067,7 +1083,6 @@
 			files = (
 				91018E041DD275E200BB4E40 /* bip32.c in Sources */,
 				91018E411DD275E200BB4E40 /* NativeSecp256k1Test.java in Sources */,
-				91018E321DD275E200BB4E40 /* crypto_scrypt_smix_sse2.c in Sources */,
 				91018E261DD275E200BB4E40 /* french.c in Sources */,
 				91018E1F1DD275E200BB4E40 /* ctaes.c in Sources */,
 				91018A141DD2701200BB4E40 /* libwally_core_ios.m in Sources */,
@@ -1107,7 +1122,6 @@
 				91018E161DD275E200BB4E40 /* sha512.c in Sources */,
 				91018E3E1DD275E200BB4E40 /* bench_verify.c in Sources */,
 				91018E471DD275E200BB4E40 /* tests.c in Sources */,
-				91018E441DD275E200BB4E40 /* org_bitcoin_NativeSecp256k1.c in Sources */,
 				91018E051DD275E200BB4E40 /* bip38.c in Sources */,
 				91018E231DD275E200BB4E40 /* chinese_simplified.c in Sources */,
 				91018E361DD275E200BB4E40 /* README.md in Sources */,
@@ -1117,7 +1131,6 @@
 				91018E151DD275E200BB4E40 /* run-types.c in Sources */,
 				91018E2E1DD275E200BB4E40 /* pbkdf2.c in Sources */,
 				91018E0D1DD275E200BB4E40 /* ripemd160.c in Sources */,
-				91018E121DD275E200BB4E40 /* run-33-bit-test.c in Sources */,
 				91018E3C1DD275E200BB4E40 /* bench_schnorr_verify.c in Sources */,
 				91018E1B1DD275E200BB4E40 /* tap.c in Sources */,
 				91018E031DD275E200BB4E40 /* base58.c in Sources */,
@@ -1227,6 +1240,10 @@
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (
+					"-DUSE_SCALAR_INV_BUILTIN=1",
+					"-DUSE_FIELD_INV_BUILTIN=1",
+					"-DUSE_SCALAR_8X32=1",
+					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_GMP=0",
 					"-isystem",
 					"$(PROJECT_DIR)/../../src/secp256k1/include/",
@@ -1251,6 +1268,10 @@
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (
+					"-DUSE_SCALAR_INV_BUILTIN=1",
+					"-DUSE_FIELD_INV_BUILTIN=1",
+					"-DUSE_SCALAR_8X32=1",
+					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_GMP=0",
 					"-isystem",
 					"$(PROJECT_DIR)/../../src/secp256k1/include/",
