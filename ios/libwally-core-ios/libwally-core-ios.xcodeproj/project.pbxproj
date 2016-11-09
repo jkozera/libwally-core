@@ -60,7 +60,6 @@
 		91018E421DD275E200BB4E40 /* NativeSecp256k1Util.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB11DD275E200BB4E40 /* NativeSecp256k1Util.java */; };
 		91018E431DD275E200BB4E40 /* Secp256k1Context.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DB21DD275E200BB4E40 /* Secp256k1Context.java */; };
 		91018E461DD275E200BB4E40 /* secp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDA1DD275E200BB4E40 /* secp256k1.c */; };
-		91018E471DD275E200BB4E40 /* tests.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DDD1DD275E200BB4E40 /* tests.c */; };
 		91018E481DD275E200BB4E40 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE01DD275E200BB4E40 /* sign.c */; };
 		91018E491DD275E200BB4E40 /* test_bip32.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE71DD275E200BB4E40 /* test_bip32.java */; };
 		91018E4A1DD275E200BB4E40 /* test_mnemonic.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE81DD275E200BB4E40 /* test_mnemonic.java */; };
@@ -1121,7 +1120,6 @@
 				91018E201DD275E200BB4E40 /* README.md in Sources */,
 				91018E161DD275E200BB4E40 /* sha512.c in Sources */,
 				91018E3E1DD275E200BB4E40 /* bench_verify.c in Sources */,
-				91018E471DD275E200BB4E40 /* tests.c in Sources */,
 				91018E051DD275E200BB4E40 /* bip38.c in Sources */,
 				91018E231DD275E200BB4E40 /* chinese_simplified.c in Sources */,
 				91018E361DD275E200BB4E40 /* README.md in Sources */,
