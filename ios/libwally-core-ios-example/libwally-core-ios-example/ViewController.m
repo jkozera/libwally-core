@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "libwally-core-ios/libwally_core_ios.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *fHeaderLabel;
