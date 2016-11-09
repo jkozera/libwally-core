@@ -1222,8 +1222,12 @@
 		91018A191DD2701200BB4E40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/secp256k1/";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/secp256k1/",
+					/usr/local/include,
+				);
 				OTHER_CFLAGS = (
+					"-DUSE_NUM_GMP=0",
 					"-isystem",
 					"$(PROJECT_DIR)/../../src/secp256k1/include/",
 					"-isystem",
@@ -1242,8 +1246,12 @@
 		91018A1A1DD2701200BB4E40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/secp256k1/";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../src/secp256k1/",
+					/usr/local/include,
+				);
 				OTHER_CFLAGS = (
+					"-DUSE_NUM_GMP=0",
 					"-isystem",
 					"$(PROJECT_DIR)/../../src/secp256k1/include/",
 					"-isystem",
