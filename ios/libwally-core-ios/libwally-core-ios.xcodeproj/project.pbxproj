@@ -22,7 +22,6 @@
 		91018E0D1DD275E200BB4E40 /* ripemd160.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D061DD275E200BB4E40 /* ripemd160.c */; };
 		91018E0F1DD275E200BB4E40 /* run-test-vectors.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0A1DD275E200BB4E40 /* run-test-vectors.c */; };
 		91018E111DD275E200BB4E40 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D0F1DD275E200BB4E40 /* sha256.c */; };
-		91018E131DD275E200BB4E40 /* run-lotsa-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D131DD275E200BB4E40 /* run-lotsa-data.c */; };
 		91018E151DD275E200BB4E40 /* run-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D151DD275E200BB4E40 /* run-types.c */; };
 		91018E161DD275E200BB4E40 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D191DD275E200BB4E40 /* sha512.c */; };
 		91018E191DD275E200BB4E40 /* hex.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D251DD275E200BB4E40 /* hex.c */; };
@@ -1087,7 +1086,6 @@
 				91018A141DD2701200BB4E40 /* libwally_core_ios.m in Sources */,
 				91018E491DD275E200BB4E40 /* test_bip32.java in Sources */,
 				91018E481DD275E200BB4E40 /* sign.c in Sources */,
-				91018E131DD275E200BB4E40 /* run-lotsa-data.c in Sources */,
 				91018E401DD275E200BB4E40 /* NativeSecp256k1.java in Sources */,
 				91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */,
 				91018E2C1DD275E200BB4E40 /* internal.c in Sources */,
@@ -1234,7 +1232,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../src/secp256k1/",
+					"$(PROJECT_DIR)/../../src/secp256k1/**",
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (
@@ -1262,7 +1260,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../src/secp256k1/",
+					"$(PROJECT_DIR)/../../src/secp256k1/**",
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (

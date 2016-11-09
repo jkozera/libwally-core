@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "wally_bip39.h"
+#import "wordlist.h"
 
 @interface libwally_core_ios : NSObject
 + (NSString *) staticTest;
