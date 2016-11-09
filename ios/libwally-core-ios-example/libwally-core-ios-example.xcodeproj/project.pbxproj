@@ -328,7 +328,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7MW2VW5JEZ;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../libwally-core-ios/libwally-core-ios/";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../libwally-core-ios/libwally-core-ios",
+					"$(PROJECT_DIR)/../../include",
+					"$(PROJECT_DIR)/../../src",
+				);
 				INFOPLIST_FILE = "libwally-core-ios-example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.isidoroghezzi.libwally-core-ios-example";
@@ -341,7 +345,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7MW2VW5JEZ;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../libwally-core-ios/libwally-core-ios/";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../libwally-core-ios/libwally-core-ios",
+					"$(PROJECT_DIR)/../../include",
+					"$(PROJECT_DIR)/../../src",
+				);
 				INFOPLIST_FILE = "libwally-core-ios-example/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.isidoroghezzi.libwally-core-ios-example";
@@ -368,6 +376,7 @@
 				91FD25261DD3680B001F3339 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
