@@ -119,8 +119,11 @@
 		NSAssert(WALLY_OK == aBip39_mnemonic_from_bytes, @"WALLY_OK == aBip39_mnemonic_from_bytes");
 		NSString * aOutputString = [NSString stringWithUTF8String:aOutput];
 		NSAssert (YES == [aMenemonic isEqualToString:aOutputString], @"YES == [aMenemonic isEqualToString:aOutputString]");
-		const int aBip39_mnemonic_validate = bip39_mnemonic_validate (aWordList, [[aMenemonic dataUsingEncoding:NSUTF8StringEncoding] bytes]);
-		// NSLog (@"%");
+		NSData * aData = [aMenemonic dataUsingEncoding:NSUTF8StringEncoding];
+		NSMutableData * aMutableData = [NSMutableData dataWithData:aData];
+		const char aZero = 0;
+		[aMutableData appendBytes:&aZero length:1];
+		const int aBip39_mnemonic_validate = bip39_mnemonic_validate (aWordList, [aMutableData bytes]);
 		NSAssert (0 == aBip39_mnemonic_validate, @"0 == aBip39_mnemonic_validate");
 		wally_free_string (aOutput);
 	}
