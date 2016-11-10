@@ -113,9 +113,10 @@
 		NSLog (@"%@", aCase.description);
 		NSString * aHexInputString = aCase [0];
 		NSString  * aMenemonic = aCase [1];
-		NSData * aHexInputData = [aHexInputString hexToBytes];
+		NSData * aBuf = [aHexInputString hexToBytes];
 		char * aOutput = NULL;
-		const int aBip39_mnemonic_from_bytes = bip39_mnemonic_from_bytes (aWordList, [aHexInputData bytes], aHexInputData.length, &aOutput);
+		
+		const int aBip39_mnemonic_from_bytes = bip39_mnemonic_from_bytes (aWordList, [aBuf bytes], aBuf.length, &aOutput);
 		NSAssert(WALLY_OK == aBip39_mnemonic_from_bytes, @"WALLY_OK == aBip39_mnemonic_from_bytes");
 		NSString * aOutputString = [NSString stringWithUTF8String:aOutput];
 		NSAssert (YES == [aMenemonic isEqualToString:aOutputString], @"YES == [aMenemonic isEqualToString:aOutputString]");
@@ -125,7 +126,22 @@
 		[aMutableData appendBytes:&aZero length:1];
 		const int aBip39_mnemonic_validate = bip39_mnemonic_validate (aWordList, [aMutableData bytes]);
 		NSAssert (0 == aBip39_mnemonic_validate, @"0 == aBip39_mnemonic_validate");
+
+
+		unsigned char * aOutBuf = malloc (aBuf.length + 1);
+		NSAssert (NULL != aOutBuf, @"NULL != aBytesOut");
+		memset(aOutBuf, 0, aBuf.length + 1);
+		
+		size_t aWritten = 0;
+		const int aBip39_mnemonic_to_bytes = bip39_mnemonic_to_bytes (aWordList, aOutput, aOutBuf, aBuf.length, &aWritten);
+		NSAssert(WALLY_OK == aBip39_mnemonic_to_bytes, @"WALLY_OK == aBip39_mnemonic_to_bytes");
+		NSAssert (aBuf.length == aWritten, @"aHexInputData.length == aWritten");
+		NSString * aBytesOutString = [NSString stringWithUTF8String:aOutBuf];
+		// NSAssert (YES == [aHexInputString isEqualToString: aBytesOutString], @"YES == [aOutputString isEqualToString: aBytesOutString]");
+
 		wally_free_string (aOutput);
+		free (aOutBuf);
+		aOutBuf = NULL;
 	}
 }
 
