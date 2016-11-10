@@ -52,7 +52,7 @@
 static void (*smix_func)(uint8_t *, size_t, uint64_t, void *, void *) = NULL;
 #endif
 
-#include "wally_core.h"
+#include <include/wally_core.h>
 
 void PBKDF2_SHA256(const unsigned char *pass, size_t pass_len,
 						  const unsigned char *salt, size_t salt_len,
