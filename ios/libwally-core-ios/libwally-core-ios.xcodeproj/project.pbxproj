@@ -63,6 +63,7 @@
 		91018E491DD275E200BB4E40 /* test_bip32.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE71DD275E200BB4E40 /* test_bip32.java */; };
 		91018E4A1DD275E200BB4E40 /* test_mnemonic.java in Sources */ = {isa = PBXBuildFile; fileRef = 91018DE81DD275E200BB4E40 /* test_mnemonic.java */; };
 		91018E4D1DD275E200BB4E40 /* wordlist.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018E001DD275E200BB4E40 /* wordlist.c */; };
+		9126A7DD1DD49EB9003477F9 /* vectors.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91018D581DD275E200BB4E40 /* vectors.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -72,6 +73,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				9126A7DD1DD49EB9003477F9 /* vectors.json in CopyFiles */,
 				91018A151DD2701200BB4E40 /* libwally_core_ios.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
