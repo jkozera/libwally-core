@@ -125,7 +125,7 @@
 		const char aZero = 0;
 		[aMutableData appendBytes:&aZero length:1];
 		const int aBip39_mnemonic_validate = bip39_mnemonic_validate (aWordList, [aMutableData bytes]);
-		NSAssert (0 == aBip39_mnemonic_validate, @"0 == aBip39_mnemonic_validate");
+		NSAssert (WALLY_OK == aBip39_mnemonic_validate, @"0 == aBip39_mnemonic_validate");
 
 
 		unsigned char * aOutBuf = malloc (aBuf.length);
@@ -143,6 +143,32 @@
 		aOutBuf = NULL;
 	}
 }
+-(void) test_288{
+	// """ Test a 288 bit (27 word) mnemonic phrase """
+	const char * mnemonic = "panel jaguar rib echo witness mean please festival " \
+		"issue item notable divorce conduct page tourist "    \
+		"west off salmon ghost grit kitten pull marine toss " \
+		"dirt oak gloom";
+	NSLog (@"strlen (mnemonic): %@", @(strlen (mnemonic)));
+	const int aBip39_mnemonic_validate = bip39_mnemonic_validate (NULL, mnemonic);
+	NSAssert (WALLY_OK == aBip39_mnemonic_validate, @"WALLY_OK == aBip39_mnemonic_validate");
+
+	unsigned char * aOutBuf = malloc (36);
+	NSAssert (NULL != aOutBuf, @"NULL != aOutBuf");
+	size_t aWritten = 0;
+	const int aBip39_mnemonic_to_bytes = bip39_mnemonic_to_bytes (NULL, mnemonic, aOutBuf, 36, &aWritten);
+	NSAssert (WALLY_OK == aBip39_mnemonic_to_bytes, @"WALLY_OK == aBip39_mnemonic_to_bytes");
+	NSAssert (36 == aWritten, @"36 == aWritten");
+
+	NSString * expectedString = @"9F8EE6E3A2FFCB13A99AA976AEDA5A2002ED" \
+		"3DF97FCB9957CD863357B55AA2072D3EB2F9";
+	NSData * expectedData = [expectedString hexToBytes];
+	const char * expected = [expectedData bytes];
+	NSAssert (0 == memcmp (expected, aOutBuf, aWritten), @"0 == memcmp (expected, aOutBuf, aWritten)");
+
+	free (aOutBuf);
+	aOutBuf = NULL;
+}
 
 -(void) test{
 	self.fDebugTextView.text = @"begin test…";
@@ -157,6 +183,7 @@
 	[aLogArray addObjectsFromArray:[self test_load_word_list]];
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 	[self test_bip39_vectors];
+	[self test_288];
 	
 }
 @end
