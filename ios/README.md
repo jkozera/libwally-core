@@ -41,3 +41,5 @@ Inside the app, tap the button `Test`
 * travis-ci
 * command line build
 * extending the `actionTest` porting `src/test/`
+* squashing `ios` branch
+* making a PR to original project [libwally-core](https://github.com/jgriffiths/libwally-core)
