@@ -98,7 +98,7 @@
 	
 	for (NSString * aKey in aLanguagesArray){
 		const struct words * aWords = [self get_wordlist:aKey];
-		for (size_t i = 0; i < aWords->len && i < 100; ++i){
+		for (size_t i = 0; i < aWords->len && i < 3; ++i){
 			NSString * aString = [NSString stringWithUTF8String:aWords->indices [i]];
 			NSString * aLog = [NSString stringWithFormat:@"%@/%@ - %@ - %@;", @(i+1), @(aWords->len), aKey, aString];
 			[aLogArray addObject:aLog];
@@ -108,6 +108,7 @@
 }
 
 - (void) test_bip39_vectors{
+	// ported from 'src/test/test_bip39.py'
 	const struct words * aWordList = [self get_wordlist:nil];
 	for (NSArray * aCase in self.fVectorsDictionary [@"english"]){
 		NSLog (@"%@", aCase.description);
@@ -144,7 +145,7 @@
 	}
 }
 -(void) test_288{
-	// """ Test a 288 bit (27 word) mnemonic phrase """
+	// ported from 'src/test/test_bip39.py'
 	const char * mnemonic = "panel jaguar rib echo witness mean please festival " \
 		"issue item notable divorce conduct page tourist "    \
 		"west off salmon ghost grit kitten pull marine toss " \
@@ -171,19 +172,23 @@
 }
 
 -(void) test{
-	self.fDebugTextView.text = @"begin test…";
+	self.fDebugTextView.text = @"";
 	NSMutableArray * aLogArray = [[NSMutableArray alloc] init];
+	[aLogArray addObject: @"begin test…"];
 	[aLogArray addObject:[libwally_core_ios staticTest]];
 	libwally_core_ios * aObject = [[libwally_core_ios alloc] init];
 	[aLogArray addObject: [aObject objectTest]];
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@";\n"];
 	
 	// Testing wally_bip39
+	[aLogArray addObject:@"testing wally_bip39 (ported from 'src/test/test_bip39.py')"];
 	[self test_all_langs];
 	[aLogArray addObjectsFromArray:[self test_load_word_list]];
-	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 	[self test_bip39_vectors];
 	[self test_288];
-	
+	NSString * testOK = @"libwally-core-ios.bip39 OK";
+	[aLogArray addObject:testOK];
+	NSLog (@"%@", testOK);
+	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 }
 @end
