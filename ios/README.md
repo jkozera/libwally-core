@@ -35,3 +35,9 @@ $ open ios/libwally-core-ios-example/libwally-core-ios-example.xcodeproj`
 Inside the app, tap the button `Test`
 
 ![libwally-core-ios-example.PNG](images/libwally-core-ios-example.PNG)
+
+## TODO
+
+* travis-ci
+* command line build
+* extending the `actionTest` porting `src/test/`
