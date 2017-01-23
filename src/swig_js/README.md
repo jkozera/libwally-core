@@ -1,0 +1,4 @@
+ - `./configure && make` in wally root directory
+ - from `src/` run `swig -javascript -node -c++ swig_js/swig.i`
+ - from `src/swig_js` run `node-gyp configure && node-gyp build`
+ - to test, from `src/swig_js`, run `node example.js`

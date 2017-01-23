@@ -20,15 +20,22 @@ extern "C" {
 }
 %enddef
 
-%define %jsbuffer_mutable_binary(TYPEMAP, SIZE)
-%typemap(in) (TYPEMAP, SIZE) {
- $1 = ($1_ltype) node::Buffer::Data($input->ToObject());
- $2 = node::Buffer::Length($input->ToObject());
+%define %jsbuffer_out_binary(TYPEMAP, SIZE, LEN)
+%typemap(in,numinputs=0) (TYPEMAP, SIZE) {
+  $2 = 32;
+  $1 = new $*1_ltype[$2];
+}
+%typemap(argout) (TYPEMAP, SIZE) {
+  v8::Local<v8::Object> buf = node::Buffer::New(v8::Isolate::GetCurrent(), $2).ToLocalChecked();
+  memcpy(node::Buffer::Data(buf), $1, $2);
+  delete[] $1;
+  $result = buf;
 }
 %enddef
 
 %jsbuffer_const_binary(unsigned char *bytes_in, size_t len_in);
-%jsbuffer_mutable_binary(unsigned char *bytes_out, size_t len);
+// TODO hardcode 32 only for the really 32-long arrays
+%jsbuffer_out_binary(unsigned char *bytes_out, size_t len, 32);
 
 
 %include "../include/wally_core.h"
