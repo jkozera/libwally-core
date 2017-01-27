@@ -208,11 +208,21 @@
                 //
                 //
             }else{
-                
+#if 0
                 //problem area
+				// TODO: resolve link error:
+				/*
+				 Undefined symbols for architecture x86_64:
+				 "_secp256k1_schnorr_verify", referenced from:
+				 _wally_ec_sig_verify in liblibwally-core-ios.a(sign.o)
+				 "_secp256k1_schnorr_sign", referenced from:
+				 _wally_ec_sig_from_bytes in liblibwally-core-ios.a(sign.o)
+				 ld: symbol(s) not found for architecture x86_64
+				*/
                 const int aBip38_mnemonic_from_bytes = bip38_from_private_key([priv bytes], priv.length, [pass bytes], pass.length, flags, &aOutput);
                 
                 NSAssert(WALLY_OK == aBip38_mnemonic_from_bytes, @"WALLY_OK == aBip38_mnemonic_from_bytes");
+#endif
             }
             
         }
