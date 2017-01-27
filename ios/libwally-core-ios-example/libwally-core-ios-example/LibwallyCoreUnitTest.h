@@ -12,4 +12,5 @@
 @interface LibwallyCoreUnitTest : NSObject
 -(instancetype)initWithDebugView:(UITextView *) theDebugView;
 -(void) test;
+-(void) test_bip38_vectors;
 @end

@@ -171,6 +171,58 @@
 	aOutBuf = NULL;
 }
 
+//bip38: start
+#define K_MAIN  0
+#define K_TEST  7
+#define K_COMP  256
+#define K_EC    512
+#define K_CHECK 1024
+#define K_RAW   2048
+#define K_ORDER 4096
+
+- (void) test_bip38_vectors{
+    NSLog(@"BIP38");
+    
+    
+    NSMutableArray *cases = [NSMutableArray arrayWithObjects:
+                             @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @K_MAIN, @"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg"],
+                             @[@"09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE",@"Satoshi", @K_MAIN, @"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq"],
+                             @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @(K_MAIN + K_COMP), @"6PYNKZ1EAgYgmQfmNVamxyXVWHzK5s6DGhwP4J5o44cvXdoY7sRzhtpUeo"],
+                             @[@"09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE",@"Satoshi", @(K_MAIN + K_COMP + K_RAW), @"0142E00B76EA60B62F66F0AF93D8B5380652AF51D1A3902EE00726CCEB70CA636B5B57CE6D3E2F"],
+                             @[@"3CBC4D1E5C5248F81338596C0B1EE025FBE6C112633C357D66D2CE0BE541EA18",@"jon", @(K_MAIN + K_COMP + K_RAW + K_ORDER), @"0142E09F8EE6E3A2FFCB13A99AA976AEDA5A2002ED3DF97FCB9957CD863357B55AA2072D3EB2F9"],  nil];
+    
+    //NSLog(@"%@",cases);
+    
+    for (id aCase in cases) {
+        
+        if([aCase isKindOfClass:[NSArray class]]){
+            NSString* priv_key = aCase[0];
+            NSString* passwd = aCase[1];
+            
+            int flags = [aCase[2] intValue];
+            
+            NSData * priv = [priv_key hexToBytes];
+            NSData * pass = [passwd hexToBytes];
+            char * aOutput = NULL;
+            if (flags > K_RAW){
+                //
+                //
+            }else{
+                
+                //problem area
+                const int aBip38_mnemonic_from_bytes = bip38_from_private_key([priv bytes], priv.length, [pass bytes], pass.length, flags, &aOutput);
+                
+                NSAssert(WALLY_OK == aBip38_mnemonic_from_bytes, @"WALLY_OK == aBip38_mnemonic_from_bytes");
+            }
+            
+        }
+        
+    }
+    
+    
+}
+//bip38: end
+
 -(void) test{
 	self.fDebugTextView.text = @"";
 	NSMutableArray * aLogArray = [[NSMutableArray alloc] init];
