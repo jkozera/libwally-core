@@ -1,3 +1,5 @@
-var wallycore = require('./build/Release/wallycore');
+var wally = require('./wally');
 
-console.log(wallycore.wally_sha256(new Buffer('test', 'ascii')).toString('hex'));
+wally.wally_sha256(new Buffer('test', 'ascii')).then(function(uint8Array) {
+  console.log(new Buffer(uint8Array).toString('hex'))
+});
