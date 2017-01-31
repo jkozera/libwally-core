@@ -57,6 +57,8 @@ class AESTests(unittest.TestCase):
 
     def test_aes(self):
 
+
+    
         for c in cases:
             key, plain, cypher = [make_cbuffer(s)[0] for s in c[1:]]
             key_bytes = { 128: 16, 192: 24, 256: 32}[c[0]]
@@ -65,6 +67,7 @@ class AESTests(unittest.TestCase):
             for p, f, o in [(plain,  self.ENCRYPT, cypher),
                             (cypher, self.DECRYPT, plain)]:
 
+                print len(p)
                 out_buf, out_len = make_cbuffer('00' * len(o))
                 ret = wally_aes(key, len(key), p, len(p), f, out_buf, out_len)
                 self.assertEqual(ret, 0)
@@ -80,6 +83,8 @@ class AESTests(unittest.TestCase):
         return [lines[x:x+4] for x in range(0, len(lines), 4)]
 
     def test_aes_cbc(self):
+        
+        
         for c in self.get_cbc_cases():
             plain, key, iv, cypher = [make_cbuffer(s)[0] for s in c]
 

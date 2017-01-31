@@ -5,6 +5,8 @@
 #include "ctaes/ctaes.h"
 #include "ctaes/ctaes.c"
 
+#include "aes.h"
+
 #define ALL_OPS (AES_FLAG_ENCRYPT | AES_FLAG_DECRYPT)
 
 static bool is_valid_key_len(size_t key_len)

@@ -81,6 +81,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6E22C6B41E40A0F400837147 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
 		91018A0F1DD2701200BB4E40 /* liblibwally-core-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibwally-core-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91018A121DD2701200BB4E40 /* libwally_core_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libwally_core_ios.h; sourceTree = "<group>"; };
 		91018A131DD2701200BB4E40 /* libwally_core_ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libwally_core_ios.m; sourceTree = "<group>"; };
@@ -362,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				91018CE91DD275E200BB4E40 /* aes.c */,
+				6E22C6B41E40A0F400837147 /* aes.h */,
 				91018CEA1DD275E200BB4E40 /* base58.c */,
 				91018CEB1DD275E200BB4E40 /* base58.h */,
 				91018CEC1DD275E200BB4E40 /* bip32.c */,

@@ -9,9 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
+
 @interface LibwallyCoreUnitTest : NSObject
 -(instancetype)initWithDebugView:(UITextView *) theDebugView;
 -(void) test;
 
--(void) test_bip38_vectors;
+- (void) test_bip38_vectors;
+- (void) test_aes;
+
+
 @end

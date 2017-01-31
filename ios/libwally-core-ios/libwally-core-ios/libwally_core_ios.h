@@ -10,6 +10,9 @@
 #import "wally_bip39.h"
 #import "wally_bip38.h"
 #import "wordlist.h"
+#include "aes.h"
+
+
 
 @interface libwally_core_ios : NSObject
 + (NSString *) staticTest;
