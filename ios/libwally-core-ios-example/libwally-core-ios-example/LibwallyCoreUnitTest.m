@@ -383,7 +383,7 @@
                 NSLog(@"Invalid argument");
             }else if( ret == WALLY_ENOMEM){
                 NSLog(@"malloc() failed");
-            }                        
+            }
             
         }//for
     }//if
