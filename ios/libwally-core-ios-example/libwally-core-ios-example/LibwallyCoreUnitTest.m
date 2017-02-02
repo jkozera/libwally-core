@@ -171,7 +171,6 @@
 	aOutBuf = NULL;
 }
 
-
 //bip38: start
 #define K_MAIN  0
 #define K_TEST  7
@@ -185,7 +184,7 @@
     NSLog(@"BIP38");
     
     
-    /*NSMutableArray *cases = [NSMutableArray arrayWithObjects:
+    NSMutableArray *cases = [NSMutableArray arrayWithObjects:
                              @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @K_MAIN, @"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg"],
                              @[@"09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE",@"Satoshi", @K_MAIN, @"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq"],
                              @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @(K_MAIN + K_COMP), @"6PYNKZ1EAgYgmQfmNVamxyXVWHzK5s6DGhwP4J5o44cvXdoY7sRzhtpUeo"],
@@ -209,19 +208,30 @@
                 //
                 //
             }else{
-                
+#if 0
                 //problem area
+				// TODO: resolve link error:
+				/*
+				 Undefined symbols for architecture x86_64:
+				 "_secp256k1_schnorr_verify", referenced from:
+				 _wally_ec_sig_verify in liblibwally-core-ios.a(sign.o)
+				 "_secp256k1_schnorr_sign", referenced from:
+				 _wally_ec_sig_from_bytes in liblibwally-core-ios.a(sign.o)
+				 ld: symbol(s) not found for architecture x86_64
+				*/
                 const int aBip38_mnemonic_from_bytes = bip38_from_private_key([priv bytes], priv.length, [pass bytes], pass.length, flags, &aOutput);
                 
                 NSAssert(WALLY_OK == aBip38_mnemonic_from_bytes, @"WALLY_OK == aBip38_mnemonic_from_bytes");
+
+#endif
             }
             
         }
         
-    }*/
-    
+    }
 }
 //bip38: end
+
 
 
 //AES: start

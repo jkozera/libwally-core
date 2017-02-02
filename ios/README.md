@@ -20,7 +20,7 @@ $ ./configure --enable-debug --enable-export-all --enable-coverage
 
 ## Opening the project
 ```c
-$ open ios/libwally-core-ios-example/libwally-core-ios-example.xcodeproj`
+$ open ios/libwally-core-ios-example/libwally-core-ios-example.xcodeproj
 ```
 
 ## Compiling the project

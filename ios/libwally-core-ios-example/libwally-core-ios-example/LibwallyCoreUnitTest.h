@@ -15,9 +15,11 @@
 -(instancetype)initWithDebugView:(UITextView *) theDebugView;
 -(void) test;
 
+
 - (void) test_bip38_vectors;
 - (void) test_aes;
 - (void) test_mnemonic;
+
 
 
 @end
