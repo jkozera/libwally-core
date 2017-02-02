@@ -11,6 +11,8 @@
 #import "wally_bip38.h"
 #import "wordlist.h"
 #include "aes.h"
+#include "mnemonic.h"
+
 
 
 

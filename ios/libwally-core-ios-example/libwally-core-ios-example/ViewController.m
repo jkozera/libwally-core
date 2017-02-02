@@ -23,7 +23,7 @@
 	self.fDebugTextView.text = @"";
     
     LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
-    [aTest test_aes];
+    [aTest test_mnemonic];
 }
 
 - (void)didReceiveMemoryWarning {

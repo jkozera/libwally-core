@@ -322,8 +322,8 @@
     NSData * cypherData = [cypher hexToBytes];
     
     NSString* out_buf = [@"" stringByPaddingToLength: 2*cypherData.length withString:@"00" startingAtIndex:0];
-    
     unsigned char *charOut = (unsigned char *) [out_buf UTF8String];
+    
     NSData * outData = [out_buf hexToBytes];
     int enc = wally_aes(charKey, keyData.length, charPlain, plainData.length, AES_FLAG_ENCRYPT, charOut, outData.length);
     
@@ -340,6 +340,68 @@
 }
 
 //AES: end
+
+
+//MNEMONIC: start
+#define LEN  ((int) 16)
+#define PHRASES (int)(LEN * 8 / 11) //11 bits per phrase : 11
+#define PHRASES_BYTES (int)(PHRASES * 11 + 7) / 8 // 8 # Bytes needed to store : 16
+
+- (void) test_mnemonic{
+  
+    
+    if(LEN == PHRASES_BYTES){
+        
+        size_t written = LEN;
+        NSString *phrase = @"";
+        unsigned char *buffer_out = (unsigned char *)calloc(LEN, sizeof(unsigned char));
+
+        //reading file
+        NSString* filePath = [[NSBundle mainBundle] pathForResource:@"english" ofType:@"txt"];
+        NSString *fileContents = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        
+        NSArray* words_list = [fileContents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+        
+        NSString *wordsString = [words_list componentsJoinedByString:@" "];
+        const struct words * w = NULL;
+        w = wordlist_init ([wordsString UTF8String]);
+        
+
+        for (int i = 0; i < (words_list.count - PHRASES); i++)
+        {
+            phrase = [self phrase_building:i end: (i + PHRASES) wordsList:words_list];
+            
+            const char *mnemonic = (const char *) [phrase UTF8String];
+            
+            int ret = mnemonic_to_bytes(w, mnemonic, buffer_out, sizeof(buffer_out), &written);
+            
+            if( ret == WALLY_OK){
+                NSLog(@"Success");
+            }else if( ret == WALLY_ERROR){
+                NSLog(@"General error");
+            }else if( ret == WALLY_EINVAL){
+                NSLog(@"Invalid argument");
+            }else if( ret == WALLY_ENOMEM){
+                NSLog(@"malloc() failed");
+            }                        
+            
+        }//for
+    }//if
+}
+
+- (NSString *) phrase_building: (int)start end: (int)end wordsList: (NSArray*) wl{
+    
+    NSString *phrase = @"";
+    for (int i = start; i <end; i++){
+        phrase = [phrase stringByAppendingString:[wl objectAtIndex: i] ];
+        phrase = [phrase stringByAppendingString:@" "];
+    }
+    
+    return phrase;
+}
+
+
+//MNEMONIC: end
 
 
 -(void) test{
