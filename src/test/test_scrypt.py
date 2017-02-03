@@ -36,13 +36,15 @@ cases = [
 class ScryptTests(unittest.TestCase):
 
     def test_scrypt(self):
-
+        
         for c in cases:
             passwd, salt, cost, block, parallel, length, expected = c
             passwd = utf8(passwd)
             salt = utf8(salt)
             expected = expected.replace(' ', '')
+            
             assert len(expected) == length * 2
+            
             out_buf, out_len = make_cbuffer('0' * len(expected))
 
             ret = wally_scrypt(passwd, len(passwd), salt, len(salt),

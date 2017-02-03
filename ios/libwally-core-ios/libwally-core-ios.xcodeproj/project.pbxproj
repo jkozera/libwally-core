@@ -82,6 +82,7 @@
 
 /* Begin PBXFileReference section */
 		6E22C6B41E40A0F400837147 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		6E23C0881E44C1D100D0CDAB /* scrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrypt.h; sourceTree = "<group>"; };
 		91018A0F1DD2701200BB4E40 /* liblibwally-core-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibwally-core-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		91018A121DD2701200BB4E40 /* libwally_core_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libwally_core_ios.h; sourceTree = "<group>"; };
 		91018A131DD2701200BB4E40 /* libwally_core_ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libwally_core_ios.m; sourceTree = "<group>"; };
@@ -389,6 +390,7 @@
 				91018D631DD275E200BB4E40 /* pbkdf2.inl */,
 				91018D641DD275E200BB4E40 /* scrypt */,
 				91018D691DD275E200BB4E40 /* scrypt.c */,
+				6E23C0881E44C1D100D0CDAB /* scrypt.h */,
 				91018D6A1DD275E200BB4E40 /* secp256k1 */,
 				91018DE01DD275E200BB4E40 /* sign.c */,
 				91018DE11DD275E200BB4E40 /* swig_java */,

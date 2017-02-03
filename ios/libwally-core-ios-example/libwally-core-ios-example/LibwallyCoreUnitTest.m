@@ -182,8 +182,7 @@
 
 - (void) test_bip38_vectors{
     NSLog(@"BIP38");
-    
-    
+        
     NSMutableArray *cases = [NSMutableArray arrayWithObjects:
                              @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @K_MAIN, @"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg"],
                              @[@"09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE",@"Satoshi", @K_MAIN, @"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq"],
@@ -337,14 +336,17 @@
     NSData * outData = [out_buf hexToBytes];
     int enc = wally_aes(charKey, keyData.length, charPlain, plainData.length, AES_FLAG_ENCRYPT, charOut, outData.length);
     
-    if(WALLY_OK == enc)
-        NSLog(@"AES%ld ENCRYPT: %d",(long)type, enc);
+    NSAssert (WALLY_OK == enc, @"WALLY_OK == wally_aes, ENCRYPT");
+    
+    /*if(WALLY_OK == enc)
+        NSLog(@"AES%ld ENCRYPT: %d",(long)type, enc);*/
     
     
     int dec = wally_aes(charKey, keyData.length, charPlain, plainData.length, AES_FLAG_DECRYPT, charOut, outData.length);
+    NSAssert (WALLY_OK == dec, @"WALLY_OK == wally_aes, DECRYPT");
     
-    if(WALLY_OK == dec)
-        NSLog(@"AES%ld DECRYPT: %d",(long)type, dec);
+    /*if(WALLY_OK == dec)
+        NSLog(@"AES%ld DECRYPT: %d",(long)type, dec);*/
 
     
 }
@@ -358,7 +360,6 @@
 #define PHRASES_BYTES (int)(PHRASES * 11 + 7) / 8 // 8 # Bytes needed to store : 16
 
 - (void) test_mnemonic{
-  
     
     if(LEN == PHRASES_BYTES){
         
@@ -384,8 +385,9 @@
             const char *mnemonic = (const char *) [phrase UTF8String];
             
             int ret = mnemonic_to_bytes(w, mnemonic, buffer_out, sizeof(buffer_out), &written);
+            NSAssert (WALLY_OK == ret, @"WALLY_OK == mnemonic_to_bytes");
             
-            if( ret == WALLY_OK){
+            /*if( ret == WALLY_OK){
                 NSLog(@"Success");
             }else if( ret == WALLY_ERROR){
                 NSLog(@"General error");
@@ -393,7 +395,7 @@
                 NSLog(@"Invalid argument");
             }else if( ret == WALLY_ENOMEM){
                 NSLog(@"malloc() failed");
-            }
+            }*/
             
         }//for
     }//if
@@ -413,6 +415,73 @@
 
 //MNEMONIC: end
 
+//scrypt: start
+- (void) test_scrypt{
+    
+    NSMutableArray *cases =
+    [NSMutableArray arrayWithObjects:
+     @[@"",@"",@16,@1,@1,@64,
+       @"77 d6 57 62 38 65 7b 20 3b 19 ca 42 c1 8a 04 97 \
+       f1 6b 48 44 e3 07 4a e8 df df fa 3f ed e2 14 42 \
+       fc d0 06 9d ed 09 48 f8 32 6a 75 3a 0f c8 1f 17 \
+       e8 d3 e0 fb 2e 0d 36 28 cf 35 e2 0c 38 d1 89 06"],
+     @[@"password",@"NaCl",@1024, @8, @16, @64,
+       @"fd ba be 1c 9d 34 72 00 78 56 e7 19 0d 01 e9 fe \
+       7c 6a d7 cb c8 23 78 30 e7 73 76 63 4b 37 31 62 \
+       2e af 30 d9 2e 22 a3 88 6f f1 09 27 9d 98 30 da \
+       c7 27 af b9 4a 83 ee 6d 83 60 cb df a2 cc 06 40"],
+     @[@"pleaseletmein", @"SodiumChloride",@16384, @8, @1, @64,
+       @"70 23 bd cb 3a fd 73 48 46 1c 06 cd 81 fd 38 eb \
+       fd a8 fb ba 90 4f 8e 3e a9 b5 43 f6 54 5d a1 f2 \
+       d5 43 29 55 61 3f 0f cf 62 d4 97 05 24 2a 9a f9 \
+       e6 1e 85 dc 0d 65 1e 40 df cf 01 7b 45 57 58 87"],
+     @[@"pleaseletmein", @"SodiumChloride",@1048576, @8, @1, @64,
+       @"21 01 cb 9b 6a 51 1a ae ad db be 09 cf 70 f8 81 \
+       ec 56 8d 57 4a 2f fd 4d ab e5 ee 98 20 ad aa 47 \
+       8e 56 fd 8f 4b a5 d0 9f fa 1c 6d 92 7c 40 f4 c3 \
+       37 30 40 49 e8 a9 52 fb cb f4 5c 6f a7 7a 41 a4"],nil];
+    
+    
+    
+    for (id aCase in cases) {
+        
+        if([aCase isKindOfClass:[NSArray class]]){
+            
+            NSString* passwd    = aCase[0];
+            NSInteger length    = [[aCase objectAtIndex:5] integerValue];
+            NSString* expected  = [aCase[6] stringByReplacingOccurrencesOfString:@" " withString:@""];
+            
+            if([expected length] == (length*2)){
+                
+                uint32_t cost = (uint32_t) [[aCase objectAtIndex:2] integerValue];
+                uint32_t block = (uint32_t) [[aCase objectAtIndex:3] integerValue];
+                uint32_t parallelism = (uint32_t) [[aCase objectAtIndex:4] integerValue];
+                
+                NSData * expectedData = [expected hexToBytes];
+                NSString* out_buf = [@"" stringByPaddingToLength: expectedData.length withString:@"0" startingAtIndex:0];
+                unsigned char *pass = (unsigned char *) [passwd UTF8String];
+                unsigned char *salt = (unsigned char *) [aCase[1] UTF8String];
+                unsigned char *outBuf = (unsigned char *) [out_buf UTF8String];
+                
+                int ret = wally_scrypt(pass, sizeof(pass), salt, sizeof(salt), cost, block, parallelism, outBuf, sizeof(outBuf));
+                NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_scrypt");
+                
+                /*if( ret == WALLY_OK){
+                    NSLog(@"Success");
+                }else if( ret == WALLY_ERROR){
+                    NSLog(@"General error");
+                }else if( ret == WALLY_EINVAL){
+                    NSLog(@"Invalid argument");
+                }else if( ret == WALLY_ENOMEM){
+                    NSLog(@"malloc() failed");
+                }*/
+            }
+        }//if
+        
+    }//for
+}
+//scrypt: end
+
 
 -(void) test{
 	self.fDebugTextView.text = @"";
@@ -429,9 +498,29 @@
 	[aLogArray addObjectsFromArray:[self test_load_word_list]];
 	[self test_bip39_vectors];
 	[self test_288];
-	NSString * testOK = @"libwally-core-ios.bip39 OK";
+	NSString * testOK = @"#libwally-core-ios.bip39 OK";
 	[aLogArray addObject:testOK];
 	NSLog (@"%@", testOK);
+    //mnemonic_to_bytes
+
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing aes (ported from 'src/test/test_aes.py')"];
+    [self test_aes];
+    testOK = @"#libwally-core-ios.aes OK";
+    [aLogArray addObject:testOK];
+    
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing mnemonic (ported from 'src/test/test_mnemonic.py')"];
+    [self test_mnemonic];
+    testOK = @"#libwally-core-ios.mnemonic OK";
+    [aLogArray addObject:testOK];
+
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_scrypt.py')"];
+    [self test_scrypt];
+    testOK = @"#libwally-core-ios.scrypt OK";
+    [aLogArray addObject:testOK];
+    
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 }
 @end

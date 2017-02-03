@@ -3,6 +3,7 @@
 #include <include/wally_crypto.h>
 #include "hmac.h"
 #include "ccan/ccan/endian/endian.h"
+#include "scrypt.h"
 
 /* Use scrypts internal malloc/free */
 #undef malloc

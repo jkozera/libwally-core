@@ -12,6 +12,7 @@
 #import "wordlist.h"
 #include "aes.h"
 #include "mnemonic.h"
+#import "scrypt.h"
 
 
 

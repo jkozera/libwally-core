@@ -12,6 +12,9 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *fHeaderLabel;
 @property (weak, nonatomic) IBOutlet UITextView *fDebugTextView;
+
+
+
 @end
 
 @implementation ViewController
@@ -21,9 +24,11 @@
 	// Do any additional setup after loading the view, typically from a nib.
 	self.fHeaderLabel.text = [NSString stringWithFormat:@"libwally-core-ios-example\nCompilation date and time:\n%s %s", __DATE__, __TIME__];
 	self.fDebugTextView.text = @"";
+        
+    /*LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
+    [aTest test_scrypt];*/
     
-    LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
-    [aTest test_mnemonic];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,8 +37,16 @@
 }
 
 - (IBAction)actionTest:(id)sender {
-	LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
-	[aTest test];
+    
+    [NSThread detachNewThreadSelector:@selector(start_test) toTarget:self withObject:nil];
+}
+- (void) start_test{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
+        [aTest test];
+    });
+
 }
 
 @end
