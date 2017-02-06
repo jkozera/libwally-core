@@ -111,7 +111,7 @@
 	// ported from 'src/test/test_bip39.py'
 	const struct words * aWordList = [self get_wordlist:nil];
 	for (NSArray * aCase in self.fVectorsDictionary [@"english"]){
-		NSLog (@"%@", aCase.description);
+		//NSLog (@"%@", aCase.description);
 		NSString * aHexInputString = aCase [0];
 		NSString  * aMenemonic = aCase [1];
 		NSData * aBuf = [aHexInputString hexToBytes];
@@ -182,7 +182,7 @@
 
 - (void) test_bip38_vectors{
     NSLog(@"BIP38");
-        
+    
     NSMutableArray *cases = [NSMutableArray arrayWithObjects:
                              @[@"CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5",@"TestingOneTwoThree", @K_MAIN, @"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg"],
                              @[@"09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE",@"Satoshi", @K_MAIN, @"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq"],
@@ -482,6 +482,201 @@
 }
 //scrypt: end
 
+//hmac: start
+- (void) test_hmac{
+    
+    NSMutableArray *cases =
+    [NSMutableArray arrayWithObjects:
+     
+     @[@"0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b", @"4869205468657265",
+      
+      @"b0344c61d8db38535ca8afceaf0bf12b 881dc200c9833da726e9376c2e32cff7",
+      @"87aa7cdea5ef619d4ff0b4241a1d6cb0 2379f4e2ce4ec2787ad0b30545e17cde\
+      daa833b7d6b8a702038b274eaea3f4e4 be9d914eeb61f1702e696c203a126854"],
+     
+     @[@"4a656665", @"7768617420646f2079612077616e7420666f72206e6f7468696e673f",
+      
+      @"5bdcc146bf60754e6a042426089575c7 5a003f089d2739839dec58b964ec3843",
+      @"164b7a7bfcf819e2e395fbe73b56e0a3 87bd64222e831fd610270cd7ea250554\
+      9758bf75c05a994a6d034f65f8f0e6fd caeab1a34d4a6b4b636e070a38bce737"],
+     
+     @[@"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      @"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\
+      dddddddddddddddddddddddddddddddddddd",
+      
+      @"773ea91e36800e46854db8ebd09181a7 2959098b3ef8c122d9635514ced565fe",
+      @"fa73b0089d56a284efb0f0756c890be9 b1b5dbdd8ee81a3655f83e33b2279d39\
+      bf3e848279a722c806b485a47e67c807 b946a337bee8942674278859e13292fb"],
+     
+     @[@"0102030405060708090a0b0c0d0e0f10111213141516171819",
+      @"cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd\
+      cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      
+      @"82558a389a443c0ea4cc819899f2083a 85f0faa3e578f8077a2e3ff46729665b",
+      @"b0ba465637458c6990e5a8c5f61d4af7 e576d97ff94b872de76f8050361ee3db\
+      a91ca5c11aa25eb4d679275cc5788063 a5f19741120c4f2de2adebeb10a298dd"],
+     
+     @[@"0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+      @"546573742057697468205472756e636174696f6e",
+      
+      @"a3b6167473100ee06e0c796c2955552b",
+      @"415fad6271580a531d4179bc891d87a6"],
+     
+     @[@"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaa",
+      @"54657374205573696e67204c6172676572205468616e20426c6f636b2d53697a\
+      65204b6579202d2048617368204b6579204669727374",
+      
+      @"60e431591ee0b67f0d8a26aacbf5b77f 8e0bc6213728c5140546040f0ee37f54",
+      @"80b24263c7c1a3ebb71493c1dd7be8b4 9b46d1f41b4aeec1121b013783f8f352\
+      6b56d037e05f2598bd0fd2215d6a1e52 95e64f73f63f0aec8b915a985d786598"],
+     
+     @[@"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+      aaaaaa",
+      @"5468697320697320612074657374207573696e672061206c6172676572207468\
+      616e20626c6f636b2d73697a65206b657920616e642061206c61726765722074\
+      68616e20626c6f636b2d73697a6520646174612e20546865206b6579206e6565\
+      647320746f20626520686173686564206265666f7265206265696e6720757365\
+      642062792074686520484d414320616c676f726974686d2e",
+      
+      @"9b09ffa71b942fcb27635fbcd5b0e944 bfdc63644f0713938a7f51535c3a35e2",
+      @"e37b6a775dc87dbaa4dfa9f96e5e3ffd debd71f8867289865df5a32d20cdc944\
+      b6022cac3c4982b10d5eeb55c3e4de15 134676fb6de0446065c97440fa8c6a58"]
+     ,nil];
+    
+    for (id aCase in cases) {
+        
+        if([aCase isKindOfClass:[NSArray class]]){
+            
+            //NSString* key    = aCase[0];
+            unsigned char *key = (unsigned char *) [aCase[0] UTF8String];
+            //NSString* msg  = aCase[1];
+            unsigned char *msg = (unsigned char *) [aCase[1] UTF8String];
+            
+            NSData * keyData = [aCase[0] hexToBytes];
+            NSData * msgData = [aCase[1] hexToBytes];
+            
+            //NSString* s256  = aCase[2];
+            //NSString* sha512  = aCase[3];
+            
+            NSString* out_buf = [@"" stringByPaddingToLength: 32 withString:@" " startingAtIndex:0];
+            unsigned char *outBuff = (unsigned char *) [out_buf UTF8String];
+            NSData * outData = [out_buf hexToBytes];
+            
+            int ret= wally_hmac_sha256(key, keyData.length, msg, msgData.length, outBuff, outData.length);
+            NSLog(@"%d",ret);
+            //NOTE: how to pass aCase[2] withnwally_hmac_sha256???
+            
+        }
+    }
+    
+}
+//hmac: end
+
+
+//hex: start
+- (void) test_hex{
+    
+    //int wally_base58_from_bytes(const unsigned char *bytes_in, size_t len_in,uint32_t flags, char **output)
+    
+    
+    //to
+    /*NSString* buffStr = [@"" stringByPaddingToLength: 4 withString:@"00" startingAtIndex:0];
+    unsigned char *buff = (unsigned char *) [buffStr UTF8String];
+    NSData * buffData = [buffStr hexToBytes];
+    size_t written =  4;
+    for(int i=0; i<256; i++){
+        NSString* hexUpper = [@"" stringByPaddingToLength: 4 withString:[NSString stringWithFormat:@"%02X", i] startingAtIndex:0];
+        NSLog(@"%@",hexUpper);
+        const char *hex = (const char *) [hexUpper UTF8String];
+        int ret = wally_hex_to_bytes(hex, buff, buffData.length, &written);
+    }*/
+    
+    //from
+
+    /*NSString* outChar = [@"" stringByPaddingToLength: 8 withString:@" " startingAtIndex:0];
+    const char *ochar = (const char *) [outChar UTF8String];
+    
+    for(int i=0; i<256; i++){
+        NSString* hexStr = [@"" stringByPaddingToLength: 8 withString:[NSString stringWithFormat:@"%02x", i] startingAtIndex:0];
+        NSLog(@"%@",hexStr);
+        const char *hex = (const char *) [hexStr UTF8String];
+        NSData * bufData = [hexStr hexToBytes];
+        
+        //int ret = wally_hex_to_bytes(hex, buff,buffData.length, &written);
+        //NSLog(@"%d",ret);
+        //int wally_hex_to_bytes(const char *hex, unsigned char *bytes_out, size_t len, size_t *written)
+    
+        //NSString* buffStr = [@"" stringByPaddingToLength: 4 withString:@"00" startingAtIndex:0];
+        //unsigned char *buff = (unsigned char *) [buffStr UTF8String];
+        
+        int ret = wally_hex_from_bytes(hex, bufData.length, ochar);
+        NSLog(@"%d",ret);
+    }*/
+    
+}
+//hex: end
+
+//base58: start
+- (void) test_base58{
+    
+    //reading file
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"address_vectors" ofType:@"txt"];
+    NSString *fileContents = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    NSArray* lines = [fileContents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+    
+    //preparing test cases
+    NSMutableArray *tempCase = [NSMutableArray array];
+    NSMutableArray *cases = [NSMutableArray array];
+    
+    for(NSString* line in lines){
+        NSString * newString = [line stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if(newString.length != 0){
+            //NSLog(@"%@",aCase);
+            [tempCase addObject: newString];
+        }else{
+            NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+            [dict setObject:[tempCase objectAtIndex:4] forKey:@"ripemd_network"];
+            [dict setObject:[tempCase objectAtIndex:8] forKey:@"checksummed"];
+            [dict setObject:[tempCase objectAtIndex:9] forKey:@"base58"];
+            [cases addObject: dict];
+        }
+    }
+    
+    //for decode
+    NSString* bufStr = [@"" stringByPaddingToLength: 1024 withString:@"00" startingAtIndex:0];
+    NSData * bufData = [bufStr hexToBytes];
+    unsigned char *buf = (unsigned char *) [bufStr UTF8String];
+    
+    for(NSMutableDictionary* aCase in cases){
+        NSString* checksummedStr = [aCase objectForKey:@"checksummed"];
+        unsigned char *checksummed = (unsigned char *) [checksummedStr UTF8String];
+        NSData * buffData = [checksummedStr hexToBytes];
+        char *output = (char *) [[aCase objectForKey:@"base58"] UTF8String];
+        uint32_t flags = 0;
+        
+        // Checksummed should match directly in base 58
+        int ret = wally_base58_from_bytes(checksummed, buffData.length, flags, &output);
+        NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_base58 ENCODE");
+        //NSLog(@"%d",ret);
+        
+        //Decode it and make sure it matches checksummed again
+        char *str_in = (char *) [[aCase objectForKey:@"base58"] UTF8String];
+        size_t written = bufData.length;
+        int retD = wally_base58_to_bytes(str_in, flags, buf, bufData.length, &written);
+        NSAssert (WALLY_OK == retD, @"WALLY_OK == wally_base58 DECODE");
+        //NSLog(@"%d",retD);
+        
+    }
+
+}
+//base58: end
 
 -(void) test{
 	self.fDebugTextView.text = @"";
@@ -520,6 +715,13 @@
     [self test_scrypt];
     testOK = @"#libwally-core-ios.scrypt OK";
     [aLogArray addObject:testOK];
+
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_base58.py')"];
+    [self test_base58];
+    testOK = @"#libwally-core-ios.base58 OK";
+    [aLogArray addObject:testOK];
+    
     
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 }

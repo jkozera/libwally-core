@@ -26,6 +26,7 @@ class Base58Tests(unittest.TestCase):
                         self.cases.append(AddressCase(cur))
                         cur = []
 
+
     def encode(self, hex_in, flags):
         buf, buf_len = make_cbuffer(hex_in)
         ret, base58 = wally_base58_from_bytes(buf, buf_len, flags)
@@ -48,8 +49,9 @@ class Base58Tests(unittest.TestCase):
 
     def test_address_vectors(self):
         """Tests for encoding and decoding with and without checksums"""
-
+        
         for c in self.cases:
+            
             # Checksummed should match directly in base 58
             base58 = self.encode(c.checksummed, 0)
             self.assertEqual(base58, c.base58)

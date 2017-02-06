@@ -26,7 +26,7 @@
 	self.fDebugTextView.text = @"";
         
     /*LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
-    [aTest test_scrypt];*/
+    [aTest test_base58];*/
     
 
 }

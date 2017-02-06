@@ -21,7 +21,11 @@
 - (void) test_mnemonic;
 - (void) test_scrypt;
 
+//not done
+- (void) test_hmac;
+- (void) test_hex;
 
+- (void) test_base58;
 
 
 @end

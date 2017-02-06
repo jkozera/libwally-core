@@ -81,8 +81,10 @@ class HMACTests(unittest.TestCase):
 
         for test in hmac_cases:
             k, msg = test[0], test[1]
+            
             for fn, expected in [(wally_hmac_sha256, test[2]),
                                  (wally_hmac_sha512, test[3])]:
+                
                 ret, result = self.doHMAC(fn, k, msg)
                 self.assertEqual(ret, 0)
                 expected = utf8(expected.replace(' ', ''))

@@ -6,9 +6,10 @@ class HexTests(unittest.TestCase):
     def test_hex_to_bytes(self):
         LEN = 4
         buf, buf_len = make_cbuffer('00' * LEN)
-
+        
         for i in range(256):
             for s in ("%02X" % i, "%02x" % i): # Upper/Lower
+                
                 ret, written = wally_hex_to_bytes(utf8(s * LEN), buf, buf_len)
                 self.assertEqual((ret, written), (WALLY_OK, LEN))
 

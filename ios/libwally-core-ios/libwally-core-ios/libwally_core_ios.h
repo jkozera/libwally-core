@@ -13,6 +13,8 @@
 #include "aes.h"
 #include "mnemonic.h"
 #import "scrypt.h"
+#import "hmac.h"
+#import "base58.h"
 
 
 

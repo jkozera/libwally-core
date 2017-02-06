@@ -1,3 +1,8 @@
+
+
+
+
+
 #ifndef LIBWALLY_HMAC_H
 #define LIBWALLY_HMAC_H
 
@@ -29,5 +34,9 @@ void hmac_sha256(struct sha256 *sha,
 void hmac_sha512(struct sha512 *sha,
                  const unsigned char *key, size_t key_len,
                  const unsigned char *msg, size_t msg_len);
+
+int wally_hmac_sha256(const unsigned char *key, size_t key_len,
+                        const unsigned char *bytes_in, size_t len_in,
+                      unsigned char *bytes_out, size_t len);
 
 #endif /* LIBWALLY_HMAC_H */

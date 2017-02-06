@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E0ACF311E48D6920030D934 /* address_vectors.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6E0ACF301E48D6920030D934 /* address_vectors.txt */; };
 		6E66CE821E435797002299B9 /* english.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6E66CE811E435797002299B9 /* english.txt */; };
 		9126A7DC1DD47988003477F9 /* LibwallyCoreUnitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9126A7DB1DD47988003477F9 /* LibwallyCoreUnitTest.m */; };
 		9126A7DF1DD4A04D003477F9 /* vectors.json in Resources */ = {isa = PBXBuildFile; fileRef = 9126A7DE1DD4A04D003477F9 /* vectors.json */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E0ACF301E48D6920030D934 /* address_vectors.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = address_vectors.txt; sourceTree = "<group>"; };
 		6E66CE811E435797002299B9 /* english.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english.txt; sourceTree = "<group>"; };
 		9126A7DA1DD47988003477F9 /* LibwallyCoreUnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibwallyCoreUnitTest.h; sourceTree = "<group>"; };
 		9126A7DB1DD47988003477F9 /* LibwallyCoreUnitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibwallyCoreUnitTest.m; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		91FD250F1DD3680B001F3339 /* libwally-core-ios-example */ = {
 			isa = PBXGroup;
 			children = (
+				6E0ACF301E48D6920030D934 /* address_vectors.txt */,
 				6E66CE811E435797002299B9 /* english.txt */,
 				9126A7DE1DD4A04D003477F9 /* vectors.json */,
 				91FD25131DD3680B001F3339 /* AppDelegate.h */,
@@ -199,6 +202,7 @@
 				6E66CE821E435797002299B9 /* english.txt in Resources */,
 				91FD25201DD3680B001F3339 /* LaunchScreen.storyboard in Resources */,
 				91FD251D1DD3680B001F3339 /* Assets.xcassets in Resources */,
+				6E0ACF311E48D6920030D934 /* address_vectors.txt in Resources */,
 				91FD251B1DD3680B001F3339 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

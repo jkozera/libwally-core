@@ -1,6 +1,7 @@
 #include "internal.h"
 #include "ccan/ccan/str/hex/hex.h"
 
+
 int wally_hex_from_bytes(const unsigned char *bytes_in, size_t len_in,
                          char **output)
 {
