@@ -88,8 +88,10 @@ class HMACTests(unittest.TestCase):
                 ret, result = self.doHMAC(fn, k, msg)
                 self.assertEqual(ret, 0)
                 expected = utf8(expected.replace(' ', ''))
+                
                 # Note we truncate the result as one of the test vectors has
                 # a truncated result in the RFC
+                
                 self.assertEqual(result[0:len(expected)], expected)
 
 

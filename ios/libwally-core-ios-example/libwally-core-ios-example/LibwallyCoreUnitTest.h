@@ -20,12 +20,15 @@
 - (void) test_aes;
 - (void) test_mnemonic;
 - (void) test_scrypt;
+- (void) test_base58;
 
 //not done
 - (void) test_hmac;
 - (void) test_hex;
 
-- (void) test_base58;
+
+- (void) test_pbkdf2;
+
 
 
 @end

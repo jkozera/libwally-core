@@ -10,7 +10,9 @@ class PBKDF2Case(object):
         # Format: HMAC_SHA_TYPE, PASSWORD, SALT, COST, EXPECTED
         self.typ = int(items[0])
         assert self.typ in [256, 512]
+        
         self.passwd = unhexlify(items[1])
+        
         self.salt = items[2]
         self.cost = int(items[3])
         self.expected, self.expected_len = make_cbuffer(items[4])
@@ -35,9 +37,9 @@ class PBKDF2Tests(unittest.TestCase):
         # first few. set these to -1 to run the whole suite (only needed
         # when refactoring the impl)
         num_crazy_256, num_crazy_512 = 8, 8
-
+        i = -1
         for case in self.cases:
-
+            
             if case.typ == 256:
                 fn = wally_pbkdf2_hmac_sha256
                 mult = PBKDF2_HMAC_SHA256_LEN
@@ -52,8 +54,9 @@ class PBKDF2Tests(unittest.TestCase):
                     if num_crazy_512 == 0:
                         continue
                     num_crazy_512 -= 1
-
+            
             out_buf, out_len = make_cbuffer('00' * case.expected_len)
+            
             if case.expected_len % mult != 0:
                 # We only support output multiples of the hmac length
                 continue
@@ -62,9 +65,11 @@ class PBKDF2Tests(unittest.TestCase):
             for flags in [0, FLAG_BLOCK_RESERVED]:
                 extra_bytes = '00000000' if flags else ''
                 salt, salt_len = make_cbuffer(case.salt + extra_bytes)
-
+                
                 ret = fn(case.passwd, len(case.passwd), salt, salt_len,
                          flags, case.cost, out_buf, out_len)
+                i += 1
+                print ret, i
 
                 self.assertEqual(ret, 0)
                 self.assertEqual(h(out_buf), h(case.expected))

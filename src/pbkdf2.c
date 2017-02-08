@@ -7,6 +7,7 @@
 #include <ccan/compiler/compiler.h>
 #include <include/wally_crypto.h>
 
+
 #define SHA_T sha256
 #define SHA_ALIGN_T uint32_t
 #define SHA_MEM u32
@@ -25,4 +26,5 @@
 #undef PBKDF2_HMAC_SHA_LEN
 #define PBKDF2_HMAC_SHA_LEN PBKDF2_HMAC_SHA512_LEN
 #include "pbkdf2.inl"
+
 

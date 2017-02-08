@@ -68,7 +68,7 @@
 -(NSArray *) get_languages{
 	char * aLanguages = NULL;
 	const int aBip39_get_languages = bip39_get_languages (&aLanguages);
-	NSLog (@"aBip39_get_languages: %@, aLanguages: %s", @(aBip39_get_languages), aLanguages);
+	//NSLog (@"aBip39_get_languages: %@, aLanguages: %s", @(aBip39_get_languages), aLanguages);
 	NSString * aLanguagesString = [NSString stringWithUTF8String:aLanguages];
 	wally_free_string (aLanguages);
 	NSArray * aLanguagesArray = [aLanguagesString componentsSeparatedByString: @" "];
@@ -150,7 +150,7 @@
 		"issue item notable divorce conduct page tourist "    \
 		"west off salmon ghost grit kitten pull marine toss " \
 		"dirt oak gloom";
-	NSLog (@"strlen (mnemonic): %@", @(strlen (mnemonic)));
+	//NSLog (@"strlen (mnemonic): %@", @(strlen (mnemonic)));
 	const int aBip39_mnemonic_validate = bip39_mnemonic_validate (NULL, mnemonic);
 	NSAssert (WALLY_OK == aBip39_mnemonic_validate, @"WALLY_OK == aBip39_mnemonic_validate");
 
@@ -554,24 +554,23 @@
         
         if([aCase isKindOfClass:[NSArray class]]){
             
-            //NSString* key    = aCase[0];
-            unsigned char *key = (unsigned char *) [aCase[0] UTF8String];
-            //NSString* msg  = aCase[1];
-            unsigned char *msg = (unsigned char *) [aCase[1] UTF8String];
+            NSString* keyStr    = [aCase[0] stringByReplacingOccurrencesOfString:@" " withString:@""];
+            const unsigned char *key = (const unsigned char *) [keyStr UTF8String];
+            NSData * keyData = [keyStr hexToBytes];
+            size_t key_len = keyData.length;
             
-            NSData * keyData = [aCase[0] hexToBytes];
-            NSData * msgData = [aCase[1] hexToBytes];
+            NSString * msgStr = [aCase[1] stringByReplacingOccurrencesOfString:@" " withString:@""];
+            const unsigned char *msg = (const unsigned char *) [msgStr UTF8String];
+            NSData * msgData = [msgStr hexToBytes];
+            size_t len_in = msgData.length;
             
-            //NSString* s256  = aCase[2];
-            //NSString* sha512  = aCase[3];
-            
-            NSString* out_buf = [@"" stringByPaddingToLength: 32 withString:@" " startingAtIndex:0];
+            NSString* out_buf = [@"" stringByPaddingToLength: 32*2 withString:@" " startingAtIndex:0];
             unsigned char *outBuff = (unsigned char *) [out_buf UTF8String];
             NSData * outData = [out_buf hexToBytes];
-            
-            int ret= wally_hmac_sha256(key, keyData.length, msg, msgData.length, outBuff, outData.length);
-            NSLog(@"%d",ret);
-            //NOTE: how to pass aCase[2] withnwally_hmac_sha256???
+            //note tested expected
+            int ret = [libwally_core_ios hmac:key key_len:key_len bytes_in:msg len_in:len_in bytes_out:outBuff len:outData.length];
+            NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_hmac");
+            //NSLog(@"%d",ret);
             
         }
     }
@@ -584,7 +583,20 @@
 - (void) test_hex{
     
     //int wally_base58_from_bytes(const unsigned char *bytes_in, size_t len_in,uint32_t flags, char **output)
-    
+    for(int i=0; i<256; i++){
+        NSString* hexStr = [@"" stringByPaddingToLength: 8 withString:[NSString stringWithFormat:@"%02x", i] startingAtIndex:0];
+        //NSLog(@"%@",hexStr);
+        const unsigned char *hex = (const unsigned char *) [hexStr UTF8String];
+        NSData * hexData = [hexStr hexToBytes];
+        size_t len_in = hexData.length;
+        char **output = (char *) [[@"" stringByPaddingToLength: 8 withString:@" " startingAtIndex:0] UTF8String];
+        
+        int ret = [libwally_core_ios hex_encode_test:hex len_in:len_in output:NULL];
+        NSLog(@"%d",ret);
+    //hex_encode:hex len_in: hexData.length output: output;
+        
+        //buf, buf_len = make_cbuffer(s)
+    }
     
     //to
     /*NSString* buffStr = [@"" stringByPaddingToLength: 4 withString:@"00" startingAtIndex:0];
@@ -678,6 +690,77 @@
 }
 //base58: end
 
+//pbkdf2: start
+- (NSString *)stringFromHexString:(NSString *)hexString {
+    
+    // The hex codes should all be two characters.
+    if (([hexString length] % 2) != 0)
+        return nil;
+    
+    NSMutableString *string = [NSMutableString string];
+    
+    for (NSInteger i = 0; i < [hexString length]; i += 2) {
+        NSString *hex = [hexString substringWithRange:NSMakeRange(i, 2)];
+        unsigned int decimalValue = 0;
+        sscanf([hex UTF8String], "%x", &decimalValue);
+        [string appendFormat:@"%c", decimalValue];
+    }
+    
+    return string;
+}
+- (void) test_pbkdf2{
+    
+    //preparing test case from file
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:@"pbkdf2_hmac_sha_vectors" ofType:@"txt"];
+    NSString *fileContents = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    NSArray* lines = [fileContents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+    
+    
+    for(NSString* line in lines){
+        NSString * newString = [line stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if(newString.length != 0 || ![newString hasPrefix:@"#"]){
+            
+            //split
+            NSArray *testArray = [newString componentsSeparatedByString:@","];
+            if([[testArray objectAtIndex:0]  isEqual: @"256"] || [[testArray objectAtIndex:0]  isEqual: @"512"]){
+                
+                size_t type = [[testArray objectAtIndex:0] integerValue];
+                
+                //checked
+                NSString* realPass =[self stringFromHexString:[testArray objectAtIndex:1]];
+                const unsigned char *pass = (const unsigned char *) [realPass UTF8String];
+                NSData * passData = [[testArray objectAtIndex:1] hexToBytes];
+                size_t pass_len = passData.length;
+                
+                uint32_t cost = (uint32_t)[[testArray objectAtIndex:3] integerValue];
+                
+                //checked
+                NSData * expectedData = [[testArray objectAtIndex:4] hexToBytes];
+                
+                //checked
+                NSString* realSalt =[self stringFromHexString:[testArray objectAtIndex:2]];
+                unsigned char *salt_in_out = (unsigned char *) [realSalt UTF8String];
+                NSData * saltData = [[testArray objectAtIndex:2] hexToBytes];
+                size_t salt_len = saltData.length;
+                
+                NSString* outBufStr = [@"" stringByPaddingToLength: 2 * expectedData.length withString:@"00" startingAtIndex:0];
+                NSData * outBufData = [outBufStr hexToBytes];
+                unsigned char *outBuff = (unsigned char *) [outBufStr UTF8String];
+                
+                uint32_t flags = 0;
+                //note tested for FLAG_BLOCK_RESERVED
+                if( (expectedData.length % 32) == 0 || (expectedData.length % 64) == 0){
+                    int ret = [libwally_core_ios pbkdf2:pass pass_len:pass_len salt_in_out:salt_in_out salt_len:salt_len flags:flags cost:cost bytes_out:outBuff len:outBufData.length type:type];
+                    //NSLog(@"%d",ret);
+                    NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_pbkdf2");
+                }
+            }
+        }
+    }
+}
+
+//pbkdf2: end
+
 -(void) test{
 	self.fDebugTextView.text = @"";
 	NSMutableArray * aLogArray = [[NSMutableArray alloc] init];
@@ -703,25 +786,42 @@
     [self test_aes];
     testOK = @"#libwally-core-ios.aes OK";
     [aLogArray addObject:testOK];
+    NSLog (@"%@", testOK);
     
     [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing mnemonic (ported from 'src/test/test_mnemonic.py')"];
     [self test_mnemonic];
     testOK = @"#libwally-core-ios.mnemonic OK";
     [aLogArray addObject:testOK];
-
+    NSLog (@"%@", testOK);
+    
     [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_scrypt.py')"];
     [self test_scrypt];
     testOK = @"#libwally-core-ios.scrypt OK";
     [aLogArray addObject:testOK];
-
+    NSLog (@"%@", testOK);
+    
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_hmac.py')"];
+    [self test_hmac];
+    testOK = @"#libwally-core-ios.hmac OK";
+    [aLogArray addObject:testOK];
+    NSLog (@"%@", testOK);
+    
     [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_base58.py')"];
     [self test_base58];
     testOK = @"#libwally-core-ios.base58 OK";
     [aLogArray addObject:testOK];
+    NSLog (@"%@", testOK);
     
+    [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_pbkdf2.py')"];
+    [self test_pbkdf2];
+    testOK = @"#libwally-core-ios.pbkdf2 OK";
+    [aLogArray addObject:testOK];
+    NSLog (@"%@", testOK);
     
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 }
