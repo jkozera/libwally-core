@@ -12,6 +12,9 @@
 #import "hex.c"
 
 
+
+
+
 @implementation libwally_core_ios
 +(NSString *) staticTest{
 	NSDate * aDate = [[NSDate alloc] init];
@@ -50,19 +53,14 @@
 }
 
 //hex
+
+
 + (int) hex_encode_test:(const unsigned char *)bytes_in len_in: (size_t) len_in output: (char **)output{
-    int ret = 0;
     
-    ret = wally_hex_from_bytes(bytes_in, len_in, output);
-    NSLog(@"%s",output);
-    
-    return ret;
-}
-+ (int) hex_decode:(const char *)hex bytes_out:
-(unsigned char *)bytes_out len:(size_t) len written: (size_t *)written{
-    int ret = 0;
-    
-    return ret;
+    //NSLog(b ? @"Yes" : @"No");
+    //hex_encode(bytes_in, len_in, *output, hex_str_size(len_in));
+    return wally_hex_from_bytes(bytes_in, len_in, output);
+    //NSLog(@"%s",output);
 }
 
 

@@ -15,19 +15,19 @@
 -(instancetype)initWithDebugView:(UITextView *) theDebugView;
 -(void) test;
 
-
-- (void) test_bip38_vectors;
 - (void) test_aes;
-- (void) test_mnemonic;
-- (void) test_scrypt;
 - (void) test_base58;
+- (void) test_bip38_vectors;
 
-//not done
-- (void) test_hmac;
 - (void) test_hex;
-
-
+- (void) test_hmac;
+- (void) test_mnemonic;
 - (void) test_pbkdf2;
+- (void) test_scrypt;
+
+
+
+
 
 
 

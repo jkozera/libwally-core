@@ -25,7 +25,6 @@
 		91018E151DD275E200BB4E40 /* run-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D151DD275E200BB4E40 /* run-types.c */; };
 		91018E161DD275E200BB4E40 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D191DD275E200BB4E40 /* sha512.c */; };
 		91018E191DD275E200BB4E40 /* hex.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D251DD275E200BB4E40 /* hex.c */; };
-		91018E1A1DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D291DD275E200BB4E40 /* run.c */; };
 		91018E1B1DD275E200BB4E40 /* tap.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D2D1DD275E200BB4E40 /* tap.c */; };
 		91018E1C1DD275E200BB4E40 /* run.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D301DD275E200BB4E40 /* run.c */; };
 		91018E1E1DD275E200BB4E40 /* bench.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D3B1DD275E200BB4E40 /* bench.c */; };
@@ -133,7 +132,6 @@
 		91018D251DD275E200BB4E40 /* hex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hex.c; sourceTree = "<group>"; };
 		91018D261DD275E200BB4E40 /* hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hex.h; sourceTree = "<group>"; };
 		91018D271DD275E200BB4E40 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		91018D291DD275E200BB4E40 /* run.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = run.c; sourceTree = "<group>"; };
 		91018D2B1DD275E200BB4E40 /* _info */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = _info; sourceTree = "<group>"; };
 		91018D2C1DD275E200BB4E40 /* tap.3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tap.3; sourceTree = "<group>"; };
 		91018D2D1DD275E200BB4E40 /* tap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tap.c; sourceTree = "<group>"; };
@@ -577,7 +575,6 @@
 		91018D281DD275E200BB4E40 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				91018D291DD275E200BB4E40 /* run.c */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -1096,7 +1093,6 @@
 				91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */,
 				91018E2C1DD275E200BB4E40 /* internal.c in Sources */,
 				91018E241DD275E200BB4E40 /* chinese_traditional.c in Sources */,
-				91018E1A1DD275E200BB4E40 /* run.c in Sources */,
 				91018E341DD275E200BB4E40 /* lax_der_parsing.c in Sources */,
 				91018E191DD275E200BB4E40 /* hex.c in Sources */,
 				91018E431DD275E200BB4E40 /* Secp256k1Context.java in Sources */,

@@ -82,6 +82,7 @@ class HashTests(unittest.TestCase):
     def test_sha_vectors(self):
         for in_msg, values in sha2_cases.items():
             msg = h(utf8(in_msg))
+            
             for i, fn in enumerate([wally_sha256, wally_sha512, wally_sha256d]):
                 if values[i] is not None:
                     for aligned in [True, False]:

@@ -19,6 +19,10 @@
 
 
 
+
+
+
+
 @interface libwally_core_ios : NSObject
 + (NSString *) staticTest;
 - (NSString *) objectTest;
@@ -30,11 +34,6 @@
 (const unsigned char *)bytes_in len_in: (size_t) len_in bytes_out:
 (unsigned char *)bytes_out len: (size_t) len;
 
-
-//hex
-+ (int) hex_encode_test:(const unsigned char *)bytes_in len_in: (size_t) len_in output: (char **)output;
-+ (int) hex_decode:(const char *)hex bytes_out:
-(unsigned char *)bytes_out len:(size_t) len written: (size_t *)written;
 
 
 

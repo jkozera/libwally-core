@@ -38,6 +38,7 @@ class HexTests(unittest.TestCase):
             s = "%02x" % i * LEN
             
             buf, buf_len = make_cbuffer(s)
+            
             ret, retstr = wally_hex_from_bytes(buf, buf_len)
             
             self.assertEqual((ret, retstr), (WALLY_OK, s))

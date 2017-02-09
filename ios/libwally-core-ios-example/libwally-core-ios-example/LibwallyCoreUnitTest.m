@@ -582,56 +582,36 @@
 //hex: start
 - (void) test_hex{
     
-    //int wally_base58_from_bytes(const unsigned char *bytes_in, size_t len_in,uint32_t flags, char **output)
+    NSString* buffStr = [@"" stringByPaddingToLength: 8 withString:@"00" startingAtIndex:0];
+    unsigned char *buff = (unsigned char *) [buffStr UTF8String];
+    NSData * buffData = [buffStr hexToBytes];
+    
     for(int i=0; i<256; i++){
         NSString* hexStr = [@"" stringByPaddingToLength: 8 withString:[NSString stringWithFormat:@"%02x", i] startingAtIndex:0];
-        //NSLog(@"%@",hexStr);
+        
         const unsigned char *hex = (const unsigned char *) [hexStr UTF8String];
         NSData * hexData = [hexStr hexToBytes];
         size_t len_in = hexData.length;
-        char **output = (char *) [[@"" stringByPaddingToLength: 8 withString:@" " startingAtIndex:0] UTF8String];
+        char **output = (char **) [[@"" stringByPaddingToLength: 8 withString:@" " startingAtIndex:0] UTF8String];
         
-        int ret = [libwally_core_ios hex_encode_test:hex len_in:len_in output:NULL];
-        NSLog(@"%d",ret);
-    //hex_encode:hex len_in: hexData.length output: output;
-        
-        //buf, buf_len = make_cbuffer(s)
-    }
-    
-    //to
-    /*NSString* buffStr = [@"" stringByPaddingToLength: 4 withString:@"00" startingAtIndex:0];
-    unsigned char *buff = (unsigned char *) [buffStr UTF8String];
-    NSData * buffData = [buffStr hexToBytes];
-    size_t written =  4;
-    for(int i=0; i<256; i++){
-        NSString* hexUpper = [@"" stringByPaddingToLength: 4 withString:[NSString stringWithFormat:@"%02X", i] startingAtIndex:0];
-        NSLog(@"%@",hexUpper);
-        const char *hex = (const char *) [hexUpper UTF8String];
-        int ret = wally_hex_to_bytes(hex, buff, buffData.length, &written);
-    }*/
-    
-    //from
+        //hex from bytes
+        int ret = wally_hex_from_bytes(hex, len_in, output);
+        NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_hex");
 
-    /*NSString* outChar = [@"" stringByPaddingToLength: 8 withString:@" " startingAtIndex:0];
-    const char *ochar = (const char *) [outChar UTF8String];
-    
-    for(int i=0; i<256; i++){
-        NSString* hexStr = [@"" stringByPaddingToLength: 8 withString:[NSString stringWithFormat:@"%02x", i] startingAtIndex:0];
-        NSLog(@"%@",hexStr);
-        const char *hex = (const char *) [hexStr UTF8String];
-        NSData * bufData = [hexStr hexToBytes];
+        //hex to bytes
+        size_t written = 8;
         
-        //int ret = wally_hex_to_bytes(hex, buff,buffData.length, &written);
+        const char *hex1 = (const char *) [hexStr UTF8String];
+        ret = wally_hex_to_bytes(hex1, buff, buffData.length, &written);
+        NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_hex");
+
+        const char *hex2 = (const char *) [[hexStr uppercaseString] UTF8String];
+        ret = wally_hex_to_bytes(hex2, buff, buffData.length, &written);
+        NSAssert (WALLY_OK == ret, @"WALLY_OK == wally_hex");
+        
+        //note: not tested for bad inputs
         //NSLog(@"%d",ret);
-        //int wally_hex_to_bytes(const char *hex, unsigned char *bytes_out, size_t len, size_t *written)
-    
-        //NSString* buffStr = [@"" stringByPaddingToLength: 4 withString:@"00" startingAtIndex:0];
-        //unsigned char *buff = (unsigned char *) [buffStr UTF8String];
-        
-        int ret = wally_hex_from_bytes(hex, bufData.length, ochar);
-        NSLog(@"%d",ret);
-    }*/
-    
+    }
 }
 //hex: end
 
@@ -715,7 +695,6 @@
     NSString *fileContents = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     NSArray* lines = [fileContents componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
     
-    
     for(NSString* line in lines){
         NSString * newString = [line stringByReplacingOccurrencesOfString:@" " withString:@""];
         if(newString.length != 0 || ![newString hasPrefix:@"#"]){
@@ -796,11 +775,19 @@
     NSLog (@"%@", testOK);
     
     [aLogArray addObject:@"\n"];
+    [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_hex.py')"];
+    [self test_hex];
+    testOK = @"#libwally-core-ios.hex OK";
+    [aLogArray addObject:testOK];
+    NSLog (@"%@", testOK);
+    
+    [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_scrypt.py')"];
     [self test_scrypt];
     testOK = @"#libwally-core-ios.scrypt OK";
     [aLogArray addObject:testOK];
     NSLog (@"%@", testOK);
+    
     
     [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_hmac.py')"];
@@ -815,13 +802,14 @@
     testOK = @"#libwally-core-ios.base58 OK";
     [aLogArray addObject:testOK];
     NSLog (@"%@", testOK);
-    
+        
     [aLogArray addObject:@"\n"];
     [aLogArray addObject:@"testing scrypt (ported from 'src/test/test_pbkdf2.py')"];
     [self test_pbkdf2];
     testOK = @"#libwally-core-ios.pbkdf2 OK";
     [aLogArray addObject:testOK];
     NSLog (@"%@", testOK);
+    
     
 	self.fDebugTextView.text = [aLogArray componentsJoinedByString:@"\n"];
 }
