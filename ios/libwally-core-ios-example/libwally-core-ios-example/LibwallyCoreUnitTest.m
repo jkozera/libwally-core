@@ -809,21 +809,19 @@
             int ret = [libwally_core_ios doHash:256 bytes_in:in_bytes len_in:in_bytes_len bytes_out:buff len:buf_len];
             
             //NSLog(@"hash: %d", ret);
-            
-            char **output = (char **) [[@"" stringByPaddingToLength: buf_len withString:@" " startingAtIndex:0] UTF8String];
-            
-            ret = wally_hex_from_bytes(buff, buf_len, output);
-            //NSLog(@"hex: %d", ret);
 
-            //NSString *s = [NSString stringWithFormat:@"%s", output];
-            
-            NSString *expected = [NSString stringWithCString:*output encoding:NSUTF8StringEncoding];
-            for(NSString* line in value){
+			char * output = NULL;
+			ret = wally_hex_from_bytes(buff, buf_len, &output);
+			NSString *expected = [NSString stringWithCString:output encoding:NSUTF8StringEncoding];
+			wally_free_string(output);
+
+			for(NSString* line in value){
                 NSString * newString = [line stringByReplacingOccurrencesOfString:@" " withString:@""];
                 
                 NSLog(@"%@ = %@", expected, newString);
                 //TODO: check why its not equal
-                
+
+				NSAssert ([newString isEqualToString:expected], @"[newString isEqualToString:expected]");
                 /*if([newString isEqualToString:expected]){
 
                 }*/
