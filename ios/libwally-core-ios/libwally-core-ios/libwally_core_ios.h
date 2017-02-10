@@ -34,7 +34,8 @@
 (const unsigned char *)bytes_in len_in: (size_t) len_in bytes_out:
 (unsigned char *)bytes_out len: (size_t) len;
 
-
+//+ (int) doHash:(NSString*)key values: (NSArray*)values;
++ (int) doHash:(size_t) type bytes_in:(const unsigned char *)bytes_in len_in:(size_t)len_in bytes_out:(unsigned char *)bytes_out len: (size_t) len;
 
 
 @end

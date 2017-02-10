@@ -25,7 +25,7 @@
 - (void) test_pbkdf2;
 - (void) test_scrypt;
 
-
+- (void) test_hash;
 
 
 

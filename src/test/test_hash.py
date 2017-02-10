@@ -71,6 +71,7 @@ class HashTests(unittest.TestCase):
 
     def do_hash(self, fn, hex_in, aligned=True):
         buf, buf_len = self.make_outbuf(fn, aligned)
+        
         in_bytes, in_bytes_len = make_cbuffer(hex_in)
         ret = fn(in_bytes, in_bytes_len, buf, buf_len)
         self.assertEqual(ret, WALLY_OK)
@@ -88,6 +89,7 @@ class HashTests(unittest.TestCase):
                     for aligned in [True, False]:
                         result = self.do_hash(fn, msg, aligned)
                         expected = utf8(values[i].replace(' ', ''))
+                        
                         self.assertEqual(result, expected)
 
 
