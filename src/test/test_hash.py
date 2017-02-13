@@ -30,11 +30,11 @@ sha2_cases = {
          '501d289e4900f7e4 331b99dec4b5433a c7d329eeb6dd2654 5e96e55b874be909',
          None],
 
-    'a' * 1000000:
-        ['cdc76e5c 9914fb92 81a1c7e2 84d73e67 f1809a48 a497200e 046d39cc c7112cd0',
-         'e718483d0ce76964 4e2e42c7bc15b463 8e1f98b13b204428 5632a803afa973eb'
-         'de0ff244877ea60a 4cb0432ce577c31b eb009c5c2c49aa2e 4eadb217ad8cc09b',
-         '80d1189477563e1b5206b2749f1afe4807e5705e8bd77887a60187a712156688'],
+    #'a' * 1000000:
+    #    ['cdc76e5c 9914fb92 81a1c7e2 84d73e67 f1809a48 a497200e 046d39cc c7112cd0',
+    #     'e718483d0ce76964 4e2e42c7bc15b463 8e1f98b13b204428 5632a803afa973eb'
+    #     'de0ff244877ea60a 4cb0432ce577c31b eb009c5c2c49aa2e 4eadb217ad8cc09b',
+    #     '80d1189477563e1b5206b2749f1afe4807e5705e8bd77887a60187a712156688'],
 }
 
 hash160_cases = [
@@ -66,6 +66,7 @@ class HashTests(unittest.TestCase):
             buf_len = self.HASH160_LEN
         offset = 0 if aligned else 1
         buf = create_string_buffer(buf_len + offset)
+        
         return byref(buf, offset), buf_len
 
 
@@ -88,7 +89,9 @@ class HashTests(unittest.TestCase):
                 if values[i] is not None:
                     for aligned in [True, False]:
                         result = self.do_hash(fn, msg, aligned)
+                        print result
                         expected = utf8(values[i].replace(' ', ''))
+                        
                         
                         self.assertEqual(result, expected)
 
