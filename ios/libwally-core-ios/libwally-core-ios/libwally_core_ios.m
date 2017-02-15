@@ -10,7 +10,7 @@
 #import "pbkdf2.c"
 #import "hmac.c"
 #import "hex.c"
-
+#import "sign.c"
 
 
 
@@ -93,5 +93,7 @@
     
     return 0;
 }*/
-
++ (int) sign_wally_ec_private_key_verify:(const unsigned char*) priv_key priv_key_len:(size_t) priv_key_len{
+    return wally_ec_private_key_verify(priv_key, priv_key_len);
+}
 @end
