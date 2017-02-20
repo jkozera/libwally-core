@@ -10,7 +10,7 @@
 #import "pbkdf2.c"
 #import "hmac.c"
 #import "hex.c"
-#import "sign.c"
+//#import "sign.c"
 
 
 
@@ -53,8 +53,6 @@
 }
 
 //hex
-
-
 + (int) hex_encode_test:(const unsigned char *)bytes_in len_in: (size_t) len_in output: (char **)output{    
     return wally_hex_from_bytes(bytes_in, len_in, output);
 }
@@ -69,31 +67,10 @@
     else
         return wally_sha256d(bytes_in, len_in, bytes_out, len);
 }
-/*+ (int) doHash:(NSString*)key values: (NSArray*)values{
 
-    //offset = 0
-    NSString* buffStr = [@"" stringByPaddingToLength: 32 withString:@" " startingAtIndex:0];
-    NSData * buffData = [buffStr hexToBytes];
-    unsigned char *bytes_out = (unsigned char *) [buffStr UTF8String];
-    size_t len = buffData.length;
-    
-    //in_bytes, in_bytes_len = make_cbuffer(hex_in)
-    const unsigned char *bytes_in = (const unsigned char *) [key UTF8String];
-    NSData * inButesData = [key hexToBytes];
-    size_t len_in = inButesData.length;
-    
-    int ret = wally_sha256(bytes_in, len_in, bytes_out, len);
-    
-    //offset = 1
-    
-    
-    //wally_sha512(const unsigned char *bytes_in, size_t len_in, unsigned char *bytes_out, size_t len)
-    
-    //wally_sha256d(const unsigned char *bytes_in, size_t len_in, unsigned char *bytes_out, size_t len)
-    
-    return 0;
-}*/
 + (int) sign_wally_ec_private_key_verify:(const unsigned char*) priv_key priv_key_len:(size_t) priv_key_len{
-    return wally_ec_private_key_verify(priv_key, priv_key_len);
+    //not working because of arch x86 error
+    //return wally_ec_private_key_verify(priv_key, priv_key_len);
+    return 0;
 }
 @end

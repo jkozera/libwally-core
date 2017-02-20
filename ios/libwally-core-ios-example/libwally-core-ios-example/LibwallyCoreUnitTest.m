@@ -753,11 +753,9 @@
     
     for(NSUInteger i = 0; i < len; i++ )
     {
-        // [hexString [NSString stringWithFormat:@"%02x", chars[i]]]; //previous input
-        
-        [hexString appendFormat:@"%02x", chars[i]]; //EDITED PER COMMENT BELOW
+        [hexString appendFormat:@"%02x", chars[i]];
     }
-    //free(chars);
+    
     
     return hexString;
 }
@@ -821,26 +819,17 @@
     
     for(NSMutableDictionary* aCase in cases){
         for(NSString* key in aCase.allKeys){
-            //key = msg
-            
             
             NSArray *value = aCase[key];
-            
             NSString* keyHex = [self stringToHex:key];
-            //NSLog(@"%@",keyHex);
-            //buf, buf_len = self.make_outbuf(fn, aligned)
             
             for (NSString *type in types){
                 for(id align in aligned){
-                    //bool b = [align  boolValue];
-                
             
                     NSString* bufString = [self makeOutBuff:[align  boolValue] type:[type intValue]];
                     NSData * buffData = [bufString hexToBytes];
                     unsigned char *buff = (unsigned char *) [bufString UTF8String];
                     size_t buf_len = buffData.length * 2;
-                    
-                    //NSLog(@"%zu",buf_len);
 
                     NSData * bytesData = [keyHex hexToBytes];
                     unsigned char *in_bytes = (unsigned char *) [keyHex UTF8String];
@@ -848,13 +837,10 @@
                     
                     int ret = [libwally_core_ios doHash:[type intValue] bytes_in:in_bytes len_in:in_bytes_len bytes_out:buff len:buf_len];
                     
-                    //NSLog(@"hash: %d", ret);
-
                     char * output = NULL;
                     ret = wally_hex_from_bytes(buff, buf_len, &output);
                     NSString *result = [NSString stringWithCString:output encoding:NSUTF8StringEncoding];
                     wally_free_string(output);
-                    //NSLog(@"%@",result);
 
                     for(NSString* line in value){
                         NSString * expected = [line stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -864,11 +850,6 @@
                         }
                         //NSLog(@"%@ = %@", result, expected);
                         //TODO: check why its not equal
-
-                        //NSAssert ([newString isEqualToString:expected], @"[newString isEqualToString:expected]");
-                        /*if([newString isEqualToString:expected]){
-
-                        }*/
                     }
                 }
             }
@@ -897,18 +878,7 @@
             return [@"" stringByPaddingToLength: (20 + 1) withString:@" " startingAtIndex:0];
     }
 }
-/*
- def make_outbuf(self, fn, aligned=True):
- buf_len = self.SHA256_LEN
- if fn == wally_sha512:
- buf_len = self.SHA512_LEN
- elif fn == wally_hash160:
- buf_len = self.HASH160_LEN
- offset = 0 if aligned else 1
- buf = create_string_buffer(buf_len + offset)
- return byref(buf, offset), buf_len
- 
-*/
+
 //hash: end
 
 -(void) test{

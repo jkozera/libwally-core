@@ -25,8 +25,8 @@
 	self.fHeaderLabel.text = [NSString stringWithFormat:@"libwally-core-ios-example\nCompilation date and time:\n%s %s", __DATE__, __TIME__];
 	self.fDebugTextView.text = @"";
         
-    LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
-    [aTest test_hash];
+    /*LibwallyCoreUnitTest * aTest = [[LibwallyCoreUnitTest alloc] initWithDebugView:self.fDebugTextView];
+    [aTest test_hash];*/
     
 
 }
