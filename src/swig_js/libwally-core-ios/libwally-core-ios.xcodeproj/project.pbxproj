@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		91018A141DD2701200BB4E40 /* libwally_core_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 91018A131DD2701200BB4E40 /* libwally_core_ios.m */; };
-		91018A151DD2701200BB4E40 /* libwally_core_ios.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91018A121DD2701200BB4E40 /* libwally_core_ios.h */; };
 		91018E021DD275E200BB4E40 /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CE91DD275E200BB4E40 /* aes.c */; };
 		91018E031DD275E200BB4E40 /* base58.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CEA1DD275E200BB4E40 /* base58.c */; };
 		91018E041DD275E200BB4E40 /* bip32.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018CEC1DD275E200BB4E40 /* bip32.c */; };
@@ -73,7 +71,6 @@
 			dstSubfolderSpec = 16;
 			files = (
 				9126A7DD1DD49EB9003477F9 /* vectors.json in CopyFiles */,
-				91018A151DD2701200BB4E40 /* libwally_core_ios.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,8 +81,6 @@
 		6E23C0881E44C1D100D0CDAB /* scrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrypt.h; sourceTree = "<group>"; };
 		6EDC2BC51E4CC0F60007DE71 /* run.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = run.c; sourceTree = "<group>"; };
 		91018A0F1DD2701200BB4E40 /* liblibwally-core-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibwally-core-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		91018A121DD2701200BB4E40 /* libwally_core_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libwally_core_ios.h; sourceTree = "<group>"; };
-		91018A131DD2701200BB4E40 /* libwally_core_ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libwally_core_ios.m; sourceTree = "<group>"; };
 		91018CE91DD275E200BB4E40 /* aes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
 		91018CEA1DD275E200BB4E40 /* base58.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base58.c; sourceTree = "<group>"; };
 		91018CEB1DD275E200BB4E40 /* base58.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base58.h; sourceTree = "<group>"; };
@@ -337,7 +332,6 @@
 			children = (
 				91FD24FE1DD34C00001F3339 /* libwally-core-include */,
 				91018CE81DD275E200BB4E40 /* libwally-core-src */,
-				91018A111DD2701200BB4E40 /* libwally-core-ios */,
 				91018A101DD2701200BB4E40 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -348,15 +342,6 @@
 				91018A0F1DD2701200BB4E40 /* liblibwally-core-ios.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		91018A111DD2701200BB4E40 /* libwally-core-ios */ = {
-			isa = PBXGroup;
-			children = (
-				91018A121DD2701200BB4E40 /* libwally_core_ios.h */,
-				91018A131DD2701200BB4E40 /* libwally_core_ios.m */,
-			);
-			path = "libwally-core-ios";
 			sourceTree = "<group>";
 		};
 		91018CE81DD275E200BB4E40 /* libwally-core-src */ = {
@@ -399,7 +384,7 @@
 				91018E011DD275E200BB4E40 /* wordlist.h */,
 			);
 			name = "libwally-core-src";
-			path = ../../src;
+			path = ../../;
 			sourceTree = "<group>";
 		};
 		91018CF01DD275E200BB4E40 /* ccan */ = {
@@ -1024,7 +1009,7 @@
 				91FD25031DD34C00001F3339 /* wally_crypto.h */,
 			);
 			name = "libwally-core-include";
-			path = ../../include;
+			path = ../../../include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1088,7 +1073,6 @@
 				91018E411DD275E200BB4E40 /* NativeSecp256k1Test.java in Sources */,
 				91018E261DD275E200BB4E40 /* french.c in Sources */,
 				91018E1F1DD275E200BB4E40 /* ctaes.c in Sources */,
-				91018A141DD2701200BB4E40 /* libwally_core_ios.m in Sources */,
 				91018E491DD275E200BB4E40 /* test_bip32.java in Sources */,
 				91018E481DD275E200BB4E40 /* sign.c in Sources */,
 				91018E401DD275E200BB4E40 /* NativeSecp256k1.java in Sources */,
@@ -1184,7 +1168,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1225,7 +1209,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1236,7 +1220,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../src/secp256k1/**",
+					"$(PROJECT_DIR)/../../secp256k1/**",
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (
@@ -1246,13 +1230,13 @@
 					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_NONE=1",
 					"-isystem",
-					"$(PROJECT_DIR)/../../src/secp256k1/include/",
+					"$(PROJECT_DIR)/../../secp256k1/include/",
+					"-isystem",
+					"$(PROJECT_DIR)/../../../",
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
 					"-isystem",
-					"$(PROJECT_DIR)/../../src/",
-					"-isystem",
-					"$(PROJECT_DIR)/../../src/ccan/",
+					"$(PROJECT_DIR)/../../ccan/",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1264,7 +1248,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../src/secp256k1/**",
+					"$(PROJECT_DIR)/../../secp256k1/**",
 					/usr/local/include,
 				);
 				OTHER_CFLAGS = (
@@ -1274,13 +1258,13 @@
 					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_NONE=1",
 					"-isystem",
-					"$(PROJECT_DIR)/../../src/secp256k1/include/",
+					"$(PROJECT_DIR)/../../secp256k1/include/",
+					"-isystem",
+					"$(PROJECT_DIR)/../../../",
 					"-isystem",
 					"$(PROJECT_DIR)/../../",
 					"-isystem",
-					"$(PROJECT_DIR)/../../src/",
-					"-isystem",
-					"$(PROJECT_DIR)/../../src/ccan/",
+					"$(PROJECT_DIR)/../../ccan/",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
