@@ -15,5 +15,12 @@
       "libraries": [ "Release/deps.a" ],
       "defines": [ "SWIG_JAVASCRIPT_BUILD", "HAVE_CONFIG_H" ],
     }
+  ],
+  "conditions": [
+    [ 'OS=="mac"', {
+      "xcode_settings": {
+        "CLANG_CXX_LIBRARY": "libc++"
+      }
+    }]
   ]
 }
