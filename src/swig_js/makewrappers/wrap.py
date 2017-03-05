@@ -57,6 +57,9 @@ def main():
     with open('WallyCordova.java', 'w') as f:
         f.write(java.generate(FUNCS))
 
+    with open('CDVWally.swift', 'w') as f:
+        f.write(swift.generate(FUNCS))
+
 
 if __name__ == '__main__':
     main()
