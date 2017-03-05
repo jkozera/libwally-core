@@ -1,6 +1,6 @@
 TEMPLATE = '''
 try {
-    var window = global.window;
+    var window = global.window || {};
 } catch (e) { var window = {}; }
 
 module.exports = {};

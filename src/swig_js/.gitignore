@@ -1,0 +1,6 @@
+*.pyc
+wally.js
+WallyCordova.java
+swig.i
+swig_wrap.cxx
+node_modules
