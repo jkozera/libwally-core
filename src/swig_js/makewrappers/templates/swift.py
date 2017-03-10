@@ -10,13 +10,15 @@ def _generate_swift(funcname, f):
     input_args = []
     output_args = []
     args = []
+    postprocess = []
     for i, arg in enumerate(f.arguments):
         if isinstance(arg, tuple):
             output_args.append(
-                'let result = [UInt8](repeating: 0, count: %s);'
-                'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: result);' % arg[1])
-            args.append('resultPtr');
+                'let resultSwift = [UInt8](repeating: 0, count: %s);'
+                'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: resultSwift);' % arg[1])
+            args.append('resultPtr')
             args.append(str(arg[1]))
+            postprocess.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
         else:
             if arg.startswith('const_bytes'):
                 input_args.append(
@@ -40,6 +42,7 @@ def _generate_swift(funcname, f):
             !!input_args!!
             !!output_args!!
             Wally.%s(!!args!!);
+            !!postprocess!!
             let pluginResult = CDVPluginResult(
                 status: CDVCommandStatus_OK,
                 messageAs: result
@@ -54,6 +57,8 @@ def _generate_swift(funcname, f):
         '!!output_args!!', '\n'.join(output_args)
     ).replace(
         '!!args!!', ', '.join(args)
+    ).replace(
+        '!!postprocess!!', '\n'.join(postprocess)
     )
 
 
