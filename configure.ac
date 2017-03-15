@@ -209,6 +209,22 @@ if test "x$swig_python" == "xyes"; then
     AX_CHECK_COMPILE_FLAG([-DSWIG_PYTHON_BUILD=1], [AM_CFLAGS="$AM_CFLAGS -DSWIG_PYTHON_BUILD=1"])
 fi
 
+AC_ARG_ENABLE(swig-js,
+    AS_HELP_STRING([--enable-swig-js],[enable the SWIG Javascript interface (default: no)]),
+    [swig_js=$enableval], [swig_js=no])
+AM_CONDITIONAL([USE_SWIG_JS], [test "x$swig_js" == "xyes"])
+
+if test "x$swig_js" == "xyes"; then
+# FIXME: Check other build deps
+    if test "x$pythonexists" != "xyes"; then
+        AC_MSG_FAILURE([ERROR: No usable python was found for generating swig-js wrappers])
+    fi
+    if test "x$swig_python" != "xyes"; then
+        SWIG_PYTHON
+    fi
+    AX_CHECK_COMPILE_FLAG([-DSWIG_JAVASCRIPT_BUILD=1], [AM_CFLAGS="$AM_CFLAGS -DSWIG_JAVASCRIPT_BUILD=1"])
+fi
+
 AC_ARG_ENABLE(swig-java,
     AS_HELP_STRING([--enable-swig-java],[enable the SWIG java (JNI) interface (default: no)]),
     [swig_java=$enableval], [swig_java=no])
