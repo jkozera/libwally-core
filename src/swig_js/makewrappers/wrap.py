@@ -36,6 +36,7 @@ pbkdf_func_spec = lambda out_size: F(
 
 
 FUNCS = (
+    # hashes + PBKDF2:
     ('wally_sha256', hash_func_spec(SHA256_LEN)),
     ('wally_sha256d', hash_func_spec(SHA256_LEN)),
     ('wally_sha512', hash_func_spec(SHA512_LEN)),
@@ -43,7 +44,12 @@ FUNCS = (
     ('wally_hmac_sha256', hmac_func_spec(HMAC_SHA256_LEN)),
     ('wally_hmac_sha512', hmac_func_spec(HMAC_SHA512_LEN)),
     ('wally_pbkdf2_hmac_sha256', pbkdf_func_spec(PBKDF2_HMAC_SHA256_LEN)),
-    ('wally_pbkdf2_hmac_sha512', pbkdf_func_spec(PBKDF2_HMAC_SHA512_LEN))
+    ('wally_pbkdf2_hmac_sha512', pbkdf_func_spec(PBKDF2_HMAC_SHA512_LEN)),
+
+    # base58:
+    ('wally_base58_from_bytes', F([
+        'const_bytes[bytes]', 'uint32_t[flags]', 'out_str_p'
+    ]))
 )
 
 def open_file(prefix, name):

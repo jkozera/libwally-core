@@ -11,6 +11,7 @@ def _generate_swift(funcname, f):
     output_args = []
     args = []
     postprocess = []
+    result_wrap = 'result'
     for i, arg in enumerate(f.arguments):
         if isinstance(arg, tuple):
             output_args.append(
@@ -37,6 +38,10 @@ def _generate_swift(funcname, f):
                 args.append('array_%s_Data!.length' % i)
             elif arg.startswith('uint32_t'):
                 args.append('command.argument(at: %s) as! UInt32' % i)
+            elif arg == 'out_str_p':
+                output_args.append('var result_Ptr : UnsafeMutablePointer<CChar>? = nil;')
+                args.append('&result_Ptr')
+                result_wrap = 'String.init(validatingUTF8: result_Ptr!)'
     return ('''
         func %s(_ command: CDVInvokedUrlCommand) {
             !!input_args!!
@@ -45,13 +50,13 @@ def _generate_swift(funcname, f):
             !!postprocess!!
             let pluginResult = CDVPluginResult(
                 status: CDVCommandStatus_OK,
-                messageAs: result
+                messageAs: %s
             )
             commandDelegate!.send(
                 pluginResult, callbackId:command.callbackId
             )
         }
-    ''' % (funcname, funcname)).replace(
+    ''' % (funcname, funcname, result_wrap)).replace(
         '!!input_args!!', '\n'.join(input_args)
     ).replace(
         '!!output_args!!', '\n'.join(output_args)

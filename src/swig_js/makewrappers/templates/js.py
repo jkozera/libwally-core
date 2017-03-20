@@ -25,9 +25,10 @@ if (window.cordova) {
 
 def _generate_cordovajs(funcname, func):
     args = []
+    resolve_wrap = 'res'
     for i, arg in enumerate(func.arguments):
         if isinstance(arg, tuple):
-            pass
+            resolve_wrap = 'new Uint8Array(res)'  # FIXME only for bytes
         else:
             if arg.startswith('const_bytes'):
                 args.append('base64.fromByteArray(_arguments[%s])' % i)
@@ -38,25 +39,32 @@ def _generate_cordovajs(funcname, func):
             var _arguments = arguments;
             return new Promise(function (resolve, reject) {
                 window.cordova.exec(
-                    function (res) { resolve(new Uint8Array(res)); },  // FIXME only for bytes
+                    function (res) { resolve(%s); },
                     reject, 'Wally', '%s', [%s]
                 );
             });
         };
-    ''' % (funcname, funcname, ', '.join(args))
+    ''' % (funcname, resolve_wrap, funcname, ', '.join(args))
 
 
 def _generate_nodejs(funcname, func):
-    return '''
+    add_args = ''
+    wrapper = '%s'
+    for i, arg in enumerate(func.arguments):
+        if isinstance(arg, tuple):
+            add_args = '_arguments.push(null);'
+            wrapper = 'new Uint8Array(%s)'
+    wrapper = wrapper % ('wallycore.%s.apply(wallycore, _arguments)' % funcname)
+    return ('''
         module.exports.%s = function () {
             var _arguments = [];
             _arguments.push.apply(_arguments, arguments);
-            _arguments.push(null);
+            !!add_args!!
             return Promise.resolve(
-                new Uint8Array(wallycore.%s.apply(wallycore, _arguments))
+                %s
             );
         }
-    ''' % (funcname, funcname)
+    ''' % (funcname, wrapper)).replace('!!add_args!!', add_args)
 
 
 def generate(functions):

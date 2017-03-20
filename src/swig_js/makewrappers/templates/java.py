@@ -26,10 +26,13 @@ def _generate_java(funcname, f):
     input_args = []
     output_args = []
     args = []
+    output_assignment = ''
     for i, arg in enumerate(f.arguments):
         if isinstance(arg, tuple):
             output_args.append('byte[] res = new byte[%s];' % arg[1])
             args.append('res');
+        elif arg == 'out_str_p':
+            output_assignment = 'String res = '
         else:
             if arg.startswith('const_bytes'):
                 input_args.append(
@@ -45,7 +48,7 @@ def _generate_java(funcname, f):
         if (action.equals("%s")) {
             !!input_args!!
             !!output_args!!
-            Wally.%s(!!args!!);
+            !!output_assignment!! Wally.%s(!!args!!);
             PluginResult result = new PluginResult(PluginResult.Status.OK, res);
             callbackContext.sendPluginResult(result);
         }
@@ -55,6 +58,8 @@ def _generate_java(funcname, f):
         '!!output_args!!', '\n'.join(output_args)
     ).replace(
         '!!args!!', ', '.join(args)
+    ).replace(
+        '!!output_assignment!!', output_assignment
     )
 
 

@@ -11,7 +11,21 @@ extern "C" {
 }
 
 #include <node_buffer.h>
+
+/* Uint32 handling */
+static uint32_t uint32_cast(v8::Local<v8::Value> value) {
+    //if (value < 0 || value > UINT_MAX)
+        // TODO JS exception SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Invalid uint32_t");
+    return value->ToUint32()->Value();
+}
+
 %}
+
+/* Uint32 handling */
+/* uint32_t input arguments are taken as longs and cast with range checking */
+%typemap(in) uint32_t {
+    $1 = uint32_cast($input);
+}
 
 /* Array handling */
 %typemap(in) (const char *STRING, size_t LENGTH) {
@@ -31,6 +45,18 @@ extern "C" {
 }
 %apply(const char *STRING, size_t LENGTH) { (const unsigned char *bytes_in, size_t len_in) };
 %apply(char *STRING, size_t LENGTH) { (unsigned char *bytes_out, size_t len) };
+
+/* Output strings are converted to native JS strings and returned */
+%typemap(in, numinputs=0) char** (char* txt) {
+   txt = NULL;
+   $1 = ($1_ltype)&txt;
+}
+%typemap(argout) char** {
+   if (*$1 != NULL) {
+       $result = v8::String::NewFromUtf8(v8::Isolate::GetCurrent(), *$1);
+       wally_free_string(*$1);
+   }
+}
 
 %define %returns_array_(FUNC, ARRAYARG, LENARG, LEN)
 %exception FUNC {
