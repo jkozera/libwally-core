@@ -10,7 +10,7 @@
     {
       "target_name": "wallycore",
       "dependencies": [ "deps" ],
-      "sources": [ "swig_js_wrap.cxx" ],
+      "sources": [ "swig_wrap.cxx" ],
       "include_dirs": [ ".." ],
       "libraries": [ "Release/deps.a" ],
       "defines": [ "SWIG_JAVASCRIPT_BUILD", "HAVE_CONFIG_H" ],

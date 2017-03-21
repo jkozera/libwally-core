@@ -3,8 +3,9 @@ import sys, os
 
 class FuncSpec(object):
 
-    def __init__(self, arguments):
+    def __init__(self, arguments, out_size=None):
         self.arguments = arguments
+        self.out_size = out_size
 
 
 F = FuncSpec
@@ -49,7 +50,10 @@ FUNCS = (
     # base58:
     ('wally_base58_from_bytes', F([
         'const_bytes[bytes]', 'uint32_t[flags]', 'out_str_p'
-    ]))
+    ])),
+    ('wally_base58_to_bytes', F([
+        'string[b58]', 'uint32_t[flags]', 'out_bytes_sized'
+    ], out_size='_arguments[0].length + ((_arguments[1] & 1) ? 4 : 0)'))
 )
 
 def open_file(prefix, name):

@@ -19,6 +19,13 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
     return value->ToUint32()->Value();
 }
 
+/* Integer handling */
+static int64_t int_cast(v8::Local<v8::Value> value) {
+    //if (value < 0 || value > UINT_MAX)
+        // TODO JS exception SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Invalid uint32_t");
+    return value->ToInteger()->Value();
+}
+
 %}
 
 /* Uint32 handling */
@@ -33,8 +40,7 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
   $2 = node::Buffer::Length($input->ToObject());
 }
 %typemap(in) (char *STRING, size_t LENGTH) (
-  char *buf = nullptr,
-  int alloc = 0
+  char * buf
 ) {
 }
 %typemap(argout) (char *STRING, size_t LENGTH) (
@@ -45,6 +51,15 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
 }
 %apply(const char *STRING, size_t LENGTH) { (const unsigned char *bytes_in, size_t len_in) };
 %apply(char *STRING, size_t LENGTH) { (unsigned char *bytes_out, size_t len) };
+
+/* Output parameters indicating how many bytes were written/sizes are
+ * converted into return values. */
+%typemap(in,noblock=1,numinputs=0) size_t *written(size_t sz) {
+    sz = 0; $1 = ($1_ltype)&sz;
+}
+%typemap(in,noblock=1,numinputs=0) size_t *output(size_t sz) {
+    sz = 0; $1 = ($1_ltype)&sz;
+}
 
 /* Output strings are converted to native JS strings and returned */
 %typemap(in, numinputs=0) char** (char* txt) {
@@ -58,6 +73,24 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
    }
 }
 
+%define %returns_array_sized_(FUNC, ARRAYARG, LENARG, OUTLENARG, INLENARGNUM)
+%exception FUNC {
+  arg ## ARRAYARG = new std::remove_pointer<typeof(arg ## ARRAYARG)>::type[arg ## LENARG];
+  arg ## LENARG = int_cast(args[INLENARGNUM]);
+
+  $action
+
+  if (result == WALLY_OK) {
+    jsbuf ## ARRAYARG = node::Buffer::New(v8::Isolate::GetCurrent(), sz ## OUTLENARG).ToLocalChecked();
+    memcpy(node::Buffer::Data(jsbuf ## ARRAYARG), arg ## ARRAYARG, sz ## OUTLENARG);
+    jsresult = jsbuf ## ARRAYARG;
+  } // TODO error handling
+
+  wally_bzero(arg ## ARRAYARG, arg ## LENARG);
+  delete[] arg ## ARRAYARG;
+}
+%enddef
+
 %define %returns_array_(FUNC, ARRAYARG, LENARG, LEN)
 %exception FUNC {
   arg ## LENARG = LEN;
@@ -68,7 +101,7 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
   if (result == WALLY_OK) {
     jsbuf ## ARRAYARG = node::Buffer::New(v8::Isolate::GetCurrent(), arg ## LENARG).ToLocalChecked();
     memcpy(node::Buffer::Data(jsbuf ## ARRAYARG), arg ## ARRAYARG, arg ## LENARG);
-    jsresult = jsbuf ## ARRAYARG;
+    $result = jsbuf ## ARRAYARG;
   } // TODO error handling
 
   wally_bzero(arg ## ARRAYARG, LEN);
@@ -90,8 +123,10 @@ static uint32_t uint32_cast(v8::Local<v8::Value> value) {
 def generate(functions):
     list_of_returns_array = []
     for funcname, f in functions:
+        inargnum = -1
         argnum = 1
         for arg in f.arguments:
+            inargnum += 1
             if isinstance(arg, tuple):
                 if arg[0] == 'out_bytes':
                     list_of_returns_array.append(
@@ -99,6 +134,13 @@ def generate(functions):
                             funcname, argnum, argnum + 1, arg[1]
                         )
                     )
+            elif arg == 'out_bytes_sized':
+                list_of_returns_array.append(
+                    '%%returns_array_sized_(%s, %s, %s, %s, %s)' % (
+                        funcname, argnum, argnum + 1, argnum + 2, inargnum
+                    )
+                )
+                argnum += 3
             elif '_bytes' in arg:
                 argnum += 2
             else:
