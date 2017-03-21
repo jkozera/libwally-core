@@ -37,7 +37,7 @@ def _generate_swift(funcname, f):
                 args.append('array_%s_Ptr' % i)
                 args.append('array_%s_Data!.length' % i)
             elif arg.startswith('uint32_t'):
-                args.append('command.argument(at: %s) as! UInt32' % i)
+                args.append('(command.argument(at: %s) as! NSNumber).uint32Value' % i)
             elif arg == 'out_str_p':
                 output_args.append('var result_Ptr : UnsafeMutablePointer<CChar>? = nil;')
                 args.append('&result_Ptr')
