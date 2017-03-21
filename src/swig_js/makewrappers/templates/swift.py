@@ -10,7 +10,7 @@ def _generate_swift(funcname, f):
     input_args = []
     output_args = []
     args = []
-    postprocess = []
+    postprocessing = []
     result_wrap = 'result'
     for i, arg in enumerate(f.arguments):
         if isinstance(arg, tuple):
@@ -19,35 +19,47 @@ def _generate_swift(funcname, f):
                 'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: resultSwift);' % arg[1])
             args.append('resultPtr')
             args.append(str(arg[1]))
-            postprocess.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
-        else:
-            if arg.startswith('const_bytes'):
-                input_args.append(
-                    '''let array_%s_B64 = command.argument(at: %s) as! NSString as String;
-                    let array_%s_Data = NSData(
-                        base64Encoded: array_%s_B64, options: NSData.Base64DecodingOptions.init(rawValue: 0));
-                    let array_%s = [UInt8](repeating: 0, count: array_%s_Data!.length);
-                    array_%s_Data?.getBytes(
-                        UnsafeMutableRawPointer(mutating: array_%s),
-                        range: NSRange(location: 0, length: array_%s_Data!.length));
-                    let array_%s_Ptr = UnsafeMutablePointer<UInt8>(mutating: array_%s);'''  % tuple(
-                        [i]*11
-                    )
+            postprocessing.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
+        elif arg.startswith('const_bytes'):
+            input_args.append(
+                '''let array_%s_B64 = command.argument(at: %s) as! NSString as String;
+                let array_%s_Data = NSData(
+                    base64Encoded: array_%s_B64, options: NSData.Base64DecodingOptions.init(rawValue: 0));
+                let array_%s = [UInt8](repeating: 0, count: array_%s_Data!.length);
+                array_%s_Data?.getBytes(
+                    UnsafeMutableRawPointer(mutating: array_%s),
+                    range: NSRange(location: 0, length: array_%s_Data!.length));
+                let array_%s_Ptr = UnsafeMutablePointer<UInt8>(mutating: array_%s);'''  % tuple(
+                    [i]*11
                 )
-                args.append('array_%s_Ptr' % i)
-                args.append('array_%s_Data!.length' % i)
-            elif arg.startswith('uint32_t'):
-                args.append('(command.argument(at: %s) as! NSNumber).uint32Value' % i)
-            elif arg == 'out_str_p':
-                output_args.append('var result_Ptr : UnsafeMutablePointer<CChar>? = nil;')
-                args.append('&result_Ptr')
-                result_wrap = 'String.init(validatingUTF8: result_Ptr!)'
+            )
+            args.append('array_%s_Ptr' % i)
+            args.append('array_%s_Data!.length' % i)
+        elif arg.startswith('uint32_t'):
+            args.append('(command.argument(at: %s) as! NSNumber).uint32Value' % i)
+        elif arg.startswith('string'):
+            args.append('command.argument(at: %s) as! NSString as String' % i)
+        elif arg == 'out_str_p':
+            output_args.append('var result_Ptr : UnsafeMutablePointer<CChar>? = nil;')
+            args.append('&result_Ptr')
+            result_wrap = 'String.init(validatingUTF8: result_Ptr!)'
+        elif arg == 'out_bytes_sized':
+            output_args.extend([
+                'let inSize = (command.argument(at: %s) as! NSNumber).intValue;' % i,
+                'let resultSwift = [UInt8](repeating: 0, count: inSize);',
+                'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: resultSwift);',
+                'var outSize : size_t = 0;'
+            ])
+            args.append('resultPtr')
+            args.append('inSize')
+            args.append('&outSize')
+            postprocessing.append('let result = resultSwift.prefix(upTo: outSize).map({ (i) -> NSValue in return NSNumber(value: i) })');
     return ('''
         func %s(_ command: CDVInvokedUrlCommand) {
             !!input_args!!
             !!output_args!!
             Wally.%s(!!args!!);
-            !!postprocess!!
+            !!postprocessing!!
             let pluginResult = CDVPluginResult(
                 status: CDVCommandStatus_OK,
                 messageAs: %s
@@ -63,7 +75,7 @@ def _generate_swift(funcname, f):
     ).replace(
         '!!args!!', ', '.join(args)
     ).replace(
-        '!!postprocess!!', '\n'.join(postprocess)
+        '!!postprocessing!!', '\n'.join(postprocessing)
     )
 
 
