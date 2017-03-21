@@ -34,6 +34,8 @@ def _generate_cordovajs(funcname, func):
                 args.append('base64.fromByteArray(_arguments[%s])' % i)
             elif arg.startswith('string') or arg.startswith('uint32_t'):
                 args.append('_arguments[%s]' % i)
+            elif arg == 'out_bytes_sized':
+                args.append(func.out_size)
     return '''
         module.exports.%s = function () {
             var _arguments = arguments;

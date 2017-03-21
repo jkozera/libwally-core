@@ -1,6 +1,7 @@
 TEMPLATE = '''package com.blockstream.libwally;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import android.util.Base64;
 
@@ -27,28 +28,36 @@ def _generate_java(funcname, f):
     output_args = []
     args = []
     output_assignment = ''
+    postprocessing = ''
     for i, arg in enumerate(f.arguments):
         if isinstance(arg, tuple):
             output_args.append('byte[] res = new byte[%s];' % arg[1])
             args.append('res');
         elif arg == 'out_str_p':
             output_assignment = 'String res = '
-        else:
-            if arg.startswith('const_bytes'):
-                input_args.append(
-                    'byte[] input%s = '
-                    'Base64.decode(args.getString(%s), Base64.NO_WRAP);' % (
-                        i, i
-                    )
+        elif arg == 'out_bytes_sized':
+            output_args.append('byte[] resIn = new byte[args.getInt(%s)];' % i)
+            args.append('resIn');
+            output_assignment = 'int len = '
+            postprocessing = 'byte[] res = Arrays.copyOf(resIn, len);'
+        elif arg.startswith('const_bytes'):
+            input_args.append(
+                'byte[] input%s = '
+                'Base64.decode(args.getString(%s), Base64.NO_WRAP);' % (
+                    i, i
                 )
-                args.append('input%s' % i)
-            elif arg.startswith('uint32_t'):
-                args.append('args.getInt(%s)' % i)
+            )
+            args.append('input%s' % i)
+        elif arg.startswith('uint32_t'):
+            args.append('args.getInt(%s)' % i)
+        elif arg.startswith('string'):
+            args.append('args.getString(%s)' % i)
     return ('''
         if (action.equals("%s")) {
             !!input_args!!
             !!output_args!!
             !!output_assignment!! Wally.%s(!!args!!);
+            !!postprocessing!!
             PluginResult result = new PluginResult(PluginResult.Status.OK, res);
             callbackContext.sendPluginResult(result);
         }
@@ -60,6 +69,8 @@ def _generate_java(funcname, f):
         '!!args!!', ', '.join(args)
     ).replace(
         '!!output_assignment!!', output_assignment
+    ).replace(
+        '!!postprocessing!!', postprocessing
     )
 
 
