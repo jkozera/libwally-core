@@ -34,7 +34,7 @@ def _generate_cordovajs(funcname, func):
                 args.append('base64.fromByteArray(_arguments[%s])' % i)
             elif arg.startswith('string') or arg.startswith('uint32_t'):
                 args.append('_arguments[%s]' % i)
-            elif arg == 'out_bytes_sized':
+            elif arg in ['out_bytes_sized', 'out_bytes_fixedsized']:
                 args.append(func.out_size)
     return '''
         module.exports.%s = function () {
@@ -56,10 +56,8 @@ def _generate_nodejs(funcname, func):
         if isinstance(arg, tuple):
             add_args = '_arguments.push(null);'
             wrapper = 'new Uint8Array(%s)'
-        elif arg == 'out_bytes_sized':
-            add_args = '''
-                _arguments.push(%s);
-            ''' % func.out_size
+        elif arg in ['out_bytes_sized', 'out_bytes_fixedsized']:
+            add_args = '_arguments.push(%s);' % func.out_size
     wrapper = wrapper % ('wallycore.%s.apply(wallycore, _arguments)' % funcname)
     return ('''
         module.exports.%s = function () {

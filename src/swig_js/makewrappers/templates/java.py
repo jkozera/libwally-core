@@ -40,6 +40,10 @@ def _generate_java(funcname, f):
             args.append('resIn');
             output_assignment = 'int len = '
             postprocessing = 'byte[] res = Arrays.copyOf(resIn, len);'
+        elif arg == 'out_bytes_fixedsized':
+            output_args.append('byte[] resIn = new byte[args.getInt(%s)];' % i)
+            args.append('resIn');
+            postprocessing = 'byte[] res = Arrays.copyOf(resIn, args.getInt(%s));' % i
         elif arg.startswith('const_bytes'):
             input_args.append(
                 'byte[] input%s = '

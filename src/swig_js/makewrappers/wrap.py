@@ -53,7 +53,13 @@ FUNCS = (
     ])),
     ('wally_base58_to_bytes', F([
         'string[b58]', 'uint32_t[flags]', 'out_bytes_sized'
-    ], out_size='_arguments[0].length + ((_arguments[1] & 1) ? 4 : 0)'))
+    ], out_size='_arguments[0].length + ((_arguments[1] & 1) ? 4 : 0)')),
+
+    # AES:
+    ('wally_aes', F([
+        'const_bytes[key]', 'const_bytes[bytes]', 'uint32_t[flags]',
+        'out_bytes_fixedsized'
+    ], out_size='_arguments[1].length'))
 )
 
 def open_file(prefix, name):

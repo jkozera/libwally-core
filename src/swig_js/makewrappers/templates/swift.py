@@ -54,6 +54,15 @@ def _generate_swift(funcname, f):
             args.append('inSize')
             args.append('&outSize')
             postprocessing.append('let result = resultSwift.prefix(upTo: outSize).map({ (i) -> NSValue in return NSNumber(value: i) })');
+        elif arg == 'out_bytes_fixedsized':
+            output_args.extend([
+                'let inSize = (command.argument(at: %s) as! NSNumber).intValue;' % i,
+                'let resultSwift = [UInt8](repeating: 0, count: inSize);',
+                'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: resultSwift);',
+            ])
+            args.append('resultPtr')
+            args.append('inSize')
+            postprocessing.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
     return ('''
         func %s(_ command: CDVInvokedUrlCommand) {
             !!input_args!!

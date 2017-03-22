@@ -50,6 +50,7 @@ static int64_t int_cast(v8::Local<v8::Value> value) {
   $result = jsbuf;
 }
 %apply(const char *STRING, size_t LENGTH) { (const unsigned char *bytes_in, size_t len_in) };
+%apply(const char *STRING, size_t LENGTH) { (const unsigned char *key, size_t key_len) };
 %apply(char *STRING, size_t LENGTH) { (unsigned char *bytes_out, size_t len) };
 
 /* Output parameters indicating how many bytes were written/sizes are
@@ -83,6 +84,24 @@ static int64_t int_cast(v8::Local<v8::Value> value) {
   if (result == WALLY_OK) {
     jsbuf ## ARRAYARG = node::Buffer::New(v8::Isolate::GetCurrent(), sz ## OUTLENARG).ToLocalChecked();
     memcpy(node::Buffer::Data(jsbuf ## ARRAYARG), arg ## ARRAYARG, sz ## OUTLENARG);
+    jsresult = jsbuf ## ARRAYARG;
+  } // TODO error handling
+
+  wally_bzero(arg ## ARRAYARG, arg ## LENARG);
+  delete[] arg ## ARRAYARG;
+}
+%enddef
+
+%define %returns_array_fixedsized_(FUNC, ARRAYARG, LENARG, INLENARGNUM)
+%exception FUNC {
+  arg ## ARRAYARG = new std::remove_pointer<typeof(arg ## ARRAYARG)>::type[arg ## LENARG];
+  arg ## LENARG = int_cast(args[INLENARGNUM]);
+
+  $action
+
+  if (result == WALLY_OK) {
+    jsbuf ## ARRAYARG = node::Buffer::New(v8::Isolate::GetCurrent(), arg ## LENARG).ToLocalChecked();
+    memcpy(node::Buffer::Data(jsbuf ## ARRAYARG), arg ## ARRAYARG, arg ## LENARG);
     jsresult = jsbuf ## ARRAYARG;
   } // TODO error handling
 
@@ -141,6 +160,13 @@ def generate(functions):
                     )
                 )
                 argnum += 3
+            elif arg == 'out_bytes_fixedsized':
+                list_of_returns_array.append(
+                    '%%returns_array_fixedsized_(%s, %s, %s, %s)' % (
+                        funcname, argnum, argnum + 1, inargnum
+                    )
+                )
+                argnum += 2
             elif '_bytes' in arg:
                 argnum += 2
             else:
