@@ -59,7 +59,11 @@ FUNCS = (
     ('wally_aes', F([
         'const_bytes[key]', 'const_bytes[bytes]', 'uint32_t[flags]',
         'out_bytes_fixedsized'
-    ], out_size='_arguments[1].length'))
+    ], out_size='_arguments[1].length')),
+    ('wally_aes_cbc', F([
+        'const_bytes[key]', 'const_bytes[iv]', 'const_bytes[bytes]',
+        'uint32_t[flags]', 'out_bytes_sized'
+    ], out_size='Math.ceil(_arguments[2].length / 16) * 16 + 16'))
 )
 
 def open_file(prefix, name):

@@ -51,6 +51,7 @@ static int64_t int_cast(v8::Local<v8::Value> value) {
 }
 %apply(const char *STRING, size_t LENGTH) { (const unsigned char *bytes_in, size_t len_in) };
 %apply(const char *STRING, size_t LENGTH) { (const unsigned char *key, size_t key_len) };
+%apply(const char *STRING, size_t LENGTH) { (const unsigned char *iv, size_t iv_len) };
 %apply(char *STRING, size_t LENGTH) { (unsigned char *bytes_out, size_t len) };
 
 /* Output parameters indicating how many bytes were written/sizes are
@@ -76,8 +77,8 @@ static int64_t int_cast(v8::Local<v8::Value> value) {
 
 %define %returns_array_sized_(FUNC, ARRAYARG, LENARG, OUTLENARG, INLENARGNUM)
 %exception FUNC {
-  arg ## ARRAYARG = new std::remove_pointer<typeof(arg ## ARRAYARG)>::type[arg ## LENARG];
   arg ## LENARG = int_cast(args[INLENARGNUM]);
+  arg ## ARRAYARG = new std::remove_pointer<typeof(arg ## ARRAYARG)>::type[arg ## LENARG];
 
   $action
 

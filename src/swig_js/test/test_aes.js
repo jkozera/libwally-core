@@ -1,6 +1,19 @@
 var wally = require('../wally');
 var test = require('tape');
 
+var fs = require('fs');
+
+if (require.extensions) {
+  require.extensions['.txt'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+  };
+}
+
+var cbc_cases_input = require('../../data/aes-cbc-pkcs7.txt');
+var cbc_lines = cbc_cases_input.split('\n').filter(
+  function (l) { return (l.indexOf('#') != 0) && l.length; }
+);
+
 var cases = [
     // AES test vectors from FIPS 197.
     [ 128, "000102030405060708090a0b0c0d0e0f",
@@ -51,14 +64,12 @@ var cases = [
            "23304b7a39f9f3ff067d8d8f9e24ecc7" ],
 ];
 
-test('base58 from bytes', function (t) {
+test('AES ECB', function (t) {
   t.plan(cases.length * 2);
   cases.forEach(function(testCase) {
     var key = new Buffer(testCase[1], 'hex');
     var plain = new Buffer(testCase[2], 'hex');
     var cypher = new Buffer(testCase[3], 'hex');
-    var key_bits = testCase[0];
-    var key_bytes = { 128: 16, 192: 24, 256: 32 }[key_bits];
     var ENCRYPT = 1, DECRYPT = 2;
     wally.wally_aes(key, plain, ENCRYPT).then(function (d) {
       t.equal(new Buffer(d).toString('hex'), cypher.toString('hex'),
@@ -69,4 +80,26 @@ test('base58 from bytes', function (t) {
         'aes decrypt('+cypher.toString('hex')+')');
     });
   });
+});
+
+test('AES CBC', function (t) {
+  t.plan(cbc_lines.length / 4 * 2);  // encrypt+decrypt for each case (4 lines)
+
+  for (var i = 0; i < cbc_lines.length / 4; ++i) {
+    var plain = new Buffer(cbc_lines[i * 4].split("=")[1], 'hex');
+    var key = new Buffer(cbc_lines[i * 4 + 1].split("=")[1], 'hex');
+    var iv = new Buffer(cbc_lines[i * 4 + 2].split("=")[1], 'hex');
+    var cypher = new Buffer(cbc_lines[i * 4 + 3].split("=")[1], 'hex');
+    (function (plain, key, iv, cypher) {
+      var ENCRYPT = 1, DECRYPT = 2;
+      wally.wally_aes_cbc(key, iv, plain, ENCRYPT).then(function (d) {
+        t.equal(new Buffer(d).toString('hex'), cypher.toString('hex'),
+          'aes CBC encrypt('+plain.toString('hex')+')');
+      });
+      wally.wally_aes_cbc(key, iv, cypher, DECRYPT).then(function (d) {
+        t.equal(new Buffer(d).toString('hex'), plain.toString('hex'),
+          'aes CBC decrypt('+cypher.toString('hex')+')');
+      });
+    })(plain, key, iv, cypher);
+   }
 });
