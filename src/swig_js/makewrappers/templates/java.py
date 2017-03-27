@@ -65,7 +65,8 @@ def _generate_java(funcname, f):
             PluginResult result = new PluginResult(PluginResult.Status.OK, res);
             callbackContext.sendPluginResult(result);
         }
-    ''' % (funcname, funcname[len('wally_'):])).replace(
+    ''' % (funcname, funcname[len('wally_'):]
+            if funcname.startswith('wally_') else funcname)).replace(
         '!!input_args!!', '\n'.join(input_args)
     ).replace(
         '!!output_args!!', '\n'.join(output_args)

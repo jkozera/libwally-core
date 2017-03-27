@@ -70,7 +70,25 @@ FUNCS = (
         'const_bytes[passwd]', 'const_bytes[salt]',
         'uint32_t[cost]', 'uint32_t[block]', 'uint32_t[parallel]',
         'out_bytes_fixedsized'
-    ]))  # out_size is passed from js directly
+    ])),  # out_size is passed from js directly
+
+    # BIP38:
+    ('bip38_raw_from_private_key', F([
+        'const_bytes[key]', 'const_bytes[pass]', 'uint32_t[flags]',
+        'out_bytes_fixedsized'
+    ], out_size='39')),
+    ('bip38_from_private_key', F([
+        'const_bytes[key]', 'const_bytes[pass]', 'uint32_t[flags]',
+        'out_str_p'
+    ])),
+    ('bip38_raw_to_private_key', F([
+        'const_bytes[bip38]', 'const_bytes[pass]', 'uint32_t[flags]',
+        'out_bytes_fixedsized'
+    ], out_size='32')),
+    ('bip38_to_private_key', F([
+        'string[bip38]', 'const_bytes[pass]', 'uint32_t[flags]',
+        'out_bytes_fixedsized'
+    ], out_size='32')),
 )
 
 def open_file(prefix, name):
