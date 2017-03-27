@@ -63,7 +63,14 @@ FUNCS = (
     ('wally_aes_cbc', F([
         'const_bytes[key]', 'const_bytes[iv]', 'const_bytes[bytes]',
         'uint32_t[flags]', 'out_bytes_sized'
-    ], out_size='Math.ceil(_arguments[2].length / 16) * 16 + 16'))
+    ], out_size='Math.ceil(_arguments[2].length / 16) * 16 + 16')),
+
+    # Scrypt:
+    ('wally_scrypt', F([
+        'const_bytes[passwd]', 'const_bytes[salt]',
+        'uint32_t[cost]', 'uint32_t[block]', 'uint32_t[parallel]',
+        'out_bytes_fixedsized'
+    ]))  # out_size is passed from js directly
 )
 
 def open_file(prefix, name):
