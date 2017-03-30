@@ -1,4 +1,4 @@
-from templates import js, swig, java, swift
+from templates import js, nan, java, swift
 import sys, os
 
 class FuncSpec(object):
@@ -97,8 +97,8 @@ def open_file(prefix, name):
 def main():
     prefix = sys.argv[1] if len(sys.argv) > 1 else '.'
 
-    with open_file(prefix, 'swig.i') as f:
-        f.write(swig.generate(FUNCS))
+    with open_file(prefix, 'nan_wrap.cc') as f:
+        f.write(nan.generate(FUNCS))
 
     with open_file(prefix, 'wally.js') as f:
         f.write(js.generate(FUNCS))
