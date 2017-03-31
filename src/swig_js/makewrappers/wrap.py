@@ -89,6 +89,17 @@ FUNCS = (
         'string[bip38]', 'const_bytes[pass]', 'uint32_t[flags]',
         'out_bytes_fixedsized'
     ], out_size='32')),
+
+    # signing:
+    ('wally_ec_sig_from_bytes', F([
+        'const_bytes[key]', 'const_bytes[bytes]', 'uint32_t[flags]',
+        'out_bytes_fixedsized'
+    ], out_size='64')),
+
+    # signatures:
+    ('wally_ec_sig_to_der', F([
+        'const_bytes[sig]', 'out_bytes_sized'
+    ], out_size='72'))
 )
 
 def open_file(prefix, name):
