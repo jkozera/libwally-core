@@ -27,10 +27,13 @@ def _generate_cordovajs(funcname, func):
     args = []
     resolve_wrap = 'res'
     for i, arg in enumerate(func.arguments):
-        if isinstance(arg, tuple):
-            resolve_wrap = 'new Uint8Array(res)'  # FIXME only for bytes
-        else:
-            if arg.startswith('const_bytes'):
+        if (isinstance(arg, tuple)
+            or 'out_bytes' in arg
+            or arg in ['bip32_priv_out', 'bip32_pub_out']
+        ):
+            resolve_wrap = 'new Uint8Array(res)'
+        if not isinstance(arg, tuple):
+            if arg.startswith('const_bytes') or arg == 'bip32_in':
                 args.append('base64.fromByteArray(_arguments[%s])' % i)
             elif arg.startswith('string') or arg.startswith('uint32_t'):
                 args.append('_arguments[%s]' % i)

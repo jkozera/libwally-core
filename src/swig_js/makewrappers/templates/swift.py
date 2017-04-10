@@ -63,6 +63,36 @@ def _generate_swift(funcname, f):
             args.append('resultPtr')
             args.append('inSize')
             postprocessing.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
+        elif arg == 'bip32_in':
+            input_args.append((
+                '''let array_%s_B64 = command.argument(at: %s) as! NSString as String;
+                let array_%s_Data = NSData(
+                    base64Encoded: array_%s_B64, options: NSData.Base64DecodingOptions.init(rawValue: 0));
+                let array_%s = [UInt8](repeating: 0, count: array_%s_Data!.length);
+                array_%s_Data?.getBytes(
+                    UnsafeMutableRawPointer(mutating: array_%s),
+                    range: NSRange(location: 0, length: array_%s_Data!.length));
+                let array_%s_Ptr = UnsafeMutablePointer<UInt8>(mutating: array_%s);
+
+                var inkey: UnsafePointer<Wally.ext_key>?;
+                Wally.bip32_key_unserialize_alloc(array_%s_Ptr, array_%s_Data!.length, &inkey);
+            ''') % tuple(
+                [i]*13
+            ))
+            args.append('inkey');
+            postprocessing.append('Wally.bip32_key_free(inkey);')
+        elif arg in ['bip32_pub_out', 'bip32_priv_out']:
+            output_args.extend([
+                'var outkey: UnsafePointer<Wally.ext_key>?;',
+                'let resultSwift = [UInt8](repeating: 0, count: Int(Wally.BIP32_SERIALIZED_LEN));',
+                'let resultPtr = UnsafeMutablePointer<UInt8>(mutating: resultSwift);',
+            ])
+            args.append('&outkey')
+            flag = {'bip32_pub_out': 'BIP32_FLAG_KEY_PUBLIC',
+                    'bip32_priv_out': 'BIP32_FLAG_KEY_PRIVATE'}[arg]
+            postprocessing.append('Wally.bip32_key_serialize(outkey, UInt32(Wally.%s), resultPtr, Int(Wally.BIP32_SERIALIZED_LEN));' % flag)
+            postprocessing.append('Wally.bip32_key_free(outkey);')
+            postprocessing.append('let result = resultSwift.map({ (i) -> NSValue in return NSNumber(value: i) })');
     return ('''
         func %s(_ command: CDVInvokedUrlCommand) {
             !!input_args!!
@@ -77,7 +107,9 @@ def _generate_swift(funcname, f):
                 pluginResult, callbackId:command.callbackId
             )
         }
-    ''' % (funcname, funcname, result_wrap)).replace(
+    ''' % (funcname,
+           (f.wally_name or funcname) + ('_alloc' if f.nodejs_append_alloc else ''),
+           result_wrap)).replace(
         '!!input_args!!', '\n'.join(input_args)
     ).replace(
         '!!output_args!!', '\n'.join(output_args)

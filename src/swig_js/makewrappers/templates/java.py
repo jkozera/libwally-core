@@ -56,6 +56,20 @@ def _generate_java(funcname, f):
             args.append('args.getInt(%s)' % i)
         elif arg.startswith('string'):
             args.append('args.getString(%s)' % i)
+        elif arg == 'bip32_in':
+            input_args.append((
+                'Object inkey = Wally.bip32_key_unserialize(Base64.decode(args.getString(%s), Base64.NO_WRAP));'
+            ) % i)
+            args.append('inkey');
+            postprocessing = 'Wally.bip32_key_free(inkey);'
+        elif arg in ['bip32_pub_out', 'bip32_priv_out']:
+            output_assignment = 'Object outkey = '
+            flag = {'bip32_pub_out': 'BIP32_FLAG_KEY_PUBLIC',
+                    'bip32_priv_out': 'BIP32_FLAG_KEY_PRIVATE'}[arg]
+            postprocessing = (
+                'byte[] res = Wally.bip32_key_serialize(outkey, Wally.%s);'
+                'Wally.bip32_key_free(outkey);'
+            ) % flag
     return ('''
         if (action.equals("%s")) {
             !!input_args!!
@@ -65,8 +79,8 @@ def _generate_java(funcname, f):
             PluginResult result = new PluginResult(PluginResult.Status.OK, res);
             callbackContext.sendPluginResult(result);
         }
-    ''' % (funcname, funcname[len('wally_'):]
-            if funcname.startswith('wally_') else funcname)).replace(
+    ''' % (funcname, f.wally_name or (funcname[len('wally_'):]
+            if funcname.startswith('wally_') else funcname))).replace(
         '!!input_args!!', '\n'.join(input_args)
     ).replace(
         '!!output_args!!', '\n'.join(output_args)

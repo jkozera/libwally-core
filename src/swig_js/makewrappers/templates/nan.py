@@ -67,6 +67,25 @@ def _generate_nan(funcname, f):
             ])
             args.append('res_ptr')
             args.append('res_size')
+        elif arg == 'bip32_in':
+            input_args.append((
+                'const ext_key* inkey;'
+                'unsigned char* inbuf = (unsigned char*) node::Buffer::Data(info[%s]->ToObject());'
+                'bip32_key_unserialize_alloc(inbuf, node::Buffer::Length(info[%s]->ToObject()), &inkey);'
+            ) % (i, i))
+            args.append('inkey');
+            postprocessing.append('bip32_key_free(inkey);')
+        elif arg in ['bip32_pub_out', 'bip32_priv_out']:
+            output_args.append(
+                'const ext_key *outkey;'
+                'v8::Local<v8::Object> res = Nan::NewBuffer(BIP32_SERIALIZED_LEN).ToLocalChecked();'
+                'unsigned char *out = (unsigned char*) node::Buffer::Data(res);'
+            )
+            args.append('&outkey')
+            flag = {'bip32_pub_out': 'BIP32_FLAG_KEY_PUBLIC',
+                    'bip32_priv_out': 'BIP32_FLAG_KEY_PRIVATE'}[arg]
+            postprocessing.append('bip32_key_serialize(outkey, %s, out, BIP32_SERIALIZED_LEN);' % flag)
+            postprocessing.append('bip32_key_free(outkey);')
     return ('''
         void %s(const Nan::FunctionCallbackInfo<v8::Value>& info) {
             !!input_args!!
@@ -78,7 +97,9 @@ def _generate_nan(funcname, f):
 
             info.GetReturnValue().Set(%s);
         }
-    ''' % (funcname, funcname, result_wrap)).replace(
+    ''' % (funcname,
+           (f.wally_name or funcname) + ('_alloc' if f.nodejs_append_alloc else ''),
+           result_wrap)).replace(
         '!!input_args!!', '\n'.join(input_args)
     ).replace(
         '!!output_args!!', '\n'.join(output_args)

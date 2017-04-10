@@ -3,9 +3,11 @@ import sys, os
 
 class FuncSpec(object):
 
-    def __init__(self, arguments, out_size=None):
+    def __init__(self, arguments, out_size=None, wally_name=None, nodejs_append_alloc=False):
         self.arguments = arguments
         self.out_size = out_size
+        self.wally_name = wally_name
+        self.nodejs_append_alloc = nodejs_append_alloc
 
 
 F = FuncSpec
@@ -99,7 +101,22 @@ FUNCS = (
     # signatures:
     ('wally_ec_sig_to_der', F([
         'const_bytes[sig]', 'out_bytes_sized'
-    ], out_size='72'))
+    ], out_size='72')),
+
+    # BIP32:
+    ('bip32_key_from_seed', F([
+        'const_bytes[seed]', 'uint32_t[version]', 'uint32_t[flags]',
+        'bip32_priv_out'
+    ], wally_name='bip32_key_from_seed', nodejs_append_alloc=True)),
+    ('bip32_privkey_from_parent', F([
+        'bip32_in', 'uint32_t[child_num]', 'uint32_t[flags]', 'bip32_priv_out'
+    ], wally_name='bip32_key_from_parent', nodejs_append_alloc=True)),
+    ('bip32_pubkey_from_parent', F([
+        'bip32_in', 'uint32_t[child_num]', 'uint32_t[flags]', 'bip32_pub_out'
+    ], wally_name='bip32_key_from_parent', nodejs_append_alloc=True)),
+    ('bip32_key_get_priv_key', F([
+        'bip32_in', 'out_bytes_fixedsized'
+    ], out_size='32'))
 )
 
 def open_file(prefix, name):
