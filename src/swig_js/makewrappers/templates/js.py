@@ -26,6 +26,7 @@ if (window.cordova) {
 def _generate_cordovajs(funcname, func):
     args = []
     resolve_wrap = 'res'
+    cur_out = 0
     for i, arg in enumerate(func.arguments):
         if (isinstance(arg, tuple)
             or 'out_bytes' in arg
@@ -40,6 +41,9 @@ def _generate_cordovajs(funcname, func):
             elif arg in ['out_bytes_sized', 'out_bytes_fixedsized']:
                 if getattr(func, 'out_size', None):
                     args.append(func.out_size)
+                elif getattr(func, 'out_sizes', None):
+                    args.append(func.out_sizes[cur_out])
+                    cur_out += 1
                 else:
                     args.append('_arguments[%s]' % i)
     return '''
@@ -58,24 +62,43 @@ def _generate_cordovajs(funcname, func):
 def _generate_nodejs(funcname, func):
     add_args = ''
     wrapper = '%s'
+    cur_out = 0
+    postprocessing = []
     for i, arg in enumerate(func.arguments):
-        if isinstance(arg, tuple):
-            add_args = '_arguments.push(null);'
-            wrapper = 'new Uint8Array(%s)'
-        elif (arg in ['out_bytes_sized', 'out_bytes_fixedsized']
-                and getattr(func, 'out_size', None)):
-            add_args = '_arguments.push(%s);' % func.out_size
+        if isinstance(arg, tuple) or arg in [
+            'out_uint64_t', 'out_bytes_sized', 'out_bytes_fixedsized'
+        ]:
+            if getattr(func, 'out_sizes', None):
+                postprocessing.append(
+                    'res[%s] = new Uint8Array(res[%s].buffer);' % (cur_out, cur_out)
+                )
+                cur_out += 1
+            else:
+                # TODO: maybe worth simplifying to avoid having to pass this null argument:
+                # (only required for arg being tuple, which never happens with out_size, hence
+                #  no add_args in the `if` above)
+                add_args = '_arguments.push(null);'
+                wrapper = 'new Uint8Array(%s.buffer)'
+        if arg in ['out_bytes_sized', 'out_bytes_fixedsized']:
+            if getattr(func, 'out_size', None):
+                add_args = '_arguments.push(%s);' % func.out_size
+            elif getattr(func, 'out_sizes', None):
+                add_args += '_arguments.push(%s);' % func.out_sizes[cur_out-1]
     wrapper = wrapper % ('wallycore.%s.apply(wallycore, _arguments)' % funcname)
     return ('''
         module.exports.%s = function () {
             var _arguments = [];
             _arguments.push.apply(_arguments, arguments);
             !!add_args!!
-            return Promise.resolve(
-                %s
-            );
+            var res = %s;
+            !!posprocessing!!
+            return Promise.resolve(res);
         }
-    ''' % (funcname, wrapper)).replace('!!add_args!!', add_args)
+    ''' % (funcname, wrapper)).replace(
+        '!!add_args!!', add_args
+    ).replace(
+        '!!posprocessing!!', '\n'.join(postprocessing)
+    )
 
 
 def generate(functions):

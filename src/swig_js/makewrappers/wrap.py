@@ -3,11 +3,12 @@ import sys, os
 
 class FuncSpec(object):
 
-    def __init__(self, arguments, out_size=None, wally_name=None, nodejs_append_alloc=False):
+    def __init__(self, arguments, out_size=None, wally_name=None, nodejs_append_alloc=False, out_sizes=None):
         self.arguments = arguments
         self.out_size = out_size
         self.wally_name = wally_name
         self.nodejs_append_alloc = nodejs_append_alloc
+        self.out_sizes = out_sizes
 
 
 F = FuncSpec
@@ -116,7 +117,27 @@ FUNCS = (
     ], wally_name='bip32_key_from_parent', nodejs_append_alloc=True)),
     ('bip32_key_get_priv_key', F([
         'bip32_in', 'out_bytes_fixedsized'
-    ], out_size='32'))
+    ], out_size='32')),
+
+    # Assets:
+    ('wally_asset_generator_from_bytes', F([
+        'const_bytes[asset]', 'const_bytes[abf]', 'out_bytes_fixedsized'
+    ], out_size='33')),
+    ('wally_asset_final_vbf', F([
+        'const_uint64s[values]', 'uint32_t[num_inputs]',
+        'const_bytes[abf]', 'const_bytes[vbf]', 'out_bytes_fixedsized'
+    ], out_size='32')),
+    ('wally_asset_unblind', F([
+        'const_bytes[pubkey]',
+        'const_bytes[privkey]',
+        'const_bytes[rangeproof]',
+        'const_bytes[commitment]',
+        'const_bytes[generator]',
+        'out_bytes_fixedsized',
+        'out_bytes_fixedsized',
+        'out_bytes_fixedsized',
+        'out_uint64_t'
+    ], out_sizes=['32', '32', '32']))
 )
 
 def open_file(prefix, name):

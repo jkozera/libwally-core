@@ -1,4 +1,5 @@
 TEMPLATE='''#include <nan.h>
+#include <ccan/ccan/endian/endian.h>
 
 extern "C" {
 #include "../include/wally_core.h"
@@ -7,6 +8,7 @@ extern "C" {
 #include "../include/wally_bip38.h"
 #include "../include/wally_bip39.h"
 #include "../include/wally_crypto.h"
+#include "../include/wally_elements.h"
 }
 
 !!nan_impl!!
@@ -23,6 +25,10 @@ def _generate_nan(funcname, f):
     args = []
     result_wrap = 'res'
     postprocessing = []
+    num_outs = len([arg for arg in f.arguments if 'out' in arg])
+    if num_outs > 1:
+        cur_out = 0
+        input_args.append('v8::Local<v8::Array> res = v8::Array::New(v8::Isolate::GetCurrent(), %s);' % num_outs)
     for i, arg in enumerate(f.arguments):
         # (const unsigned char*) arg1, arg2, (unsigned char*) arg3, arg4
         if isinstance(arg, tuple):
@@ -45,6 +51,18 @@ def _generate_nan(funcname, f):
             args.append('info[%s]->ToInteger()->Value()' % i)
         elif arg.startswith('string'):
             args.append('*Nan::Utf8String(info[%s])' % i)
+        elif arg.startswith('const_uint64s'):
+            input_args.extend([
+                'v8::Array *arr%s = (v8::Array*)*(info[%s]->ToObject());' % (i, i),
+                'uint64_t *uint64s%s = new uint64_t[arr%s->Length()];' % (i, i),
+                'for (int i = 0; i < arr%s->Length(); ++i) {' % i,
+                '   unsigned char *bytes = (unsigned char*) node::Buffer::Data(arr%s->Get(i)->ToObject());' % i,
+                '   uint64s%s[i] = be64_to_cpu(*((uint64_t*)bytes));' % i,
+                '}'
+            ])
+            postprocessing.append('delete[] uint64s%s;' % i)
+            args.append('uint64s%s' % i)
+            args.append('arr%s->Length()' % i)
         elif arg == 'out_str_p':
             output_args.append('char *result_ptr;')
             args.append('&result_ptr')
@@ -61,12 +79,30 @@ def _generate_nan(funcname, f):
             postprocessing.append('v8::Local<v8::Object> res = Nan::NewBuffer((char*)res_ptr, out_size).ToLocalChecked();')
         elif arg == 'out_bytes_fixedsized':
             output_args.extend([
-                'const size_t res_size = info[%s]->ToInteger()->Value();' % i,
-                'v8::Local<v8::Object> res = Nan::NewBuffer(res_size).ToLocalChecked();',
-                'unsigned char *res_ptr  = (unsigned char*) node::Buffer::Data(res);'
+                'const size_t res_size%s = info[%s]->ToInteger()->Value();' % (i, i),
+                'v8::Local<v8::Object> res%s = Nan::NewBuffer(res_size%s).ToLocalChecked();' % (i, i),
+                'unsigned char *res_ptr%s  = (unsigned char*) node::Buffer::Data(res%s);' % (i, i)
             ])
-            args.append('res_ptr')
-            args.append('res_size')
+            args.append('res_ptr%s' % i)
+            args.append('res_size%s' % i)
+            if num_outs > 1:
+                postprocessing.append('res->Set(%s, res%s);' % (cur_out, i))
+                cur_out += 1
+            else:
+                output_args.append(
+                    'v8::Local<v8::Object> res = res%s;' % i,
+                )
+        elif arg == 'out_uint64_t':
+            assert num_outs > 1  # wally_asset_unblind is the only func using this type
+            output_args.extend([
+                'uint64_t *res%s = (uint64_t*)malloc(8);' % i,
+            ])
+            args.append('res%s' % i)
+            postprocessing.extend([
+                '*res%s = cpu_to_be64(*res%s);' % (i, i),
+                'res->Set(%s, Nan::NewBuffer((char*)res%s, 8).ToLocalChecked());' % (cur_out, i)
+            ])
+            cur_out += 1
         elif arg == 'bip32_in':
             input_args.append((
                 'const ext_key* inkey;'
