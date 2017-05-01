@@ -63,6 +63,14 @@ def _generate_nan(funcname, f):
             postprocessing.append('delete[] uint64s%s;' % i)
             args.append('uint64s%s' % i)
             args.append('arr%s->Length()' % i)
+        elif arg.startswith('uint64_t'):
+            input_args.extend([
+                '   uint64_t arg%s; { ' % i,
+                '      unsigned char *bytes = (unsigned char*) node::Buffer::Data(info[%s]->ToObject());' % i,
+                '      arg%s = be64_to_cpu(*((uint64_t*)bytes));' % i,
+                '   }'
+            ])
+            args.append('arg%s' % i)
         elif arg == 'out_str_p':
             output_args.append('char *result_ptr;')
             args.append('&result_ptr')

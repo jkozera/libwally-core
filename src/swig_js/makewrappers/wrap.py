@@ -137,7 +137,25 @@ FUNCS = (
         'out_bytes_fixedsized',
         'out_bytes_fixedsized',
         'out_uint64_t'
-    ], out_sizes=['32', '32', '32']))
+    ], out_sizes=['32', '32', '32'])),
+    ('wally_asset_value_commitment', F([
+        'uint64_t[value]', 'const_bytes[vbf]', 'const_bytes[asset_generator]',
+        'out_bytes_fixedsized'
+    ], out_size='33')),
+    ('wally_asset_rangeproof', F([
+        'uint64_t[value]', 'const_bytes[blidning_pub]',
+        'const_bytes[ephemeral]', 'const_bytes[asset_id]',
+        'const_bytes[abf]', 'const_bytes[vbf]', 'const_bytes[commitment]',
+        'const_bytes[asset_generator]',
+        'out_bytes_sized',
+    ], out_size='5134')),
+    ('wally_asset_surjectionproof', F([
+        'const_bytes[asset_id]', 'const_bytes[abf]',
+        'const_bytes[asset_generator]', 'const_bytes[entropy]',
+        'const_bytes[input_assets]',
+        'const_bytes[input_abfs]', 'const_bytes[input_ags]',
+        'out_bytes_sized',
+    ], out_size='(2 + Math.floor((_arguments[5].length/32 + 7)/8) + 32 * (1 + (_arguments[5].length/32 > 3 ? 3 : _arguments[5].length/32)))')),
 )
 
 def open_file(prefix, name):
