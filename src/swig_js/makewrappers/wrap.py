@@ -39,7 +39,7 @@ pbkdf_func_spec = lambda out_size: F(
 )
 
 
-FUNCS = (
+FUNCS = [
     # hashes + PBKDF2:
     ('wally_sha256', hash_func_spec(SHA256_LEN)),
     ('wally_sha256d', hash_func_spec(SHA256_LEN)),
@@ -118,7 +118,8 @@ FUNCS = (
     ('bip32_key_get_priv_key', F([
         'bip32_in', 'out_bytes_fixedsized'
     ], out_size='32')),
-
+]
+FUNCS_NODE = [
     # Assets:
     ('wally_asset_generator_from_bytes', F([
         'const_bytes[asset]', 'const_bytes[abf]', 'out_bytes_fixedsized'
@@ -156,7 +157,7 @@ FUNCS = (
         'const_bytes[input_abfs]', 'const_bytes[input_ags]',
         'out_bytes_sized',
     ], out_size='(2 + Math.floor((_arguments[5].length/32 + 7)/8) + 32 * (1 + (_arguments[5].length/32 > 3 ? 3 : _arguments[5].length/32)))')),
-)
+]
 
 def open_file(prefix, name):
     return open(os.path.join(prefix, name), "w")
@@ -165,7 +166,7 @@ def main():
     prefix = sys.argv[1] if len(sys.argv) > 1 else '.'
 
     with open_file(prefix, 'nan_wrap.cc') as f:
-        f.write(nan.generate(FUNCS))
+        f.write(nan.generate(FUNCS + FUNCS_NODE))
 
     with open_file(prefix, 'wally.js') as f:
         f.write(js.generate(FUNCS))
