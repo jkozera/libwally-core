@@ -46,7 +46,6 @@
 		91018E351DD275E200BB4E40 /* lax_der_privatekey_parsing.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D771DD275E200BB4E40 /* lax_der_privatekey_parsing.c */; };
 		91018E361DD275E200BB4E40 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 91018D841DD275E200BB4E40 /* README.md */; };
 		91018E3B1DD275E200BB4E40 /* bench_recover.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D911DD275E200BB4E40 /* bench_recover.c */; };
-		91018E3C1DD275E200BB4E40 /* bench_schnorr_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D921DD275E200BB4E40 /* bench_schnorr_verify.c */; };
 		91018E3D1DD275E200BB4E40 /* bench_sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D931DD275E200BB4E40 /* bench_sign.c */; };
 		91018E3E1DD275E200BB4E40 /* bench_verify.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018D941DD275E200BB4E40 /* bench_verify.c */; };
 		91018E3F1DD275E200BB4E40 /* gen_context.c in Sources */ = {isa = PBXBuildFile; fileRef = 91018DA71DD275E200BB4E40 /* gen_context.c */; };
@@ -194,7 +193,6 @@
 		91018D7C1DD275E200BB4E40 /* secp256k1_ecdh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secp256k1_ecdh.h; sourceTree = "<group>"; };
 		91018D7D1DD275E200BB4E40 /* secp256k1_rangeproof.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secp256k1_rangeproof.h; sourceTree = "<group>"; };
 		91018D7E1DD275E200BB4E40 /* secp256k1_recovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secp256k1_recovery.h; sourceTree = "<group>"; };
-		91018D7F1DD275E200BB4E40 /* secp256k1_schnorr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = secp256k1_schnorr.h; sourceTree = "<group>"; };
 		91018D801DD275E200BB4E40 /* libsecp256k1.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libsecp256k1.pc.in; sourceTree = "<group>"; };
 		91018D811DD275E200BB4E40 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
 		91018D831DD275E200BB4E40 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -209,7 +207,6 @@
 		91018D8F1DD275E200BB4E40 /* bench_internal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_internal.c; sourceTree = "<group>"; };
 		91018D901DD275E200BB4E40 /* bench_rangeproof.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_rangeproof.c; sourceTree = "<group>"; };
 		91018D911DD275E200BB4E40 /* bench_recover.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_recover.c; sourceTree = "<group>"; };
-		91018D921DD275E200BB4E40 /* bench_schnorr_verify.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_schnorr_verify.c; sourceTree = "<group>"; };
 		91018D931DD275E200BB4E40 /* bench_sign.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_sign.c; sourceTree = "<group>"; };
 		91018D941DD275E200BB4E40 /* bench_verify.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench_verify.c; sourceTree = "<group>"; };
 		91018D951DD275E200BB4E40 /* ecdsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ecdsa.h; sourceTree = "<group>"; };
@@ -260,8 +257,6 @@
 		91018DC91DD275E200BB4E40 /* tests_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tests_impl.h; sourceTree = "<group>"; };
 		91018DCB1DD275E200BB4E40 /* main_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_impl.h; sourceTree = "<group>"; };
 		91018DCC1DD275E200BB4E40 /* Makefile.am.include */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am.include; sourceTree = "<group>"; };
-		91018DCD1DD275E200BB4E40 /* schnorr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schnorr.h; sourceTree = "<group>"; };
-		91018DCE1DD275E200BB4E40 /* schnorr_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schnorr_impl.h; sourceTree = "<group>"; };
 		91018DCF1DD275E200BB4E40 /* tests_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tests_impl.h; sourceTree = "<group>"; };
 		91018DD01DD275E200BB4E40 /* num.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = num.h; sourceTree = "<group>"; };
 		91018DD11DD275E200BB4E40 /* num_gmp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = num_gmp.h; sourceTree = "<group>"; };
@@ -713,7 +708,6 @@
 				91018D7C1DD275E200BB4E40 /* secp256k1_ecdh.h */,
 				91018D7D1DD275E200BB4E40 /* secp256k1_rangeproof.h */,
 				91018D7E1DD275E200BB4E40 /* secp256k1_recovery.h */,
-				91018D7F1DD275E200BB4E40 /* secp256k1_schnorr.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -746,7 +740,6 @@
 				91018D8F1DD275E200BB4E40 /* bench_internal.c */,
 				91018D901DD275E200BB4E40 /* bench_rangeproof.c */,
 				91018D911DD275E200BB4E40 /* bench_recover.c */,
-				91018D921DD275E200BB4E40 /* bench_schnorr_verify.c */,
 				91018D931DD275E200BB4E40 /* bench_sign.c */,
 				91018D941DD275E200BB4E40 /* bench_verify.c */,
 				91018D951DD275E200BB4E40 /* ecdsa.h */,
@@ -838,7 +831,6 @@
 				91018DB81DD275E200BB4E40 /* ecdh */,
 				91018DBC1DD275E200BB4E40 /* rangeproof */,
 				91018DC61DD275E200BB4E40 /* recovery */,
-				91018DCA1DD275E200BB4E40 /* schnorr */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -877,18 +869,6 @@
 				91018DC91DD275E200BB4E40 /* tests_impl.h */,
 			);
 			path = recovery;
-			sourceTree = "<group>";
-		};
-		91018DCA1DD275E200BB4E40 /* schnorr */ = {
-			isa = PBXGroup;
-			children = (
-				91018DCB1DD275E200BB4E40 /* main_impl.h */,
-				91018DCC1DD275E200BB4E40 /* Makefile.am.include */,
-				91018DCD1DD275E200BB4E40 /* schnorr.h */,
-				91018DCE1DD275E200BB4E40 /* schnorr_impl.h */,
-				91018DCF1DD275E200BB4E40 /* tests_impl.h */,
-			);
-			path = schnorr;
 			sourceTree = "<group>";
 		};
 		91018DE11DD275E200BB4E40 /* swig_java */ = {
@@ -1098,7 +1078,6 @@
 				91018E151DD275E200BB4E40 /* run-types.c in Sources */,
 				91018E2E1DD275E200BB4E40 /* pbkdf2.c in Sources */,
 				91018E0D1DD275E200BB4E40 /* ripemd160.c in Sources */,
-				91018E3C1DD275E200BB4E40 /* bench_schnorr_verify.c in Sources */,
 				91018E1B1DD275E200BB4E40 /* tap.c in Sources */,
 				91018E031DD275E200BB4E40 /* base58.c in Sources */,
 				91018E2A1DD275E200BB4E40 /* hex.c in Sources */,
@@ -1211,7 +1190,6 @@
 					"-DUSE_SCALAR_8X32=1",
 					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_NONE=1",
-					"-DENABLE_MODULE_SCHNORR=1",
 					"-DSWIG_JAVASCRIPT_BUILD=1",
 					"-isystem",
 					"$(PROJECT_DIR)/../../secp256k1/include/",
@@ -1243,7 +1221,6 @@
 					"-DUSE_SCALAR_8X32=1",
 					"-DUSE_FIELD_10X26=1",
 					"-DUSE_NUM_NONE=1",
-					"-DENABLE_MODULE_SCHNORR=1",
 					"-DSWIG_JAVASCRIPT_BUILD=1",
 					"-isystem",
 					"$(PROJECT_DIR)/../../secp256k1/include/",
