@@ -137,6 +137,7 @@ fi
 
 cd $PLUGINDIR
 python $SWIGJSDIR/makewrappers/wrap.py
+cp $SRCDIR/swig_java/src/com/blockstream/libwally/Wally.java . || true
 
 cd $APPDIR
 
