@@ -33,9 +33,15 @@ module.exports = function(context) {
             projectFile = platform_ios.parseProjectFile(iosPlatformPath);
         } catch (e) {
             console.log("Looks like we're in Cordova 5.0 and above...");
-            // let's try cordova 5.0 structure
-            platform_ios = context.requireCordovaModule('cordova-lib/src/plugman/platforms/ios');
-            projectFile = platform_ios.parseProjectFile(iosPlatformPath);
+            try {
+                // let's try cordova 5.0 structure
+                platform_ios = context.requireCordovaModule('cordova-lib/src/plugman/platforms/ios');
+                projectFile = platform_ios.parseProjectFile(iosPlatformPath);
+            } catch (e) {
+                console.log("Looks like we're in Cordova 7.0 and above...");
+                platform_ios = require('cordova-lib/src/plugman/platforms/ios');
+                projectFile = platform_ios.parseProjectFile(iosPlatformPath);
+            }
         }
 
         // hopefully projectFile can't go null here.......

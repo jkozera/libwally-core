@@ -145,7 +145,7 @@ if [ "$(uname -s)" == "Darwin" ]; then
     cordova prepare ios
     # FIXME plugin add doesn't work before prepare for iOS
     sed s/HelloCordova/$APPNAME/ $PLUGINDIR/scripts/add_swift_support.js.HelloCordova > $PLUGINDIR/scripts/add_swift_support.js
-    cordova plugin add $PLUGINDIR
+    cordova plugin add $PLUGINDIR --nosave
     sed s/HelloCordova/$APPNAME/ $PLUGINDIR/patch_pbxproj_with_wally.js > patch_pbxproj_with_wally.js
     NODE_PATH=`pwd`/platforms/ios/cordova/node_modules node patch_pbxproj_with_wally.js > pbxproj.new
     cp -r $SRCDIR/* platforms/ios/$APPNAME
@@ -153,7 +153,7 @@ if [ "$(uname -s)" == "Darwin" ]; then
     cp -r $SRCDIR/secp256k1/include/* platforms/ios/$APPNAME/include/
     mv pbxproj.new platforms/ios/$APPNAME.xcodeproj/project.pbxproj
 else
-    cordova plugin add $PLUGINDIR
+    cordova plugin add $PLUGINDIR --nosave
 fi
 
 # Put files required by GA webfiles into place:

@@ -18,5 +18,8 @@
     "cordova-ios"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "plugman": "^1.4.1"
+  }
 }
