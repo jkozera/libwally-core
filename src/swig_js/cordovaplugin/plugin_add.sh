@@ -21,7 +21,7 @@ if [ -z "$JAVA_HOME" ]; then
     export JAVA_HOME=$JAVA7_HOME
 fi
 if [ "$(uname -s)" != "Darwin" ]; then
-    # Reuire JAVA_HOME and ANDROID_NDK on Linux only, where we can't build for iOS
+    # Require JAVA_HOME and ANDROID_NDK on Linux only, where we can't build for iOS
     echo ${JAVA_HOME:?}
     echo ${ANDROID_NDK:?}
 fi
@@ -100,33 +100,43 @@ else
     all_android_archs="armeabi armeabi-v7a arm64-v8a mips mips64 x86 x86_64"
 fi
 
-echo '============================================================'
-echo 'Initialising Android build for architecture(s):'
-echo $all_android_archs
-echo '============================================================'
-
 cd $LIBWALLYDIR  #  cd from src/swig_js/cordovaplugin to wallycore root
 
 ./tools/cleanup.sh
 ./tools/autogen.sh
 
-OLDPATH=$PATH
-export PATH=`pwd`/toolchain/bin:$PATH
-export CC=clang
+if [ "$ANDROID_NDK" != "" ]; then
+    OLDPATH=$PATH
+    export PATH=`pwd`/toolchain/bin:$PATH
+    export CC=clang
 
-for a in $all_android_archs; do
-    build $a || if [ "$(uname -s)" == "Darwin" ]; then
-        echo "Android build failed - ignoring, still trying iOS."
-    else
-        echo "Android build failed and not on macOS, so cannot do iOS - exiting."
-        exit 1
-    fi
-done
+    echo '============================================================'
+    echo 'Initialising Android build for architecture(s):'
+    echo $all_android_archs
+    echo '============================================================'
 
-# Note we can't do a full clean here since we need the generated Java files
-export PATH=$OLDPATH
-rm -rf src/.libs ./toolchain
+    for a in $all_android_archs; do
+        build $a || if [ "$(uname -s)" == "Darwin" ]; then
+            echo "Android build failed - ignoring, still trying iOS."
+            unset CFLAGS
+            unset CPPFLAGS
+            unset LDFLAGS
+            break
+        else
+            echo "Android build failed and not on macOS, so cannot do iOS - exiting."
+            exit 1
+        fi
+    done
+
+    # Note we can't do a full clean here since we need the generated Java files
+    export PATH=$OLDPATH
+    rm -rf src/.libs ./toolchain
+fi
+
 ./configure && make -j$NUM_JOBS  # generate files for iOS in case Android build failed
+
+cd $PLUGINDIR
+python $SWIGJSDIR/makewrappers/wrap.py
 
 cd $APPDIR
 
@@ -147,7 +157,6 @@ fi
 
 # Put files required by GA webfiles into place:
 cd $APPDIR/plugins/cordova-plugin-wally
-python $SWIGJSDIR/makewrappers/wrap.py
 mkdir -p build/Release
 echo '' > build/Release/wallycore.js  # mock wallycore which is nodejs-only
 npm i base64-js
