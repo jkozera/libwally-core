@@ -133,7 +133,7 @@ if [ "$ANDROID_NDK" != "" ]; then
     rm -rf src/.libs ./toolchain
 fi
 
-./configure && make -j$NUM_JOBS  # generate files for iOS in case Android build failed
+./configure && make clean && make -j$NUM_JOBS  # generate files for iOS in case Android build failed
 
 cd $PLUGINDIR
 python $SWIGJSDIR/makewrappers/wrap.py
