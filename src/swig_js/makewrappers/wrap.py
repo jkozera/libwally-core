@@ -169,7 +169,7 @@ def main():
         f.write(nan.generate(FUNCS + FUNCS_NODE))
 
     with open_file(prefix, 'wally.js') as f:
-        f.write(js.generate(FUNCS))
+        f.write(js.generate(FUNCS + FUNCS_NODE))
 
     with open_file(prefix, 'WallyCordova.java') as f:
         f.write(java.generate(FUNCS))
